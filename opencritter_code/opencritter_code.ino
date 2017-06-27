@@ -126,6 +126,9 @@ void loop()
     case confM:
       confMenu();
       break;
+    case c_clockset:
+      clockset();
+      break;
     //
     // Games
     case g_cardflip:

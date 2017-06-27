@@ -1,3 +1,11 @@
+/*
+   THIS is the function that actually handles drawing the screen.
+
+   Do not use this for anything other than drawing to the screen.
+   Use the appropirate menu/minigame/animation for changing variables or other actions.
+
+*/
+
 void updateScreen()
 {
   switch (selMenu)
@@ -31,9 +39,26 @@ void updateScreen()
       // if (debugMode)
       //   Serial.println(F("Drawing clock"));
       display.fillRect(0, 0, 128, 64, 0);
+      // Master Clock
       display.setCursor(16, 0);
       display.setTextColor(1);
       display.setTextSize(2);
+      if (hnow + clockOFFSETh < 10)
+        display.print(F("0"));
+      display.print(hnow + clockOFFSETh);
+      display.print(F(":"));
+      if (mnow + clockOFFSETm < 10)
+        display.print(F("0"));
+      display.print(mnow + clockOFFSETm);
+      display.print(F(":"));
+      if (snow + clockOFFSETs < 10)
+        display.print(F("0"));
+      display.print(snow + clockOFFSETs);
+      // Lifetime clock
+      display.setTextColor(1);
+      display.setTextSize(1);
+      display.setCursor(0, 16);
+      display.print(F("Lifespan: "));
       if (hnow < 10)
         display.print(F("0"));
       display.print(hnow);
@@ -45,17 +70,14 @@ void updateScreen()
       if (snow < 10)
         display.print(F("0"));
       display.print(snow);
-      //Other Stats
+      // Other Stats
       display.setTextSize(1);
-      display.setCursor(0, 16);
+      display.setCursor(0, 24);
       display.print(F("Heartbeats: "));
       display.print(heartbeats);
-      display.setCursor(0, 24);
+      display.setCursor(0, 32);
       display.print(F("BPM: "));
       display.print((1 / ((baseHRT_speed * metabolism) / 1000)) * 60);
-      display.setCursor(0, 32);
-      display.print(F("Metabolism: "));
-      display.print(metabolism);
       display.setCursor(0, 40);
       display.print(F("Days Alive: "));
       if (dnow < 10)
@@ -191,10 +213,31 @@ void updateScreen()
       display.setCursor(8, 24);
       display.print(F("Beeper Mute: "));
       display.print(buzzMute);
-      display.setCursor(8, 24);
-      display.print(F("Set Clock: "));
+      display.setCursor(8, 32);
+      display.print(F("Set Clock"));
       break;
     default:
+      break;
+    case c_clockset: //Clock set menu
+      // if (debugMode)
+      //   Serial.println(F("Drawing clock"));
+      display.fillRect(0, 0, 128, 64, 0);
+      display.setCursor(16, 0);
+      display.setTextColor(1);
+      display.setTextSize(2);
+      if (hnow + clockOFFSETh < 10)
+        display.print(F("0"));
+      display.print(hnow + clockOFFSETh);
+      display.print(F(":"));
+      if (mnow + clockOFFSETm < 10)
+        display.print(F("0"));
+      display.print(mnow + clockOFFSETm);
+      display.print(F(":"));
+      if (snow + clockOFFSETs < 10)
+        display.print(F("0"));
+      display.print(snow + clockOFFSETs);
+      display.setCursor(32 * (ocCursor + 1), 16);
+      display.print(F("*"));
       break;
   }
   display.display();

@@ -1,3 +1,12 @@
+/*
+ * 
+ * Handles all Input/Output for human interaction.
+ * 
+ * Buttons, Speakers, Vibration Motors, and LEDs go here
+ * 
+ */
+
+
 void getButton() //Game-wide handling of reading button input
 {
   if (digitalRead(Abut_pin) != butTHEN[0]) //If the current physical state of then button is not what it was

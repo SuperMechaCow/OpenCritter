@@ -1,5 +1,11 @@
-/*        ARRAY NAMES         */
-
+/*        SWITCH NAMES        *\
+ *  These values never need to
+ *  be changed. They are simply
+ *  for eschewing variables
+ *  and to make human read-able
+ *  code.
+\*                            */
+          
 //Functions
 #define RESET 0
 
@@ -14,7 +20,7 @@
 #define cryCLK 7 //time between crying for attention
 #define gameCLK 8 //game clock
 
-//beepER NAMES
+//BEEPER NAMES
 #define UpChirp 1
 #define DnChirp 2
 #define HiLo1 3
@@ -22,7 +28,8 @@
 #define PosBeep 5
 #define NegBeep 6
 
-//MENU NAMES
+//MENU NAMES 
+//(g_ games, c_ config)
 #define mainM 1
 #define clockM 2
 #define statsM 3
@@ -31,6 +38,7 @@
 #define medsM 6
 #define confM 7
 #define g_cardflip 9
+#define c_clockset 10
 
 //ANIMATION TYPES
 #define a_idle 1
@@ -50,11 +58,6 @@
 #define egg 0
 #define wibbur 1
 #define tribbur 2
-
-//BASE WEIGHT
-#define egg_w 5
-#define wibbur_w 10
-#define tribbur_w 20
 
 //card Flip gameVals
 #define nextcard 0

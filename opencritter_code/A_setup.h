@@ -1,12 +1,14 @@
+/*
+ * This is the setup that normally goes before setup()
+ * Typical variable declarations, hardware definitions
+ */
+
+//Start OLED
 #define OLED_RESET 4
 Adafruit_SSD1306 display(OLED_RESET);
 #if (SSD1306_LCDHEIGHT != 64)
 #error("Height incorrect, please fix Adafruit_SSD1306.h!");
 #endif
-
-//Board specific setup
-#define espSDA D6
-#define espSCL D5
 
 #define debugMode true
 #define versionnum "0.01"
@@ -34,9 +36,10 @@ Adafruit_SSD1306 display(OLED_RESET);
 #define buzzer_pin D8
 #define beeper_pin D4
 #define GPIO_pin D7
+//ESP8266 I2C pin assignment
+#define espSDA D6
+#define espSCL D5
 #endif
-
-#define baseHRT_speed 2000
 
 /* digicritter stats */
 //Start stage at 0
@@ -50,7 +53,7 @@ float happiness = 100;
 float boredom = 100;
 int heartbeats = 0;
 float metabolism = 0.50;
-//byte clockOFFSETh, clockOFFSETm, clockOFFSETs = 0;
+byte clockOFFSETh, clockOFFSETm, clockOFFSETs = 0;
 
 unsigned long CLK[7] = {0}; //See clock array names
 
@@ -80,3 +83,18 @@ byte aniMode, aniOffset, aniStage, aniLast = 0;
 //Real clock functions
 int dnow, hnow, mnow, snow = 0;
 byte hoffset, moffset, soffset = 0;
+
+
+/*        Game Properties       *\
+ * These change certain constants
+ * throughout the game. Changing
+ * these will impact gameplay.
+\*                              */
+
+//MASTER PARAMETERS
+#define baseHRT_speed 2000
+
+//BASE WEIGHT
+#define egg_w 5
+#define wibbur_w 10
+#define tribbur_w 20

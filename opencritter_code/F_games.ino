@@ -1,3 +1,10 @@
+/*
+ * Handles all of the minigames in the game
+ * 
+ * Note that this does not actually draw the screen. It only handles the "behind the scenes".
+ * See updateScreen() and animate() for drawing minigames.
+ */
+
 void cardflip() {
 
   animate();
@@ -39,8 +46,6 @@ void cardflip() {
     //A button is pressed
     if (butNOW[0])
     {
-      beepStage = RESET;
-      beepMode = UpChirp;
       butNOW[0] = false; //Set the button to not enable again
       gameVal[thiscard] = random(10);
       if (debug) {
@@ -61,8 +66,6 @@ void cardflip() {
     //B button is pressed
     if (butNOW[1])
     {
-      beepStage = RESET;
-      beepMode = DnChirp;
       butNOW[1] = false; //Set the button to not enable again
       gameVal[thiscard] = random(10);
       if (debug) {
@@ -98,6 +101,8 @@ void cardflip() {
     if (gameVal[point]) {
       if (debug)
         Serial.println(F("You win!"));
+      beepStage = RESET;
+      beepMode = UpChirp;
       gameVal[point] = 1;
       //WEIGHT DROP ISN'T SUPPOSED TO HAPPEN IN THIS GAME
       if (weight <= 1)
@@ -115,6 +120,8 @@ void cardflip() {
       display.print(F("YOU WIN!"));
     }
     else {
+      beepStage = RESET;
+      beepMode = DnChirp;
       display.setCursor(80, 48);
       display.setTextColor(1);
       display.setTextSize(1);

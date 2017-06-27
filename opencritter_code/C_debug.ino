@@ -1,3 +1,11 @@
+/*
+ * 
+ * If debug is enabled in setup.h, it creates a debug menu that can be accessed over serial.
+ * 
+ * This is designed to use numerical commands only.
+ * 
+ */
+
 void debug()
 {
   if (Serial.available())

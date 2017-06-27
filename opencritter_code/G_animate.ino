@@ -1,3 +1,12 @@
+/*
+ * Handles all of the critter animations in the game
+ * 
+ * Note that this only prepares the animation for the screen.
+ * It does not update the screen itself.
+ * See updateScreen() for screen drawing.
+ * 
+ */
+
 void aniModeSet (byte brd, byte anitype) {
   switch (brd) {
     case egg:
