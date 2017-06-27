@@ -188,6 +188,11 @@ void updateScreen()
       display.setCursor(8, 16);
       display.print(F("Beeper Mute: "));
       display.print(beepMute);
+      display.setCursor(8, 24);
+      display.print(F("Beeper Mute: "));
+      display.print(buzzMute);
+      display.setCursor(8, 24);
+      display.print(F("Set Clock: "));
       break;
     default:
       break;

@@ -6,21 +6,23 @@
 #include <EEPROM.h>
 
 //Include custom files
-#include "gfx.h"
-#include "names.h"
-#include "setup.h"
+#include "A_setup.h"
+#include "B_names.h"
+#include "Z_gfx.h"
 
 void setup()
 {
   //Spin up a serial port for debugging/comms
   Serial.begin(9600);
 
-  if (ARDUINO_ESP8266_NODEMCU) {
-    //Set the pins for I2C
-    Wire.begin(espSDA, espSCL);
-    //Set the EEPROM size in bytes
-    EEPROM.begin(32);
-  }
+  /*
+    if (ARDUINO_ESP8266_NODEMCU) {
+      //Set the pins for I2C
+      Wire.begin(espSDA, espSCL);
+      //Set the EEPROM size in bytes
+      EEPROM.begin(32);
+    }
+  */
 
   //start an OLED screen object
   display.begin(SSD1306_SWITCHCAPVCC, 0x3C); // initialize with the I2C addr 0x3C (for the 128x32)
@@ -28,6 +30,9 @@ void setup()
   display.display();
   // Clear the buffer
   display.clearDisplay();
+
+  //Reset the seed
+  //randomSeed(analogRead(0));
 
   //Set pin modes for the input tactile switches
   pinMode(Abut_pin, INPUT);
@@ -38,7 +43,6 @@ void setup()
   pinMode(hrt_pin, OUTPUT);
   pinMode(beeper_pin, OUTPUT);
   pinMode(buzzer_pin, OUTPUT);
-
 
   //If the debugging is on, let the user know over serial
   if (debugMode)
@@ -51,6 +55,10 @@ void setup()
   aniLast = RESET;  //Set the placeholder for previous animation
 
   beepMode = UpChirp;
+
+  // If we are debugging, skip the egg
+  if (debug)
+    breed = 1;
 
   updateScreen(); //draw the first screen
 }
@@ -76,9 +84,9 @@ void loop()
     //Raising the trait decreases the drain rate of the status
     //Raising a stat with junk foods should negatively impact the trait
     //Traits also each effect one other part of the game
-    hunger = hunger - (1 * Ath); //hunger = athleticism
-    happiness = happiness - (1 * Dis); //happiness = Dis
-    boredom = boredom - (1 * Int); //boredom = Int
+    hunger = hunger - (1 * (1 - Ath)); //hunger = athleticism
+    happiness = happiness - (1 * (1 - Dis)); //happiness = Dis
+    boredom = boredom - (1 * (1 - Int)); //boredom = Int
     //Keep stats from going below 0
     if (hunger <= 0)
       hunger = RESET;
@@ -88,23 +96,22 @@ void loop()
       boredom = RESET;
   }
 
-  //Hacked up temporary evolution handler
-  if (heartbeats > 60 && breed < 1)
-  {
-    beepMode = HiLo3;
-    breed = wibbur;
-    aniModeSet(breed, a_idle);
-  }
+  //Check for evolution change
+  evolveHandler();
 
   //Call the function for running the beeper if not muted
   if (!beepMute)
     beep();
+
   //Call the function for running the buzzer
-  buzz();
+  if (!buzzMute)
+    buzz();
 
   //Call the right menu function depending on what the current menu variable is set to (selMenu)
   switch (selMenu)
   {
+    //
+    // Menus
     case mainM:
       mainMenu();
       break;
@@ -119,33 +126,18 @@ void loop()
     case confM:
       confMenu();
       break;
+    //
+    // Games
+    case g_cardflip:
+      cardflip();
+      break;
     default:
       break;
   }
-
   /*
     This is where we should be putting "plugins"
     The plugin should just be an ino file with a single function
     The function gets called here
     This should be able to overwrite menus
   */
-}
-
-void getButton() //Game-wide handling of reading button input
-{
-  if (digitalRead(Abut_pin) != butTHEN[0]) //If the current physical state of then button is not what it was
-  {
-    butTHEN[0] = digitalRead(Abut_pin); //Set the "previous state" to the button state
-    butNOW[0] = digitalRead(Abut_pin); //Set the current state to the button state
-  }
-  if (digitalRead(Bbut_pin) != butTHEN[1])
-  {
-    butTHEN[1] = digitalRead(Bbut_pin);
-    butNOW[1] = digitalRead(Bbut_pin);
-  }
-  if (digitalRead(Cbut_pin) != butTHEN[2])
-  {
-    butTHEN[2] = digitalRead(Cbut_pin);
-    butNOW[2] = digitalRead(Cbut_pin);
-  }
 }

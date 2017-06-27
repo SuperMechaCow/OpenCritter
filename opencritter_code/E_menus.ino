@@ -47,17 +47,11 @@ void mainMenu()
         ocCursor = RESET;
         break;
       case 3:
-        beepMode = HiLo1;
-
-        if (weight <= 1)
-          weight = RESET;
-        else
-          weight--;
+        selMenu = g_cardflip;
         break;
       case 5:
         CLK[timeCLK] = CLK[baseCLK];
         selMenu = confM;
-        display.fillRect(0, 0, 128, 64, 0);
         ocCursor = RESET;
         break;
       default:
@@ -186,7 +180,8 @@ void foodMenu()
         hunger = hunger + 25;
         if (hunger > 100)
           hunger = 100;
-        weight = weight + 1;
+        weight = weight + 2;
+        Dis = Dis - 0.01;
         aniMode = ani_wibbur_eat;
         aniStage = RESET;
         aniLast = RESET;
@@ -198,7 +193,8 @@ void foodMenu()
         happiness = happiness + 25;
         if (happiness > 100)
           happiness = 100;
-        weight = weight + 1;
+        weight = weight + 2;
+        Int = Int - 0.01;
         aniMode = ani_wibbur_eat;
         aniStage = RESET;
         aniLast = RESET;
@@ -210,7 +206,8 @@ void foodMenu()
         boredom = boredom + 25;
         if (boredom > 100)
           boredom = 100;
-        weight = weight + 1;
+        weight = weight + 2;
+        Ath = Ath - 0.01;
         aniMode = ani_wibbur_eat;
         aniStage = RESET;
         aniLast = RESET;
@@ -248,7 +245,7 @@ void confMenu() {
     //do stuff when button is HIGH
     butNOW[0] = false; //Set the button to not enable again
     ocCursor++;
-    if (ocCursor >= 1)
+    if (ocCursor >= 2)
       ocCursor = RESET;
     updateScreen();
     if (debugMode) {
@@ -265,6 +262,10 @@ void confMenu() {
     switch (ocCursor) {
       case 0: //Mute Beep
         beepMute = !beepMute;
+        beepMode = HiLo1;
+        break;
+      case 1: //Mute Beep
+        buzzMute = !buzzMute;
         beepMode = HiLo1;
         break;
       default:

@@ -1,5 +1,4 @@
 void aniModeSet (byte brd, byte anitype) {
-
   switch (brd) {
     case egg:
       switch (anitype) {
@@ -12,12 +11,20 @@ void aniModeSet (byte brd, byte anitype) {
       switch (anitype) {
         case a_idle:
           aniMode = ani_wibbur_idle;
+          break;
+        case a_eat:
+          aniMode = ani_wibbur_eat;
+          break;
+        case a_play:
+          aniMode = ani_wibbur_play;
+          break;
       }
       break;
     case tribbur:
       switch (anitype) {
         case a_idle:
           aniMode = ani_tribbur_idle;
+          break;
       }
       break;
   }
@@ -131,6 +138,35 @@ void animate()
           updateScreen();
         }
       };
+      break;
+    case ani_wibbur_play:
+      if (aniStage == 0)
+      {
+        Serial.print(F("Wibbur play at: "));
+        Serial.println(metabolism);
+        CLK[aniCLK] = CLK[baseCLK];
+        aniStage = 1;
+      }
+      else
+      {
+        // Starts on one. How long it's been since clocks synced divided by increments equal to 2000 * 0.25 * 0.5
+        aniStage = 1 + ((CLK[baseCLK] - CLK[aniCLK]) / ((baseHRT_speed * 0.25) * metabolism));
+        if (aniStage % 2 == 1) //if odd
+        {
+          display.fillRect(24, 16, 32, 32, 0);
+          display.drawBitmap(24, 16, wibbur_main, 32, 32, 1);
+        }
+        else //if even
+        {
+          display.fillRect(24, 16, 32, 32, 0);
+          display.drawBitmap(24, 16, wibbur_idle, 32, 32, 1);
+        }
+        if (aniLast != (aniStage % 2))
+        {
+          aniLast = aniStage % 2;
+          updateScreen();
+        }
+      }
       break;
     default:
       break;

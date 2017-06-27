@@ -1,3 +1,22 @@
+void getButton() //Game-wide handling of reading button input
+{
+  if (digitalRead(Abut_pin) != butTHEN[0]) //If the current physical state of then button is not what it was
+  {
+    butTHEN[0] = digitalRead(Abut_pin); //Set the "previous state" to the button state
+    butNOW[0] = digitalRead(Abut_pin); //Set the current state to the button state
+  }
+  if (digitalRead(Bbut_pin) != butTHEN[1])
+  {
+    butTHEN[1] = digitalRead(Bbut_pin);
+    butNOW[1] = digitalRead(Bbut_pin);
+  }
+  if (digitalRead(Cbut_pin) != butTHEN[2])
+  {
+    butTHEN[2] = digitalRead(Cbut_pin);
+    butNOW[2] = digitalRead(Cbut_pin);
+  }
+}
+
 void beep()
 {
   switch (beepMode)
@@ -100,6 +119,34 @@ void beep()
       break;
     default:
       Serial.println(F("Invalid beeper!"));
+      break;
+  }
+}
+
+void buzz() {
+  switch (buzzMode)
+  {
+    case 0:
+      break;
+    case 1: // Default
+      if (buzzStage == 0)
+      {
+        Serial.print(F("Testing buzzer "));
+        CLK[buzzCLK] = CLK[baseCLK];
+        buzzStage = 1;
+      }
+      else if (CLK[baseCLK] - CLK[buzzCLK] > (baseHRT_speed / 4))
+      {
+        analogWrite(buzzer_pin, 0);
+        buzzMode = RESET;
+      }
+      else
+      {
+        analogWrite(buzzer_pin, 255);
+      }
+      break;
+    default:
+      Serial.println(F("Invalid buzzer!"));
       break;
   }
 }

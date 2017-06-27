@@ -62,6 +62,10 @@ byte beepMode, beepOffset, beepStage = 0; //What type of beep the speaker should
 bool buzzMute = false;
 byte buzzMode, buzzStage = 0;
 
+//Game functions
+int gameStage = 0;
+byte gameVal[10] = {0};
+
 //button state functions
 bool butNOW[3] = {0};                     //state of the button now
 bool butTHEN[3] = {0};                    //previous state of each button
