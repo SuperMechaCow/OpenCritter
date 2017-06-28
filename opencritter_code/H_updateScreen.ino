@@ -18,10 +18,10 @@ void updateScreen()
       display.drawBitmap(8, 16, icon_stat, 16, 16, 1);
       display.drawBitmap(8, 32, icon_food, 16, 16, 1);
       display.drawBitmap(8, 48, icon_game, 16, 16, 1);
-      display.drawBitmap(104, 0, icon_meds, 16, 16, 1);
+      //display.drawBitmap(104, 0, icon_meds, 16, 16, 1);
       display.drawBitmap(104, 16, icon_conf, 16, 16, 1);
-      display.drawBitmap(104, 32, icon_poop, 16, 16, 1);
-      display.drawBitmap(104, 48, icon_sick, 16, 16, 1);
+      //display.drawBitmap(104, 32, icon_poop, 16, 16, 1);
+      //display.drawBitmap(104, 48, icon_sick, 16, 16, 1);
       //draw ocCursor
       display.fillRect(0, 0, 8, 64, 0);
       display.fillRect(121, 0, 8, 64, 0);
@@ -43,17 +43,17 @@ void updateScreen()
       display.setCursor(16, 0);
       display.setTextColor(1);
       display.setTextSize(2);
-      if (hnow + clockOFFSETh < 10)
+      if ((hnow + clockOFFSETh) % 24 < 10)
         display.print(F("0"));
-      display.print(hnow + clockOFFSETh);
+      display.print((hnow + clockOFFSETh) % 24);
       display.print(F(":"));
-      if (mnow + clockOFFSETm < 10)
+      if ((mnow + clockOFFSETm) % 60 < 10)
         display.print(F("0"));
-      display.print(mnow + clockOFFSETm);
+      display.print((mnow + clockOFFSETm) % 60);
       display.print(F(":"));
-      if (snow + clockOFFSETs < 10)
+      if ((snow + clockOFFSETs) % 60 < 10)
         display.print(F("0"));
-      display.print(snow + clockOFFSETs);
+      display.print((snow + clockOFFSETs) % 60);
       // Lifetime clock
       display.setTextColor(1);
       display.setTextSize(1);
@@ -189,9 +189,9 @@ void updateScreen()
       }
       break;
     case foodM:
+      display.fillRect(0, 0, 128, 64, 0); //Erase Screen
       display.setTextColor(1);
       display.setTextSize(1);
-      display.fillRect(0, 0, 128, 64, 0); //Erase Screen
       // x = 0, y = cursor * 8 pixels per row + skip 16 pixels, character number 16 (right arrow), foreground, background, size
       display.drawChar(0, (ocCursor * 8) + 16, 16, 1, 0, 1);
       display.setCursor(8, 16);
@@ -202,9 +202,12 @@ void updateScreen()
       display.print(F("Boredom Food"));
       break;
     case confM:
-      display.setTextColor(1);
-      display.setTextSize(1);
       display.fillRect(0, 0, 128, 64, 0); //Erase Screen
+      display.setTextColor(1);
+      display.setTextSize(2);
+      display.setCursor(0, 0);
+      display.print(F("Config"));
+      display.setTextSize(1);
       // x = 0, y = cursor * 8 pixels per row + skip 16 pixels, character number 16 (right arrow), foreground, background, size
       display.drawChar(0, (ocCursor * 8) + 16, 16, 1, 0, 1);
       display.setCursor(8, 16);
@@ -216,28 +219,45 @@ void updateScreen()
       display.setCursor(8, 32);
       display.print(F("Set Clock"));
       break;
-    default:
+    case playM:
+      display.fillRect(0, 0, 128, 64, 0); //Erase Screen
+      display.setTextColor(1);
+      display.setTextSize(2);
+      display.setCursor(0, 0);
+      display.print(F("Games"));
+      display.setTextColor(1);
+      display.setTextSize(1);
+      // x = 0, y = cursor * 8 pixels per row + skip 16 pixels, character number 16 (right arrow), foreground, background, size
+      display.drawChar(0, (ocCursor * 8) + 16, 16, 1, 0, 1);
+      display.setCursor(8, 16);
+      display.print(F("High or Low"));
+      display.setCursor(8, 24);
+      display.print(F("BitShifter"));
       break;
     case c_clockset: //Clock set menu
       // if (debugMode)
       //   Serial.println(F("Drawing clock"));
       display.fillRect(0, 0, 128, 64, 0);
-      display.setCursor(16, 0);
       display.setTextColor(1);
       display.setTextSize(2);
-      if (hnow + clockOFFSETh < 10)
+      display.setCursor(0, 0);
+      display.print(F("Clock Set"));
+      display.setCursor(16, 32);
+      if ((hnow + clockOFFSETh) % 24 < 10)
         display.print(F("0"));
-      display.print(hnow + clockOFFSETh);
+      display.print((hnow + clockOFFSETh) % 24);
       display.print(F(":"));
-      if (mnow + clockOFFSETm < 10)
+      if ((mnow + clockOFFSETm) % 60 < 10)
         display.print(F("0"));
-      display.print(mnow + clockOFFSETm);
+      display.print((mnow + clockOFFSETm) % 60);
       display.print(F(":"));
-      if (snow + clockOFFSETs < 10)
+      if ((snow + clockOFFSETs) % 60 < 10)
         display.print(F("0"));
-      display.print(snow + clockOFFSETs);
-      display.setCursor(32 * (ocCursor + 1), 16);
+      display.print((snow + clockOFFSETs) % 60);
+      display.setCursor(28 + (32 * ocCursor), 48);
       display.print(F("*"));
+      break;
+    default:
       break;
   }
   display.display();

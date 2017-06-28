@@ -37,9 +37,10 @@
 #define gameM 5
 #define medsM 6
 #define confM 7
+#define playM 8
 #define g_cardflip 9
 #define c_clockset 10
-
+#define g_bitshifter 11
 //ANIMATION TYPES
 #define a_idle 1
 #define a_eat 2
@@ -60,6 +61,15 @@
 #define tribbur 2
 
 //card Flip gameVals
-#define nextcard 0
-#define thiscard 1
-#define point 2
+#define gcf_nextcard 0
+#define gcf_thiscard 1
+#define gcf_point 2
+
+//bitshifter gameVals
+#define gbs_setup 10
+#define gbs_buttons 11
+#define gbs_score 12
+#define gbs_gameover 13
+#define gbs_point 8
+#define gbs_goalbyte 9
+//do not use 0-7

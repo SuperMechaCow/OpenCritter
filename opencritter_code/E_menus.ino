@@ -54,7 +54,9 @@ void mainMenu()
         ocCursor = RESET;
         break;
       case 3:
-        selMenu = g_cardflip;
+        CLK[timeCLK] = CLK[baseCLK];
+        selMenu = playM;
+        ocCursor = RESET;
         break;
       case 5:
         CLK[timeCLK] = CLK[baseCLK];
@@ -246,19 +248,41 @@ void playMenu()
     updateScreen();
   }
   getButton();
-  if (butNOW[0]) //A button is pressed
+  if (butNOW[0])
   {
     beepStage = RESET;
     beepMode = NegBeep;
+    //do stuff when button is HIGH
     butNOW[0] = false; //Set the button to not enable again
+    ocCursor++;
+    if (ocCursor >= 2)
+      ocCursor = RESET;
+    updateScreen();
+    if (debugMode) {
+      Serial.print(F("Menu ocCursor: "));
+      Serial.println(ocCursor);
+    }
   }
-  if (butNOW[1]) //B button is pressed
+  if (butNOW[1])
   {
     beepStage = RESET;
     beepMode = PosBeep;
+    //do stuff when button is HIGH
     butNOW[1] = false; //Set the button to not enable again
+    switch (ocCursor) {
+      case 0: // Card Flip
+        selMenu = g_cardflip;
+        ocCursor = RESET;
+        break;
+      case 1: // Bit Shift
+        selMenu = g_bitshifter;
+        ocCursor = RESET;
+        break;
+      default:
+        break;
+    }
   }
-  if (butNOW[2]) //C button is pressed
+  if (butNOW[2])
   {
     beepStage = RESET;
     beepMode = HiLo1;
@@ -266,6 +290,7 @@ void playMenu()
     butNOW[2] = false; //Set the button to not enable again
     selMenu = mainM;
     display.fillRect(0, 0, 128, 64, 0);
+    ocCursor = RESET;
   }
 }
 
@@ -362,7 +387,7 @@ void clockset()
     if (ocCursor == 1) {
       clockOFFSETm++;
       if (clockOFFSETm >= 60)
-        clockOFFSETh = RESET;
+        clockOFFSETm = RESET;
     }
     if (ocCursor == 2) {
       clockOFFSETs++;

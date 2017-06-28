@@ -18,7 +18,7 @@ void setup()
   /*
     if (ARDUINO_ESP8266_NODEMCU) {
       //Set the pins for I2C
-      Wire.begin(espSDA, espSCL);
+      Wire.begin(i2cSDA, i2cSCL);
       //Set the EEPROM size in bytes
       EEPROM.begin(32);
     }
@@ -32,7 +32,7 @@ void setup()
   display.clearDisplay();
 
   //Reset the seed
-  //randomSeed(analogRead(0));
+  randomSeed(analogRead(0));
 
   //Set pin modes for the input tactile switches
   pinMode(Abut_pin, INPUT);
@@ -48,6 +48,10 @@ void setup()
   if (debugMode)
     Serial.println(F("Ready for command..."));
 
+  // If we are debugging, skip the egg
+  if (debug)
+    breed = 1;
+
   //Get the starting variables ready for the various functions
   selMenu = mainM; //Start the menus with the "Main Menu" play screen
   aniModeSet(breed, a_idle); //First animation to play is the egg
@@ -55,10 +59,6 @@ void setup()
   aniLast = RESET;  //Set the placeholder for previous animation
 
   beepMode = UpChirp;
-
-  // If we are debugging, skip the egg
-  if (debug)
-    breed = 1;
 
   updateScreen(); //draw the first screen
 }
@@ -84,9 +84,9 @@ void loop()
     //Raising the trait decreases the drain rate of the status
     //Raising a stat with junk foods should negatively impact the trait
     //Traits also each effect one other part of the game
-    hunger = hunger - (1 * (1 - Ath)); //hunger = athleticism
-    happiness = happiness - (1 * (1 - Dis)); //happiness = Dis
-    boredom = boredom - (1 * (1 - Int)); //boredom = Int
+    hunger = hunger - (100 - Ath); //hunger = athleticism
+    happiness = happiness - (100 - Dis); //happiness = Dis
+    boredom = boredom - (100 - Int); //boredom = Int
     //Keep stats from going below 0
     if (hunger <= 0)
       hunger = RESET;
@@ -126,6 +126,9 @@ void loop()
     case confM:
       confMenu();
       break;
+    case playM:
+      playMenu();
+      break;
     case c_clockset:
       clockset();
       break;
@@ -133,6 +136,9 @@ void loop()
     // Games
     case g_cardflip:
       cardflip();
+      break;
+    case g_bitshifter:
+      bitshifter();
       break;
     default:
       break;

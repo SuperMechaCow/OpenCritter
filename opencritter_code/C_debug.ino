@@ -6,6 +6,7 @@
  * 
  */
 
+
 void debug()
 {
   if (Serial.available())
@@ -144,4 +145,3 @@ void debug()
     }
   }
 }
-

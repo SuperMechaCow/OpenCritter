@@ -37,20 +37,22 @@ Adafruit_SSD1306 display(OLED_RESET);
 #define beeper_pin D4
 #define GPIO_pin D7
 //ESP8266 I2C pin assignment
-#define espSDA D6
-#define espSCL D5
+#define i2cSDA D6
+#define i2cSCL D5
 #endif
+
+
 
 /* digicritter stats */
 //Start stage at 0
 byte breed = 0;
 byte weight = 0;
-float Ath = 0.50;
-float Int = 0.50;
-float Dis = 0.50;
-float hunger = 100;
-float happiness = 100;
-float boredom = 100;
+byte Ath = 50;
+byte Int = 50;
+byte Dis = 50;
+int hunger = 10000;
+int happiness = 10000;
+int boredom = 10000;
 int heartbeats = 0;
 float metabolism = 0.50;
 byte clockOFFSETh, clockOFFSETm, clockOFFSETs = 0;
@@ -67,7 +69,7 @@ byte buzzMode, buzzStage = 0;
 
 //Game functions
 int gameStage = 0;
-byte gameVal[10] = {0};
+int gameVal[10] = {0};
 
 //button state functions
 bool butNOW[3] = {0};                     //state of the button now
