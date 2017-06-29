@@ -11,8 +11,8 @@ Adafruit_SSD1306 display(OLED_RESET);
 #endif
 
 #define debugMode true
-#define versionnum "0.01"
-#define release "0/0/00"
+#define versionnum "0.04"
+#define release "06/29/17"
 
 //PIN ASSIGNMENT Arduino
 #ifdef __AVR_ATmega328P__
@@ -25,6 +25,7 @@ Adafruit_SSD1306 display(OLED_RESET);
 #define GPIO_pin 6
 #define Tx_pin 4
 #define Rx_pin 2
+#include <EEPROM.h>
 #endif
 
 //PIN ASSIGNMENT ESP8266
@@ -39,23 +40,24 @@ Adafruit_SSD1306 display(OLED_RESET);
 //ESP8266 I2C pin assignment
 #define i2cSDA D6
 #define i2cSCL D5
+#include "Z_gfx.h"
 #endif
-
-
 
 /* digicritter stats */
 //Start stage at 0
 byte breed = 0;
-byte weight = 0;
+byte weight = 10;
 byte Ath = 50;
 byte Int = 50;
 byte Dis = 50;
-int hunger = 10000;
-int happiness = 10000;
-int boredom = 10000;
-int heartbeats = 0;
+byte hunger = 255;
+byte happiness = 255;
+byte boredom = 255;
+unsigned int heartbeats = 0;
 float metabolism = 0.50;
 byte clockOFFSETh, clockOFFSETm, clockOFFSETs = 0;
+
+byte gfxBuffer[128] = {0};
 
 unsigned long CLK[7] = {0}; //See clock array names
 
@@ -72,8 +74,8 @@ int gameStage = 0;
 int gameVal[10] = {0};
 
 //button state functions
-bool butNOW[3] = {0};                     //state of the button now
-bool butTHEN[3] = {0};                    //previous state of each button
+bool butNOW[3] = {0};  //state of the button now
+bool butTHEN[3] = {0}; //previous state of each button
 
 //Menu and cursor funtions
 byte selMenu = 0;
@@ -86,7 +88,6 @@ byte aniMode, aniOffset, aniStage, aniLast = 0;
 int dnow, hnow, mnow, snow = 0;
 byte hoffset, moffset, soffset = 0;
 
-
 /*        Game Properties       *\
  * These change certain constants
  * throughout the game. Changing
@@ -95,6 +96,13 @@ byte hoffset, moffset, soffset = 0;
 
 //MASTER PARAMETERS
 #define baseHRT_speed 2000
+#define ref_int 1000 //Standard time between refresh rates
+#define max_stats 255
+#define max_traits 100
+#define stat_beat 10 //Roll to drain stats every X heartbeats
+#define sick_beat 100 //Roll for sickness every X heartbeats
+#define cry_beat 100  //Roll to cry for attention every X heartbeats
+#define foodbonus 25
 
 //BASE WEIGHT
 #define egg_w 5

@@ -1,23 +1,90 @@
 /*
- * Handles all of the critter animations in the game
- * 
- * Note that this only prepares the animation for the screen.
- * It does not update the screen itself.
- * See updateScreen() for screen drawing.
- * 
- */
+   Handles all of the critter animations in the game
 
-void aniModeSet (byte brd, byte anitype) {
-  switch (brd) {
+   Note that this only prepares the animation for the screen.
+   It does not update the screen itself.
+   See updateScreen() for screen drawing.
+
+*/
+
+void getGFX(int frameFetch) {
+  int index = 0;
+  byte gfxsize = 0;
+  switch (frameFetch) {
+    case icon_food:
+      index = icon_food_addr;
+      break;
+    case icon_clok:
+      index = icon_clok_addr;
+      break;
+    case icon_stat:
+      index = icon_stat_addr;
+      break;
+    case icon_game:
+      index = icon_game_addr;
+      break;
+    case icon_meds:
+      index = icon_meds_addr;
+      break;
+    case icon_conf:
+      index = icon_conf_addr;
+      break;
+    case icon_sick:
+      index = icon_sick_addr;
+      break;
+    case icon_poop:
+      index = icon_poop_addr;
+      break;
+    case icon_unon:
+      index = icon_unon_addr;
+      break;
+    case egg_main:
+      index = egg_main_addr;
+      break;
+    case egg_idle:
+      index = egg_idle_addr;
+      break;
+    case wibbur_main:
+      index = wibbur_main_addr;
+      break;
+    case wibbur_idle:
+      index = wibbur_idle_addr;
+      break;
+    case wibbur_play:
+      index = wibbur_idle_addr;
+      break;
+    default:
+      index = 0;
+      break;
+  }
+
+  //Find if it's an icon or a critter
+  if (frameFetch <= numberoficons)
+    gfxsize = icon_size;
+  else
+    gfxsize = crit_size;
+
+  //Load the proper gfx from the address with the right size
+  for (int i = 0; i < gfxsize; i++) {
+    gfxBuffer[i] = EEPROM.read(i + index);
+  }
+}
+
+void aniModeSet(byte brd, byte anitype)
+{
+  switch (brd)
+  {
     case egg:
-      switch (anitype) {
+      switch (anitype)
+      {
         case a_idle:
           aniMode = ani_egg_idle;
           break;
       }
       break;
     case wibbur:
-      switch (anitype) {
+      switch (anitype)
+      {
         case a_idle:
           aniMode = ani_wibbur_idle;
           break;
@@ -30,7 +97,8 @@ void aniModeSet (byte brd, byte anitype) {
       }
       break;
     case tribbur:
-      switch (anitype) {
+      switch (anitype)
+      {
         case a_idle:
           aniMode = ani_tribbur_idle;
           break;
@@ -46,16 +114,14 @@ void animate()
     case ani_egg_idle:
       if (aniStage == 0)
       {
-        Serial.print(F("Egging at: "));
-        Serial.println(metabolism);
         CLK[aniCLK] = CLK[baseCLK];
         aniStage = 1;
       }
       /* //only do a certain number of times
-          else if (CLK[baseCLK] - CLK[aniCLK] > (baseHRT_speed * 1.5) * metabolism)
-          {
-          aniMode = RESET;
-          }
+            else if (CLK[baseCLK] - CLK[aniCLK] > (baseHRT_speed * 1.5) * metabolism)
+            {
+            aniMode = RESET;
+            }
       */
       else
       {
@@ -63,33 +129,33 @@ void animate()
         if (aniStage % 2) //If odd
         {
           display.fillRect(48, 16, 32, 32, 0);
-          display.drawBitmap(48, 16, egg_main, 32, 32, 1);
+          getGFX(egg_main);
+          display.drawBitmap(48, 16, gfxBuffer, 32, 32, 1);
         }
         else
         {
           display.fillRect(48, 16, 32, 32, 0);
-          display.drawBitmap(48, 16, egg_idle, 32, 32, 1);
+          getGFX(egg_idle);
+          display.drawBitmap(48, 16, gfxBuffer, 32, 32, 1);
         }
         if (aniLast != aniStage) //The last stage is not the same odd or even as the current stage
         {
           aniLast = aniStage; //Match the stages
-          updateScreen(); //Update the screen
+          updateScreen();     //Update the screen
         }
       }
       break;
     case ani_wibbur_idle:
       if (aniStage == 0)
       {
-        Serial.print(F("Wibbur idle at: "));
-        Serial.println(metabolism);
         CLK[aniCLK] = CLK[baseCLK];
         aniStage = 1;
       }
       /* //only do a certain number of times
-          else if (CLK[baseCLK] - CLK[aniCLK] > (baseHRT_speed * 1.5) * metabolism)
-          {
-          aniMode = RESET;
-          }
+            else if (CLK[baseCLK] - CLK[aniCLK] > (baseHRT_speed * 1.5) * metabolism)
+            {
+            aniMode = RESET;
+            }
       */
       else
       {
@@ -97,12 +163,14 @@ void animate()
         if (aniStage % 2 == 1)
         {
           display.fillRect(48, 16, 32, 32, 0);
-          display.drawBitmap(48, 16, wibbur_main, 32, 32, 1);
+          getGFX(wibbur_main);
+          display.drawBitmap(48, 16, gfxBuffer, 32, 32, 1);
         }
         else
         {
           display.fillRect(48, 16, 32, 32, 0);
-          display.drawBitmap(48, 16, wibbur_idle, 32, 32, 1);
+          getGFX(wibbur_idle);
+          display.drawBitmap(48, 16, gfxBuffer, 32, 32, 1);
         }
         if (aniLast != (aniStage % 2))
         {
@@ -114,8 +182,6 @@ void animate()
     case ani_wibbur_eat:
       if (aniStage == 0)
       {
-        Serial.print(F("Wibbur eat at: "));
-        Serial.println(metabolism);
         CLK[aniCLK] = CLK[baseCLK];
         aniStage = 1;
       }
@@ -125,8 +191,6 @@ void animate()
         aniModeSet(breed, a_idle);
         aniStage = RESET;
         aniLast = RESET;
-        if (debugMode)
-          Serial.println(F("Returning to normal animation"));
       }
       else
       {
@@ -134,12 +198,14 @@ void animate()
         if (aniStage % 2 == 1)
         {
           display.fillRect(48, 16, 32, 32, 0);
-          display.drawBitmap(48, 16, wibbur_main, 32, 32, 1);
+          getGFX(wibbur_main);
+          display.drawBitmap(48, 16, gfxBuffer, 32, 32, 1);
         }
         else
         {
           display.fillRect(48, 16, 32, 32, 0);
-          display.drawBitmap(56, 24, icon_food, 16, 16, 1);
+          getGFX(icon_food);
+          display.drawBitmap(48, 16, gfxBuffer, 32, 32, 1);
         }
         if (aniLast != (aniStage % 2))
         {
@@ -151,8 +217,6 @@ void animate()
     case ani_wibbur_play:
       if (aniStage == 0)
       {
-        Serial.print(F("Wibbur play at: "));
-        Serial.println(metabolism);
         CLK[aniCLK] = CLK[baseCLK];
         aniStage = 1;
       }
@@ -163,12 +227,14 @@ void animate()
         if (aniStage % 2 == 1) //if odd
         {
           display.fillRect(24, 16, 32, 32, 0);
-          display.drawBitmap(24, 16, wibbur_main, 32, 32, 1);
+          getGFX(wibbur_main);
+          display.drawBitmap(48, 16, gfxBuffer, 32, 32, 1);
         }
         else //if even
         {
           display.fillRect(24, 16, 32, 32, 0);
-          display.drawBitmap(24, 16, wibbur_idle, 32, 32, 1);
+          getGFX(wibbur_idle);
+          display.drawBitmap(48, 16, gfxBuffer, 32, 32, 1);
         }
         if (aniLast != (aniStage % 2))
         {
@@ -181,4 +247,3 @@ void animate()
       break;
   }
 }
-

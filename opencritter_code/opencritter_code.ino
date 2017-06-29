@@ -1,14 +1,12 @@
 #include <SPI.h>
 #include <Wire.h>
-#include <Adafruit_GFX.h>
-//#include <U8glib.h>
+//#include <Adafruit_GFX.h>
+#include <U8g2lib.h>
 #include <Adafruit_SSD1306.h>
-#include <EEPROM.h>
 
 //Include custom files
 #include "A_setup.h"
 #include "B_names.h"
-#include "Z_gfx.h"
 
 void setup()
 {
@@ -69,6 +67,9 @@ void loop()
   if (debugMode)
     debug();
 
+  //Calculate metabolism
+  metabolism = (((map(hunger, 0, 255, 100, 0) + map(hunger, 0, 255, 100, 0) + map(hunger, 0, 255, 100, 0) + Ath + Dis + Int) / 6) + abs(weight - 10)) * 0.01;
+
   //HEARTBEATS: Each opencritter gets a set amount of heartbeats. Metabolism effects how fast it uses those beats
   CLK[baseCLK] = millis(); //Update clock to the current millisecond
   //If the current clock is bigger than the heartbeat clock by the heartbeat's speed (speed * metabolism)
@@ -84,16 +85,36 @@ void loop()
     //Raising the trait decreases the drain rate of the status
     //Raising a stat with junk foods should negatively impact the trait
     //Traits also each effect one other part of the game
-    hunger = hunger - (100 - Ath); //hunger = athleticism
-    happiness = happiness - (100 - Dis); //happiness = Dis
-    boredom = boredom - (100 - Int); //boredom = Int
-    //Keep stats from going below 0
-    if (hunger <= 0)
-      hunger = RESET;
-    if (happiness <= 0)
-      happiness = RESET;
-    if (boredom <= 0)
-      boredom = RESET;
+    //Every stat_beat number of heartbeats the game "rolls" to decrease a stat
+    if (heartbeats % stat_beat == 0) {
+      if (random(0, 101) > Ath) {
+        hunger--; //hunger = athleticism
+        beepStage = RESET;
+        beepMode = bip;
+      }
+      if (random(0, 101) > Dis) {
+        happiness--; //happiness = Dis
+        beepStage = RESET;
+        beepMode = bip;
+      }
+      if (random(0, 101) > Int) {
+        boredom--; //boredom = Int
+        beepStage = RESET;
+        beepMode = bip;
+      }
+      //Keep stats from going below 0
+      if (hunger <= 0)
+        hunger = RESET;
+      if (happiness <= 0)
+        happiness = RESET;
+      if (boredom <= 0)
+        boredom = RESET;
+    }
+
+    //
+    if (heartbeats % cry_beat == 0) {
+      beepMode = HiLo3;
+    }
   }
 
   //Check for evolution change
@@ -104,8 +125,8 @@ void loop()
     beep();
 
   //Call the function for running the buzzer
-  if (!buzzMute)
-    buzz();
+  //if (!buzzMute)
+  //  buzz();
 
   //Call the right menu function depending on what the current menu variable is set to (selMenu)
   switch (selMenu)

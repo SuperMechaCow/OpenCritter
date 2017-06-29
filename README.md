@@ -7,7 +7,7 @@ Anyone is invited to work on the project for as long as they stick to the follow
 - The hardware and software toolchain must be *NEWB FRIENDLY* above all else. A complete novice should be able to obtain and breadboard the hardware easily and upload the firmware without problem. Add-on modules/functionality can be more complex, but any human should be able to have a fully-functional "base game".
 - The core rules of the game do not change in the master branch. There must be at least one "core experience" common amongst all users with unmodified firmware.
 - Mods are encouraged! But too much deviation from the "core experience" should be listed as a new branch.
-- OpenCritter software is gender nuetral.
+- OpenCritter software is all-ages and gender nuetral.
 
 ## Hardware
 

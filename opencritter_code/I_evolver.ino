@@ -4,7 +4,8 @@
  * Barebones functionality right now. Finished version will have a complete system.
  */
 
-void evolveHandler() {
+void evolveHandler()
+{
   //Hacked up temporary evolution handler
   if (heartbeats > 60 && breed < 1)
   {
@@ -13,4 +14,3 @@ void evolveHandler() {
     aniModeSet(breed, a_idle);
   }
 }
-

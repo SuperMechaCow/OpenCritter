@@ -14,14 +14,23 @@ void updateScreen()
       //if (debugMode)
       //  Serial.println(F("Drawing main menu"));
       //draw icons
-      display.drawBitmap(8, 0, icon_clok, 16, 16, 1);
-      display.drawBitmap(8, 16, icon_stat, 16, 16, 1);
-      display.drawBitmap(8, 32, icon_food, 16, 16, 1);
-      display.drawBitmap(8, 48, icon_game, 16, 16, 1);
-      //display.drawBitmap(104, 0, icon_meds, 16, 16, 1);
-      display.drawBitmap(104, 16, icon_conf, 16, 16, 1);
-      //display.drawBitmap(104, 32, icon_poop, 16, 16, 1);
-      //display.drawBitmap(104, 48, icon_sick, 16, 16, 1);
+      getGFX(icon_clok);
+      display.drawBitmap(8, 0, gfxBuffer, 16, 16, 1);
+      getGFX(icon_stat);
+      display.drawBitmap(8, 16, gfxBuffer, 16, 16, 1);
+      getGFX(icon_food);
+      display.drawBitmap(8, 32, gfxBuffer, 16, 16, 1);
+      getGFX(icon_game);
+      display.drawBitmap(8, 48, gfxBuffer, 16, 16, 1);
+      getGFX(icon_meds);
+      display.drawBitmap(104, 0, gfxBuffer, 16, 16, 1);
+      getGFX(icon_conf);
+      display.drawBitmap(104, 16, gfxBuffer, 16, 16, 1);
+      getGFX(icon_poop);
+      display.drawBitmap(104, 32, gfxBuffer, 16, 16, 1);
+      getGFX(icon_sick);
+      display.drawBitmap(104, 48, gfxBuffer, 16, 16, 1);
+      
       //draw ocCursor
       display.fillRect(0, 0, 8, 64, 0);
       display.fillRect(121, 0, 8, 64, 0);
@@ -116,13 +125,13 @@ void updateScreen()
         display.print(F("Hunger: "));
         display.setCursor(88, 16);
         display.print(hunger);
-        display.drawLine(2, 26, map(hunger, 0, 100, 3, 127), 26, 1);
+        display.drawLine(2, 26, map(hunger, 0, 255, 3, 127), 26, 1);
       }
       else if (ocCursor == 1) {
         display.print(F("Ath: "));
         display.setCursor(88, 16);
         display.print(Ath);
-        display.drawLine(2, 26, map(Ath, 0, 1, 3, 127), 26, 1);
+        display.drawLine(2, 26, map(Ath, 0, 100, 3, 127), 26, 1);
       }
       else {
         display.print(F("Weight: "));
@@ -144,13 +153,13 @@ void updateScreen()
         display.print(F("Happiness: "));
         display.setCursor(88, 31);
         display.print(happiness);
-        display.drawLine(2, 41, map(happiness, 0, 100, 3, 127), 41, 1);
+        display.drawLine(2, 41, map(happiness, 0, 255, 3, 127), 41, 1);
       }
       else if (ocCursor == 1) {
         display.print(F("Dis: "));
         display.setCursor(88, 31);
         display.print(Dis);
-        display.drawLine(2, 41, map(Dis, 0, 1, 3, 127), 41, 1);
+        display.drawLine(2, 41, map(Dis, 0, 100, 3, 127), 41, 1);
       }
       else {
         display.print(F("Metabolism: "));
@@ -162,13 +171,13 @@ void updateScreen()
         display.print(F("Boredom: "));
         display.setCursor(88, 46);
         display.print(boredom);
-        display.drawLine(2, 56, map(boredom, 0, 100, 3, 127), 56, 1);
+        display.drawLine(2, 56, map(boredom, 0, 255, 3, 127), 56, 1);
       }
       else if (ocCursor == 1) {
         display.print(F("Int: "));
         display.setCursor(88, 46);
         display.print(Int);
-        display.drawLine(2, 56, map(Int, 0, 1, 3, 127), 56, 1);
+        display.drawLine(2, 56, map(Int, 0, 100, 3, 127), 56, 1);
       }
       else {
         display.print(F("Breed: "));
