@@ -28,3 +28,4 @@ Currently, the software requires Adafruit's GFX and SSD1306 libraries. May also 
 - Multi-player games and functions
 - OpenCritter "dog house" device or wireless internet functionality.
 - OpenCritter database for online multiplayer/scoreboards.
+- Robust serial comms for UART "add-on" devices that add gameplay features.

@@ -17,8 +17,6 @@
 #define aniCLK 4  //Animation clock
 #define beepCLK 5 //beeper clock
 #define buzzCLK 6 //beeper clock
-//#define cryCLK 7  //time between crying for attention
-//#define gameCLK 8 //game clock
 
 //BEEPER NAMES
 #define UpChirp 1

@@ -46,19 +46,19 @@ void mainMenu()
     case 0:
       CLK[timeCLK] = CLK[baseCLK];
       selMenu = clockM;
-      display.fillRect(0, 0, 128, 64, 0);
+      display.clearDisplay();
       ocCursor = RESET;
       break;
     case 1:
       CLK[timeCLK] = CLK[baseCLK];
       selMenu = statsM;
-      display.fillRect(0, 0, 128, 64, 0);
+      display.clearDisplay();
       ocCursor = RESET;
       break;
     case 2:
       CLK[timeCLK] = CLK[baseCLK];
       selMenu = foodM;
-      display.fillRect(0, 0, 128, 64, 0);
+      display.clearDisplay();
       ocCursor = RESET;
       break;
     case 3:
@@ -123,7 +123,7 @@ void clockMenu()
     //do stuff when button is HIGH
     butNOW[2] = false; //Set the button to not enable again
     selMenu = mainM;
-    display.fillRect(0, 0, 128, 64, 0);
+    display.clearDisplay();
   }
 }
 
@@ -165,7 +165,7 @@ void statsMenu()
     //do stuff when button is HIGH
     butNOW[2] = false; //Set the button to not enable again
     selMenu = mainM;
-    display.fillRect(0, 0, 128, 64, 0);
+    display.clearDisplay();
   }
 }
 
@@ -220,7 +220,7 @@ void foodMenu()
       aniStage = RESET;
       aniLast = RESET;
       selMenu = mainM;
-      display.fillRect(0, 0, 128, 64, 0);
+      display.clearDisplay();
       ocCursor = 2;
       break;
     case 1: //Food 2
@@ -237,7 +237,7 @@ void foodMenu()
       aniStage = RESET;
       aniLast = RESET;
       selMenu = mainM;
-      display.fillRect(0, 0, 128, 64, 0);
+      display.clearDisplay();
       ocCursor = 2;
       break;
     case 2: //Food 3
@@ -253,7 +253,7 @@ void foodMenu()
       aniStage = RESET;
       aniLast = RESET;
       selMenu = mainM;
-      display.fillRect(0, 0, 128, 64, 0);
+      display.clearDisplay();
       ocCursor = 2;
       break;
     default:
@@ -267,7 +267,7 @@ void foodMenu()
     //do stuff when button is HIGH
     butNOW[2] = false; //Set the button to not enable again
     selMenu = mainM;
-    display.fillRect(0, 0, 128, 64, 0);
+    display.clearDisplay();
     ocCursor = RESET;
   }
 }
@@ -328,7 +328,7 @@ void playMenu()
     //do stuff when button is HIGH
     butNOW[2] = false; //Set the button to not enable again
     selMenu = mainM;
-    display.fillRect(0, 0, 128, 64, 0);
+    display.clearDisplay();
     ocCursor = RESET;
   }
 }
@@ -394,7 +394,7 @@ void confMenu()
     //do stuff when button is HIGH
     butNOW[2] = false; //Set the button to not enable again
     selMenu = mainM;
-    display.fillRect(0, 0, 128, 64, 0);
+    display.clearDisplay();
   }
 }
 
@@ -460,6 +460,6 @@ void clockset()
     butNOW[2] = false; //Set the button to not enable again
     selMenu = confM;
     ocCursor = RESET;
-    display.fillRect(0, 0, 128, 64, 0);
+    display.clearDisplay();
   }
 }

@@ -19,7 +19,7 @@ void cardflip()
     {
       gameVal[i] = 0;
     }
-    display.fillRect(0, 0, 128, 64, 0);
+    display.clearDisplay();
     aniModeSet(breed, a_play);
     aniStage = RESET;
     gameVal[gcf_nextcard] = random(10);
@@ -80,7 +80,7 @@ void cardflip()
       gameStage = RESET;
       selMenu = mainM;
       aniModeSet(breed, a_idle);
-      display.fillRect(0, 0, 128, 64, 0);
+      display.clearDisplay();
     }
   }
 
@@ -158,7 +158,7 @@ void bitshifter()
   else if (gameStage == 1)
   {
 
-    display.fillRect(0, 0, 128, 64, 0);
+    display.clearDisplay();
 
     display.setCursor(48, 16);
     display.setTextColor(1);
@@ -229,7 +229,7 @@ void bitshifter()
       selMenu = mainM;
       ocCursor = RESET;
       aniModeSet(breed, a_idle);
-      display.fillRect(0, 0, 128, 64, 0);
+      display.clearDisplay();
     }
   }
 

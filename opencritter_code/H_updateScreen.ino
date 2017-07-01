@@ -45,9 +45,7 @@ void updateScreen()
         } */
       break;
     case clockM: //Clock Menu
-      // if (debugMode)
-      //   Serial.println(F("Drawing clock"));
-      display.fillRect(0, 0, 128, 64, 0);
+      display.clearDisplay();
       // Master Clock
       display.setCursor(16, 0);
       display.setTextColor(1);
@@ -94,15 +92,13 @@ void updateScreen()
       display.print(dnow);
       break;
     case statsM:
-      //if (debugMode)
-      //  Serial.println(F("Drawing stats"));
-      display.fillRect(0, 0, 128, 64, 0); // Erase screen
+      display.clearDisplay(); // Erase screen
 
       // Draw bar outlines
       if (ocCursor <= 1) {
-        display.drawRect(0, 24, 128, 5, 1);
-        display.drawRect(0, 39, 128, 5, 1);
-        display.drawRect(0, 54, 128, 5, 1);
+        //display.drawRect(0, 24, 128, 5, 1);
+        //display.drawRect(0, 39, 128, 5, 1);
+        //display.drawRect(0, 54, 128, 5, 1);
       }
 
       display.setTextColor(1);
@@ -125,13 +121,13 @@ void updateScreen()
         display.print(F("Hunger: "));
         display.setCursor(88, 16);
         display.print(hunger);
-        display.drawLine(2, 26, map(hunger, 0, 255, 3, 127), 26, 1);
+        //display.drawLine(2, 26, map(hunger, 0, 255, 3, 127), 26, 1);
       }
       else if (ocCursor == 1) {
         display.print(F("Ath: "));
         display.setCursor(88, 16);
         display.print(Ath);
-        display.drawLine(2, 26, map(Ath, 0, 100, 3, 127), 26, 1);
+        //display.drawLine(2, 26, map(Ath, 0, 100, 3, 127), 26, 1);
       }
       else {
         display.print(F("Weight: "));
@@ -153,13 +149,13 @@ void updateScreen()
         display.print(F("Happiness: "));
         display.setCursor(88, 31);
         display.print(happiness);
-        display.drawLine(2, 41, map(happiness, 0, 255, 3, 127), 41, 1);
+        //display.drawLine(2, 41, map(happiness, 0, 255, 3, 127), 41, 1);
       }
       else if (ocCursor == 1) {
         display.print(F("Dis: "));
         display.setCursor(88, 31);
         display.print(Dis);
-        display.drawLine(2, 41, map(Dis, 0, 100, 3, 127), 41, 1);
+        //display.drawLine(2, 41, map(Dis, 0, 100, 3, 127), 41, 1);
       }
       else {
         display.print(F("Metabolism: "));
@@ -171,13 +167,13 @@ void updateScreen()
         display.print(F("Boredom: "));
         display.setCursor(88, 46);
         display.print(boredom);
-        display.drawLine(2, 56, map(boredom, 0, 255, 3, 127), 56, 1);
+        //display.drawLine(2, 56, map(boredom, 0, 255, 3, 127), 56, 1);
       }
       else if (ocCursor == 1) {
         display.print(F("Int: "));
         display.setCursor(88, 46);
         display.print(Int);
-        display.drawLine(2, 56, map(Int, 0, 100, 3, 127), 56, 1);
+        //display.drawLine(2, 56, map(Int, 0, 100, 3, 127), 56, 1);
       }
       else {
         display.print(F("Breed: "));
@@ -198,7 +194,7 @@ void updateScreen()
       }
       break;
     case foodM:
-      display.fillRect(0, 0, 128, 64, 0); //Erase Screen
+      display.clearDisplay(); //Erase Screen
       display.setTextColor(1);
       display.setTextSize(1);
       // x = 0, y = cursor * 8 pixels per row + skip 16 pixels, character number 16 (right arrow), foreground, background, size
@@ -211,7 +207,7 @@ void updateScreen()
       display.print(F("Boredom Food"));
       break;
     case confM:
-      display.fillRect(0, 0, 128, 64, 0); //Erase Screen
+      display.clearDisplay(); //Erase Screen
       display.setTextColor(1);
       display.setTextSize(2);
       display.setCursor(0, 0);
@@ -229,7 +225,7 @@ void updateScreen()
       display.print(F("Set Clock"));
       break;
     case playM:
-      display.fillRect(0, 0, 128, 64, 0); //Erase Screen
+      display.clearDisplay(); //Erase Screen
       display.setTextColor(1);
       display.setTextSize(2);
       display.setCursor(0, 0);
@@ -244,9 +240,7 @@ void updateScreen()
       display.print(F("BitShifter"));
       break;
     case c_clockset: //Clock set menu
-      // if (debugMode)
-      //   Serial.println(F("Drawing clock"));
-      display.fillRect(0, 0, 128, 64, 0);
+      display.clearDisplay();
       display.setTextColor(1);
       display.setTextSize(2);
       display.setCursor(0, 0);

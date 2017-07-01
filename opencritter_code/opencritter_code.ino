@@ -13,14 +13,13 @@ void setup()
   //Spin up a serial port for debugging/comms
   Serial.begin(9600);
 
-  /*
-    if (ARDUINO_ESP8266_NODEMCU) {
-      //Set the pins for I2C
-      Wire.begin(i2cSDA, i2cSCL);
-      //Set the EEPROM size in bytes
-      EEPROM.begin(32);
-    }
-  */
+
+  if (ARDUINO_ESP8266_NODEMCU) {
+    //Set the pins for I2C
+    Wire.begin(i2cSDA, i2cSCL);
+    //Set the EEPROM size in bytes
+    EEPROM.begin(4096);
+  }
 
   //start an OLED screen object
   display.begin(SSD1306_SWITCHCAPVCC, 0x3C); // initialize with the I2C addr 0x3C (for the 128x32)
@@ -113,7 +112,7 @@ void loop()
 
     //
     if (heartbeats % cry_beat == 0) {
-      beepMode = HiLo3;
+      //beepMode = HiLo3;
     }
   }
 

@@ -40,7 +40,8 @@ Adafruit_SSD1306 display(OLED_RESET);
 //ESP8266 I2C pin assignment
 #define i2cSDA D6
 #define i2cSCL D5
-#include "Z_gfx.h"
+#include <EEPROM.h>
+//#include "Z_gfx.h"
 #endif
 
 /* digicritter stats */

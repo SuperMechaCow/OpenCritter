@@ -9,6 +9,7 @@
 
 void debug()
 {
+  /*
   if (Serial.available())
   {
     switch (Serial.parseInt())
@@ -27,17 +28,17 @@ void debug()
             Serial.println(F("0: Clock Menu"));
             CLK[timeCLK] = CLK[baseCLK];
             selMenu = clockM;
-            display.fillRect(0, 0, 128, 64, 0);
+            display.clearDisplay();
           case 1:
             Serial.println(F("1: Stats Menu"));
             CLK[timeCLK] = CLK[baseCLK];
             selMenu = statsM;
-            display.fillRect(0, 0, 128, 64, 0);
+            display.clearDisplay();
             break;
           case 8:
             Serial.println(F("8: Main Menu"));
             selMenu = mainM;
-            display.fillRect(0, 0, 128, 64, 0);
+            display.clearDisplay();
           default:
             break;
         }
@@ -144,4 +145,5 @@ void debug()
         break;
     }
   }
+  */
 }
