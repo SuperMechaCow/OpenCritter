@@ -1,5 +1,0 @@
-{
-    "board": "arduino:avr:leonardo",
-    "port": "/dev/ttyACM0",
-    "sketch": "tamagotchi_main.ino"
-}

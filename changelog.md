@@ -1,3 +1,50 @@
+### September 1st, 2017 [alpha v0.008]
+
+[Changes]
+- Add KiCad schematics, pcb layout, and gerber files for the upcoming DevKit1
+- Started sketch for IOPU based on Attiny
+- Seeedstudio Fusion project published for DevKit1, so anyone can easily purchase PCBs for it.
+	https://www.seeedstudio.com/undefined-g-1040190
+
+### August 2nd, 2017 [alpha v0.007]
+
+[Changes]
+- Added lifestages counter (egg, baby, teen, adult, senior... "ancient?").
+- The "sickness threshold" is now calculated by how sick the critter already is, how much poop is on the floor, and what "life stage" the critter is at.
+- Critter will now cry for attention if its stats and Dis are low
+- Criter will now cry when it is in danger of becoming sick
+- Sound alerts for becoming sick or pooping
+
+
+### August 1st, 2017 [alpha v0.006] Nightly
+
+[Changes]
+- Stats will no longer roll around to 255 when reducing past 0.
+- Added "sick" feature. If stats are left below an average of 100 there's a chance every X heartbeats to gain an illness.
+- Medicine menu now removes one illness (this is to made finite later)
+- Critters can now poop. The heavier the critter, the more likely it is to poop.
+- Poop menu now removes one poop.
+- Each stage of life (egg, baby, teen, adult, senior) has a different metabolism bonus
+- Metabolism calculation has changed. Is now the average of the average of stats, the average of traits, and the metabolic bonus.
+- Critter now evolves every X heartbeats in a linear list of breeds. Variable evolution will be handled in later versions.
+- Fixed eating animations (distorted burger icon).
+- Added "Tribbur" and "Snek" breeds back into the game.
+- Fixed some issues with food subtracting stats rather than adding.
+
+### July 27th, 2017 [alpha v0.005] Major
+
+[Changes]
+- Project is now design for ESP-01 with OLED and an Input/Output Processing Unit ("IOPU" device) or a NodeMCU
+- Scope of project became too large to run on an Atmega328, so a branch was made for "OpenCritter Lite"
+- heartbeat "rolls" now "pile up" so they can be resolved later. This means delay() can now be used in animations, etc. without skipping important heartbeat events
+- Started addding support for hardware modules on the I2C bus. This includes scanning and identification of plugged in devices. However, only hard-coded IOPU works right now.
+- Real clock is now adjusted by a single offset parameter, rather than by hour/minute/seconds seperately
+
+[Known Bugs]
+- Too much serial data seems to interfere with I2C bus comms. Most serial debugging verbosity commented out to "fix" this.
+
+[Notes]
+
 ### June 29th, 2017 [alpha v0.004] Nightly
 
 [Changes]
