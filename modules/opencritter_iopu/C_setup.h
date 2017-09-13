@@ -6,7 +6,7 @@
 #define i2c_addr          10
 #define devicetype        IOPU_Atmega328
 
-bool debugMode = false;
+bool debugMode = true;
 
 // Beeper functions
 bool beepMute = 0;
@@ -21,6 +21,7 @@ byte buzzStage = 0;
 unsigned long CLK[7] = {0}; //See clock array names
 
 //Button states, Then and Now
+byte buttbyte = 0;
 bool butNOW[8] = {0};
 bool butTHEN[8] = {0};
 

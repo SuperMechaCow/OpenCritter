@@ -11,3 +11,6 @@ Atmega328 x 10 $21.80
 Crystal x 10 $3.58
 Angled Headers x 16 x 10 $3.54
 Straight Headers x 22 x 10 $3.41
+
+digi-key shipping $8.99
+digi-key tax $4.25

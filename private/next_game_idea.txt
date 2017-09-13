@@ -1,0 +1,4 @@
+must move left or right across the button of the screen to "catch" falling objects
+game moves with heartbeat speed and gets multiplied by difficulty as game goes on
+A is move left, B is move right, C is exit game
+

@@ -1,10 +1,11 @@
+//#include <OpenCritterIO.h>
+
+#define debugMode false
 
 /*
    For fast editting and human readability, we used defined labels.
    These are just defined parameters, and contain no variables (constant or otherwsie).
 */
-
-#define debugMode true
 
 /*========================================================================================================================
     i2c Comms Labels
@@ -29,7 +30,7 @@
 #define debugSet          20
 #define hrtSend           21
 #define beepSend          22
-#define buzzSend          23
+#define rumbleSend        23
 #define updateParam       24
 
 // Commands (for The Q. Up to 128 types of requests)
@@ -76,7 +77,7 @@
 #define butCLK            3   //Button clock
 #define aniCLK            4   //Animation clock
 #define beepCLK           5   //beeper clock
-#define buzzCLK           6   //beeper clock
+#define rumbleCLK         6   //beeper clock
 
 /*========================================================================================================================
     I/O Function Labels
@@ -95,10 +96,10 @@
 #define beep_Tick         10
 
 // BUZZER NAMES
-//0 and 1 are reserved for changing buzzer mute state
-#define buzz_Alert        2
-#define buzz_Long         3
-#define buzz_Short        4
+//0 and 1 are reserved for changing rumble mute state
+#define rumble_Alert        2
+#define rumble_Long         3
+#define rumble_Short        4
 
 /*        Game Properties       *\
    These change certain constants
@@ -117,6 +118,7 @@
 #define sick_penalty      10          //How much the trait is "lowered" by when calculating stat drain
 #define foodbonus         25          //How much does food increase the stat?
 #define gamebonus         10          //How much do games increase a stat?
+#define NRGcost           10          //How much energy does a game use?
 
 //Random Number Maximums
 #define max_sickChance    255
@@ -131,6 +133,7 @@
 #define cry_beat          25          //Roll to cry for attention every X heartbeats
 #define hatch_beat        10          //How long it takes to hatch the egg
 #define evolve_beat       1000        //How many beats it takes to evolve
+#define nrgc_beat         5           //How many beats before charging NRG
 #else
 #define stat_beat         20          //Roll to drain stats every X heartbeats
 #define sick_beat         100         //Roll for sickness every X heartbeats
@@ -138,6 +141,7 @@
 #define cry_beat          100         //Roll to cry for attention every X heartbeats
 #define hatch_beat        1000        //How long it takes to hatch the egg
 #define evolve_beat       10000       //How many beats it takes to evolve
+#define nrgc_beat         10           //How many beats before charging NRG
 #endif
 
 //BASE WEIGHT
@@ -164,9 +168,10 @@
 #define medsM             6
 #define confM             7
 #define playM             8
-#define g_cardflip        9
-#define c_clockset        10
+#define g_ballcatch       9
+#define g_cardflip        10
 #define g_bitshifter      11
+#define c_clockset        12
 
 //ANIMATION TYPES
 #define a_idle            1
@@ -180,16 +185,32 @@
 #define tribbur           2
 #define snek              3
 
+//ballcatch gameVals
+#define gbc_balls         0     //How many balls are in play?
+#define gbc_position      1     //Position of the "paddle"
+#define gbc_speed         2     //speed of the paddle
+#define gbc_1X            3     //X position of ball 1
+#define gbc_1Y            4     //Y position of ball 1
+#define gbc_2X            5     //X position of ball 2
+#define gbc_2Y            6     //Y position of ball 2
+#define gbc_3X            7     //X position of ball 3
+#define gbc_3Y            8     //Y position of ball 3
+#define gbc_score         9     //Score of the game. Also affects game speed
+//ballcatch misc values
+#define gbc_maxspeed      10    //The fastest the paddle can go
+#define gbc_incspeed      2     //How fast the speed charges
+#define gbc_decspeed      1     //How fast the speed drains per tick
+
 //card Flip gameVals
 #define gcf_nextcard      0
 #define gcf_thiscard      1
 #define gcf_point         2
 
 //bitshifter gameVals
-#define gbs_setup         10
-#define gbs_buttons       11
-#define gbs_score         12
-#define gbs_gameover      13
+#define gbs_setup         0
+#define gbs_buttons       1
+#define gbs_score         2
+#define gbs_gameover      3
 #define gbs_point         8
 #define gbs_goalbyte      9
 //do not use 0-7

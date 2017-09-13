@@ -117,8 +117,8 @@ void debug()
         beep(Serial.parseInt());
         break;
       case 4:
-        Serial.println(F("Testing buzzer: "));
-        buzzMode = 1;
+        Serial.println(F("Testing rumble: "));
+        rumbleMode = 1;
         break;
       //      case 5:
       //        Serial.println(F("Write what address?"));

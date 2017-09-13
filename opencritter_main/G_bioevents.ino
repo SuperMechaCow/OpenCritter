@@ -1,4 +1,3 @@
-
 /*
    Handles evolution, sickness, and other game changes of critters.
 
@@ -49,6 +48,9 @@ void evolveHandler()
   hun = hun / 2;
   hap = hap / 2;
   bor = bor / 2;
+  Ath = Ath / 2;
+  Dis = Dis / 2;
+  Int = Int / 2;
 
 }
 

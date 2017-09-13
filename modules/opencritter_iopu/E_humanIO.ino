@@ -1,7 +1,13 @@
 void getButton() {
-  butNOW[0] = digitalRead(Abut_pin);  //Set the current state to the button state
-  butNOW[1] = digitalRead(Bbut_pin);
-  butNOW[2] = digitalRead(Cbut_pin);
+  buttbyte = 0;
+  buttbyte += 1 * digitalRead(Abut_pin);  //Add this bit to the button byte if the button is being pressed
+  buttbyte += 2 * digitalRead(Bbut_pin);
+  buttbyte += 4 * digitalRead(Cbut_pin);
+  //  buttbyte += 8 * 0;
+  //  buttbyte += 16 * 0;
+  //  buttbyte += 32 * 0;
+  //  buttbyte += 64 * 0;
+  //  buttbyte += 128 * 0;
 }
 
 void beep() {

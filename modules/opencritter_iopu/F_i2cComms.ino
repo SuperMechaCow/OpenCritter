@@ -69,11 +69,18 @@ void requestEvent() { //The master is asking you for bytes!
       Wire.write(devicetype);
       break;
     case gimmeButtons: //If the master is asking us which buttons are pressed
-      for (int i = 0; i < 8; i++) {
-        //sendByte = butNOW[i];
-        Wire.write(butNOW[i]);
-      }
-      sendByte = RESET;
+      /* This used to send 8 bytes of 0 or 1 over i2c. Left here for legacy purposes
+        //      for (int i = 0; i < 8; i++) {
+        //        if (debugMode) {
+        //          if (i <= 2)
+        //          Serial.print(butNOW[i]);
+        //        }
+        //        Wire.write(butNOW[i]);
+        //      }
+        //      if (debugMode)
+        //        Serial.println("");
+      */
+      Wire.write(buttbyte);
       break;
     case wutuwant: //If the master is asking us what information we need.
       // This code is totally defunct. Just here for when I tackle this later.

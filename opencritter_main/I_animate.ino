@@ -1,4 +1,3 @@
-
 /*
    Handles all of the critter animations in the game
 
@@ -129,8 +128,8 @@ void aniModeSet(byte brd, byte anitype)
   }
 }
 
-void animate()
-{
+void animate(byte Xpos, byte Ypos)
+{ //Play the animation stored in aniMode at position X and Y
   switch (aniMode)
   {
     case ani_egg_idle:
@@ -150,15 +149,15 @@ void animate()
         aniStage = 1 + ((CLK[baseCLK] - CLK[aniCLK]) / ((baseHRT_speed * 1) * metabolism));
         if (aniStage % 2) //If odd
         {
-          display.fillRect(48, 16, 32, 32, 0);
+          display.fillRect(Xpos, Ypos, 32, 32, 0);
           //          getGFX(egg_main);
-          display.drawBitmap(48, 16, gfx_egg_main, 32, 32, 1);
+          display.drawBitmap(Xpos, Ypos, gfx_egg_main, 32, 32, 1);
         }
         else
         {
-          display.fillRect(48, 16, 32, 32, 0);
+          display.fillRect(Xpos, Ypos, 32, 32, 0);
           //          getGFX(egg_idle);
-          display.drawBitmap(48, 16, gfx_egg_idle, 32, 32, 1);
+          display.drawBitmap(Xpos, Ypos, gfx_egg_idle, 32, 32, 1);
         }
         if (aniLast != aniStage) //The last stage is not the same odd or even as the current stage
         {
@@ -178,15 +177,15 @@ void animate()
         aniStage = 1 + ((CLK[baseCLK] - CLK[aniCLK]) / ((baseHRT_speed * 1) * metabolism));
         if (aniStage % 2 == 1)
         {
-          display.fillRect(48, 16, 32, 32, 0);
+          display.fillRect(Xpos, Ypos, 32, 32, 0);
           //          getGFX(wibbur_main);
-          display.drawBitmap(48, 16, gfx_wibbur_main, 32, 32, 1);
+          display.drawBitmap(Xpos, Ypos, gfx_wibbur_main, 32, 32, 1);
         }
         else
         {
-          display.fillRect(48, 16, 32, 32, 0);
+          display.fillRect(Xpos, Ypos, 32, 32, 0);
           //          getGFX(wibbur_idle);
-          display.drawBitmap(48, 16, gfx_wibbur_idle, 32, 32, 1);
+          display.drawBitmap(Xpos, Ypos, gfx_wibbur_idle, 32, 32, 1);
         }
         if (aniLast != (aniStage % 2))
         {
@@ -213,15 +212,15 @@ void animate()
         aniStage = 1 + ((CLK[baseCLK] - CLK[aniCLK]) / ((baseHRT_speed * 1) * metabolism));
         if (aniStage % 2 == 1)
         {
-          display.fillRect(48, 16, 32, 32, 0);
+          display.fillRect(Xpos, Ypos, 32, 32, 0);
           //          getGFX(wibbur_main);
-          display.drawBitmap(48, 16, gfx_wibbur_main, 32, 32, 1);
+          display.drawBitmap(Xpos, Ypos, gfx_wibbur_main, 32, 32, 1);
         }
         else
         {
-          display.fillRect(48, 16, 32, 32, 0);
+          display.fillRect(Xpos, Ypos, 32, 32, 0);
           //          getGFX(icon_food);
-          display.drawBitmap(56, 24, gfx_icon_food, 16, 16, 1);
+          display.drawBitmap(Xpos + 8, Ypos + 8, gfx_icon_food, 16, 16, 1);
         }
         if (aniLast != (aniStage % 2))
         {
@@ -242,15 +241,15 @@ void animate()
         aniStage = 1 + ((CLK[baseCLK] - CLK[aniCLK]) / ((baseHRT_speed * 0.25) * metabolism));
         if (aniStage % 2 == 1) //if odd
         {
-          display.fillRect(24, 16, 32, 32, 0);
+          display.fillRect(Xpos, Ypos, 32, 32, 0);
           //          getGFX(wibbur_main);
-          display.drawBitmap(48, 16, gfx_wibbur_main, 32, 32, 1);
+          display.drawBitmap(Xpos, Ypos, gfx_wibbur_main, 32, 32, 1);
         }
         else //if even
         {
-          display.fillRect(24, 16, 32, 32, 0);
+          display.fillRect(Xpos, Ypos, 32, 32, 0);
           //          getGFX(wibbur_idle);
-          display.drawBitmap(48, 16, gfx_wibbur_idle, 32, 32, 1);
+          display.drawBitmap(Xpos, Ypos, gfx_wibbur_idle, 32, 32, 1);
         }
         if (aniLast != (aniStage % 2))
         {
@@ -272,15 +271,15 @@ void animate()
         aniStage = 1 + ((CLK[baseCLK] - CLK[aniCLK]) / ((baseHRT_speed * 1) * metabolism));
         if (aniStage % 2 == 1)
         {
-          display.fillRect(48, 16, 32, 32, 0);
+          display.fillRect(Xpos, Ypos, 32, 32, 0);
           //          getGFX(tribbur_main);
-          display.drawBitmap(48, 16, gfx_tribbur_main, 32, 32, 1);
+          display.drawBitmap(Xpos, Ypos, gfx_tribbur_main, 32, 32, 1);
         }
         else
         {
-          display.fillRect(48, 16, 32, 32, 0);
+          display.fillRect(Xpos, Ypos, 32, 32, 0);
           //          getGFX(tribbur_idle);
-          display.drawBitmap(48, 16, gfx_tribbur_idle, 32, 32, 1);
+          display.drawBitmap(Xpos, Ypos, gfx_tribbur_idle, 32, 32, 1);
         }
         if (aniLast != (aniStage % 2))
         {
@@ -307,15 +306,15 @@ void animate()
         aniStage = 1 + ((CLK[baseCLK] - CLK[aniCLK]) / ((baseHRT_speed * 1) * metabolism));
         if (aniStage % 2 == 1)
         {
-          display.fillRect(48, 16, 32, 32, 0);
+          display.fillRect(Xpos, Ypos, 32, 32, 0);
           //          getGFX(tribbur_main);
-          display.drawBitmap(48, 16, gfx_tribbur_main, 32, 32, 1);
+          display.drawBitmap(Xpos, Ypos, gfx_tribbur_main, 32, 32, 1);
         }
         else
         {
-          display.fillRect(48, 16, 32, 32, 0);
+          display.fillRect(Xpos, Ypos, 32, 32, 0);
           //          getGFX(icon_food);
-          display.drawBitmap(56, 24, gfx_icon_food, 16, 16, 1);
+          display.drawBitmap(Xpos + 8, Ypos + 8, gfx_icon_food, 16, 16, 1);
         }
         if (aniLast != (aniStage % 2))
         {
@@ -336,15 +335,15 @@ void animate()
         aniStage = 1 + ((CLK[baseCLK] - CLK[aniCLK]) / ((baseHRT_speed * 0.25) * metabolism));
         if (aniStage % 2 == 1) //if odd
         {
-          display.fillRect(24, 16, 32, 32, 0);
+          display.fillRect(Xpos, Ypos, 32, 32, 0);
           //          getGFX(tribbur_main);
-          display.drawBitmap(48, 16, gfx_tribbur_main, 32, 32, 1);
+          display.drawBitmap(Xpos, Ypos, gfx_tribbur_main, 32, 32, 1);
         }
         else //if even
         {
-          display.fillRect(24, 16, 32, 32, 0);
+          display.fillRect(Xpos, Ypos, 32, 32, 0);
           //          getGFX(tribbur_idle);
-          display.drawBitmap(48, 16, gfx_tribbur_idle, 32, 32, 1);
+          display.drawBitmap(Xpos, Ypos, gfx_tribbur_idle, 32, 32, 1);
         }
         if (aniLast != (aniStage % 2))
         {
@@ -367,15 +366,15 @@ void animate()
         aniStage = 1 + ((CLK[baseCLK] - CLK[aniCLK]) / ((baseHRT_speed * 1) * metabolism));
         if (aniStage % 2 == 1)
         {
-          display.fillRect(48, 16, 32, 32, 0);
+          display.fillRect(Xpos, Ypos, 32, 32, 0);
           //          getGFX(snek_main);
-          display.drawBitmap(48, 16, gfx_snek_main, 32, 32, 1);
+          display.drawBitmap(Xpos, Ypos, gfx_snek_main, 32, 32, 1);
         }
         else
         {
-          display.fillRect(48, 16, 32, 32, 0);
+          display.fillRect(Xpos, Ypos, 32, 32, 0);
           //          getGFX(snek_idle);
-          display.drawBitmap(48, 16, gfx_snek_idle, 32, 32, 1);
+          display.drawBitmap(Xpos, Ypos, gfx_snek_idle, 32, 32, 1);
         }
         if (aniLast != (aniStage % 2))
         {
@@ -402,15 +401,15 @@ void animate()
         aniStage = 1 + ((CLK[baseCLK] - CLK[aniCLK]) / ((baseHRT_speed * 1) * metabolism));
         if (aniStage % 2 == 1)
         {
-          display.fillRect(48, 16, 32, 32, 0);
+          display.fillRect(Xpos, Ypos, 32, 32, 0);
           //          getGFX(snek_main);
-          display.drawBitmap(48, 16, gfx_snek_main, 32, 32, 1);
+          display.drawBitmap(Xpos, Ypos, gfx_snek_main, 32, 32, 1);
         }
         else
         {
-          display.fillRect(48, 16, 32, 32, 0);
+          display.fillRect(Xpos, Ypos, 32, 32, 0);
           //          getGFX(icon_food);
-          display.drawBitmap(56, 24, gfx_icon_food, 16, 16, 1);
+          display.drawBitmap(Xpos + 8, Ypos + 8, gfx_icon_food, 16, 16, 1);
         }
         if (aniLast != (aniStage % 2))
         {
@@ -431,15 +430,15 @@ void animate()
         aniStage = 1 + ((CLK[baseCLK] - CLK[aniCLK]) / ((baseHRT_speed * 0.25) * metabolism));
         if (aniStage % 2 == 1) //if odd
         {
-          display.fillRect(24, 16, 32, 32, 0);
+          display.fillRect(Xpos, Ypos, 32, 32, 0);
           //          getGFX(snek_main);
-          display.drawBitmap(48, 16, gfx_snek_main, 32, 32, 1);
+          display.drawBitmap(Xpos, Ypos, gfx_snek_main, 32, 32, 1);
         }
         else //if even
         {
-          display.fillRect(24, 16, 32, 32, 0);
+          display.fillRect(Xpos, Ypos, 32, 32, 0);
           //          getGFX(snek_idle);
-          display.drawBitmap(48, 16, gfx_snek_idle, 32, 32, 1);
+          display.drawBitmap(Xpos, Ypos, gfx_snek_idle, 32, 32, 1);
         }
         if (aniLast != (aniStage % 2))
         {

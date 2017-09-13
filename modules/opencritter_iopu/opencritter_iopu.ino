@@ -11,7 +11,8 @@
 void setup()
 {
   //Spin up a comm port
-  //Serial.begin(serialbaud);
+  if (debugMode)
+    Serial.begin(serialbaud);
 
   //Start the I2C slave and give it an address
   Wire.begin(i2c_addr);
@@ -44,6 +45,6 @@ void loop()
   if (!buzzMute)
     buzz();
   //if (debugMode)
-    //debug();
+  //debug();
 }
 

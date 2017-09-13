@@ -10,9 +10,9 @@ Anyone is invited to work on the project for as long as they stick to the follow
 
 ## Hardware
 
-OpenCritter is currently being developed for ESP-01 and NodeMCU in the Arduino IDE. A branch is being made for Atmega328-based "Lite" versions.
+OpenCritter is currently being developed for ESP-01 and NodeMCU in the Arduino IDE. A branch is being made for Atmega328p-based "Lite" versions.
 
-DevKit1 is soon to be released. It features an ESP8266 circuit, an alternative header for an ESP-01 module, an Atmega328 circuit, programming headers, and four i2c bus headers.
+**DevKit1** has been released. It features an ESP8266 circuit, an alternative header for an ESP-01 module, an Atmega328p circuit, programming headers, and four i2c bus headers.
 
 All platforms will need an I2C 0.96" OLED screen based on SSD1306. Additonal piezo buzzer, a small vibration motor (optional), a battery circuit, and three tactile switches should be used with the platform or as an additional IOPU device.
 
@@ -22,9 +22,19 @@ Currently, the software requires Adafruit's GFX and SSD1306 libraries, and ESP82
 
 ## Objectives
 
-- Finish the main game's functionality (sickness/death, crying for attention, evolution, mini-games, property interactions)
+- Finish the main game's functionality (sickness/death, crying for attention, evolution, mini-games, game rules)
 - Add robust "plug-in device" support for modularity.
 - Add peer-to-peer wireless communications
 - Multi-player games and functions
 - OpenCritter "dog house" device or wireless internet functionality.
 - OpenCritter database for online multiplayer/scoreboards.
+
+## How can I contribute?
+
+- Graphic designer? We need sprites and animations for 30 different critters!
+- Web front-end developer? We need a more robust and pretty webapp to be hosted by the device itself!
+- Web back-end developer? We need a database / highscore table for the pets to connect to/register/sync with!
+- 3D CAD? DevKit1 could benefit from some open-source cases!
+- Electronics Engineer? We need new i2c modules to add plug-and-play functions to the device!
+- Software/Embedded Engineer? The device is always in need of optimization, improved i2c module API, and power-saving features!
+- Stickler for details? Documentation constantly needs updated!

@@ -1,6 +1,10 @@
 #include <Wire.h>
 //#include <U8g2lib.h>
 #include <Adafruit_SSD1306.h>
+#include <ESP8266WiFi.h>
+#include <WiFiClient.h>
+#include <ESP8266WebServer.h>
+#include <Base64.h>
 
 //Include custom files
 #include "A_labels.h"
@@ -8,9 +12,22 @@
 #include "C_setup.h"
 #include "Z_gfx.h"
 
+//
+// All of the variable declarations are in _setup.h
+//
 
 void setup()
 {
+
+  //  if (oc_nodemcu) {
+  //    pinMode(hrt_pin, OUTPUT);
+  //    pinMode(Abut_pin, INPUT);
+  //    pinMode(Bbut_pin, INPUT);
+  //    pinMode(Cbut_pin, INPUT);
+  //    pinMode(beeper_pin, OUTPUT);
+  //    pinMode(rumble_pin, OUTPUT);
+  //  }
+
   /*== Start Comms =========================================================================================================*/
 
   delay(2000); // Wait for other devices to boot.
@@ -47,30 +64,43 @@ void setup()
 
   metaBonus = egg_m;
 
-  // If we are debugging, skip the egg
-  //  if (debugMode) {
-  //    breed = wibbur;
-  //    metaBonus = baby_m;
-  //  }
-
   /*== Animation Setup =====================================================================================================*/
 
   //Get the starting variables ready for the various functions
-  selMenu = mainM; //Start the menus with the "Main Menu" play screen
-  aniModeSet(breed, a_idle); //First animation to play is the egg
-  aniStage = RESET; //primer animation stage
-  aniLast = RESET;  //Set the placeholder for previous animation
+  selMenu = mainM;            //Start the menus with the "Main Menu" play screen
+  aniModeSet(breed, a_idle);  //First animation to play is the egg
+  aniStage = RESET;           //prime animation stage
+  aniLast = RESET;            //Set the placeholder for previous animation
 
-  //Call the function for running the beeper if not muted
-  beep(beep_UpChirp);
+  beep(beep_UpChirp);         //Hello World!
 
-  updateScreen(); //draw the first screen
+  updateScreen();             //draw the first screen
+
+  /*== WebAP Setup =========================================================================================================*/
+
+  if (wifiEnabled) {
+    WiFiMode(WIFI_AP);
+    WiFi.softAP(ssid, password);        //Start a WiFi AP with this Name and Password
+    IPAddress myIP = WiFi.softAPIP();
+    server.on("/", handleRoot);         //Root
+    server.begin();
+  }
+  else {
+    WiFiMode(WIFI_STA);
+    WiFi.disconnect();
+    WiFi.mode(WIFI_OFF);
+    WiFi.forceSleepBegin();
+    delay(100);
+  }
 
   /*== End Setup ===========================================================================================================*/
 
 }
 
 void loop() {
+
+
+
 
   /*== Start Loop ==========================================================================================================*/
 
@@ -91,10 +121,10 @@ void loop() {
 
   //Calculate the sickness threshold
   sick_thresh = (sick_multi * (poopCount + sickCount + lifestage)) + sick_base;
+  /*== Heartbeat Events ====================================================================================================*/
+
   if (sick_thresh > 255)
     sick_thresh = 255;
-
-  /*== Heartbeat Events ====================================================================================================*/
 
   /*HEARTBEATS AND CLOCK CHECKING
      The timing in this game is linked to Metabolism and Heartbeats, which are the frequency of "game ticks", respectively.
@@ -133,16 +163,22 @@ void loop() {
         if (random(0, max_drainChance) > Ath - (sick_penalty * sickCount)) { //High traits reduce chance of stat drain. Each stack of sickness increases chance.
           if (hun > 0)
             hun--; //hunger = athleticism
+          if (NRG < max_stats)
+            NRG++;
           beep(beep_Tick);
         }
         if (random(0, max_drainChance) > Dis - (sick_penalty * sickCount)) {
           if (hap > 0)
             hap--; //happiness = Dis
+          if (NRG < max_stats)
+            NRG++;
           beep(beep_Tick);
         }
         if (random(0, max_drainChance) > Int - (sick_penalty * sickCount)) {
           if (bor > 0)
             bor--; //boredom = Int
+          if (NRG < max_stats)
+            NRG++;
           beep(beep_Tick);
         }
       }
@@ -186,6 +222,7 @@ void loop() {
 
   //theQ();
 
+  //Comment out for NODEMCU
   updateIOPU();
 
   getButtons();
@@ -221,6 +258,9 @@ void loop() {
       break;
     //
     // Games
+    case g_ballcatch:
+      ballcatch();
+      break;
     case g_cardflip:
       cardflip();
       break;
@@ -230,5 +270,9 @@ void loop() {
     default:
       break;
   }
+
+  if (wifiEnabled)
+    server.handleClient();
+
 }
 

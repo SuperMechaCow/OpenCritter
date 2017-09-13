@@ -1,4 +1,3 @@
-
 /*
    Handles all of the minigames in the game
 
@@ -6,16 +5,188 @@
    See updateScreen() and animate() for drawing minigames.
 */
 
+
+void ballcatch()
+{
+
+  //I really wanted to have multiple balls dropping, but this game is good enough
+
+  if (gameStage == 0) //Splash screen
+  {
+    display.clearDisplay();
+    display.setTextColor(1);
+    display.setTextSize(2);
+    display.setCursor(4, 0);
+    display.print(F("Ball Catch"));
+    display.setTextSize(1);
+    display.setCursor(28, 20);
+    display.print(F("Move catcher"));
+    display.setCursor(32, 28);
+    display.print(F("with A + B."));
+    display.setCursor(37, 36);
+    display.print(F("Catch the"));
+    display.setCursor(24, 44);
+    display.print(F("falling balls!"));
+    display.setCursor(22, 56);
+    display.print(F("Energy: "));
+    display.print(NRGcost);
+    display.print(F(" ("));
+    display.print(NRG);
+    display.print(F(")"));
+    updateScreen();
+
+    //A OR B button is pressed
+    if (butNOW[0] || butNOW[1])
+    {
+      butNOW[0] = false; //Set the button to not enable again
+      if (NRG >= NRGcost) { //If we have enough energy to start a game
+        beep(beep_UpChirp);
+        NRG -= NRGcost; //Remove that energy cost from the available amount
+        gameStage++;
+      }
+      else { //If we don't have enough energy, just beep
+        beep(beep_HiLo1);
+      }
+    }
+
+    //C button is pressed
+    if (butNOW[2])
+    { //ABORT! Cancel the game...
+      beep(beep_HiLo1);
+      //do stuff when button is HIGH
+      butNOW[2] = false; //Set the button to not enable again
+      for (int i = 0; i <= 9; i++)
+      {
+        gameVal[i] = 0;
+      }
+      gameStage = RESET;
+      selMenu = mainM;
+      aniModeSet(breed, a_idle);
+      display.clearDisplay();
+    }
+
+  }
+
+  //Start up
+  if (gameStage == 1)
+  {
+    //Make a ball drop... *snicker*
+    gameVal[gbc_balls + 3] = random(0, 112);
+    gameVal[gbc_balls + 4] = RESET;
+    gameVal[gbc_balls]++;
+    //clears screen
+    display.clearDisplay();
+    updateScreen();
+    gameStage++;
+  }
+
+  else if (gameStage == 2)
+  {
+    if (CLK[timeCLK] - CLK[baseCLK] >= (baseHRT_speed * metabolism) / 4) {
+
+      //Drop the balls... *snicker*...
+      gameVal[gbc_1Y] += 1 + (gameVal[gbc_score] / 3); //Gets a little faster every three points!
+
+      //Move the paddle
+      gameVal[gbc_position] += gameVal[gbc_speed];
+      if (gameVal[gbc_position] < 0) {
+        gameVal[gbc_position] = 0;
+        gameVal[gbc_speed] = gameVal[gbc_speed] * -1;
+      }
+      if (gameVal[gbc_position] > 112) {
+        gameVal[gbc_position] = 112;
+        gameVal[gbc_speed] = gameVal[gbc_speed] * -1;
+      }
+      if (gameVal[gbc_speed] > 0)
+        gameVal[gbc_speed] -= 1;
+      if (gameVal[gbc_speed] < 0)
+        gameVal[gbc_speed] += 1;
+
+      //Draw everything
+      display.clearDisplay();
+      display.setTextColor(1);
+      display.setTextSize(2);
+      display.setCursor(0, 0);
+      display.print(gameVal[gbc_score]);
+      display.drawBitmap(gameVal[gbc_1X], gameVal[gbc_1Y], gfx_icon_clok, 16, 16, 1); // Draw ball
+      display.drawBitmap(gameVal[gbc_position], 48, gfx_icon_poop, 16, 16, 1); // Draw character at bottom of screen in it's position
+      updateScreen();
+
+      //See if there's a collision
+      if (gameVal[gbc_position] - gameVal[gbc_1X] < 16 && gameVal[gbc_position] - gameVal[gbc_1X] > -16 && gameVal[gbc_1Y] > 36) {
+        beep(beep_UpChirp);
+        gameVal[gbc_score]++;
+        gameVal[gbc_balls]--;
+        gameStage = 1;
+
+        //Reward
+        if (weight < nominal_w)
+          if (random(0, 101) <= Ath)
+            weight++;
+        if (weight > nominal_w)
+          if (random(0, 101) <= Ath)
+            weight--;
+        if (Ath < max_traits)
+          Ath++;
+      }
+
+      //See if the balls dropped... *SNICKER*
+      if (gameVal[gbc_1Y] > 48) {
+        beep(beep_DnChirp);
+        gameVal[gbc_balls]--;
+        gameStage = RESET;
+        gameVal[gbc_score] = 0;
+      }
+
+      if (butNOW[0])
+      {
+        //butNOW[0] = false; //Set the button to not enable again
+        gameVal[gbc_speed] -= 2;
+        if (gameVal[gbc_speed] <= -10)
+          gameVal[gbc_speed] = -10;
+      }
+
+      //B button is pressed
+      if (butNOW[1])
+      {
+        //butNOW[1] = false; //Set the button to not enable again
+        gameVal[gbc_speed] += 2;
+        if (gameVal[gbc_speed] >= 10)
+          gameVal[gbc_speed] = 10;
+      }
+
+      //C button is pressed
+      if (butNOW[2])
+      { //ABORT! Cancel the game...
+        beep(beep_HiLo1);
+        //do stuff when button is HIGH
+        butNOW[2] = false; //Set the button to not enable again
+        for (int i = 0; i <= 9; i++)
+        {
+          gameVal[i] = 0;
+        }
+        gameStage = RESET;
+        selMenu = mainM;
+        aniModeSet(breed, a_idle);
+        display.clearDisplay();
+      }
+    }
+  }
+}
+
+/*========================================================================================================================*/
+
 void cardflip()
 {
 
-  animate();
+  animate(24, 16);
 
   //Start up
   if (gameStage == 0)
   { //If game is not setup or is reset
     //Reset all game variables
-    for (int i = 0; i >= sizeof(gameVal); i++)
+    //for (int i = 0; i <= sizeof(gameVal); i++) //This line didn't work. Returned a sizeof of 40
+    for (int i = 0; i <= 9; i++)
     {
       gameVal[i] = 0;
     }
@@ -77,6 +248,10 @@ void cardflip()
       beep(beep_HiLo1);
       //do stuff when button is HIGH
       butNOW[2] = false; //Set the button to not enable again
+      for (int i = 0; i <= 9; i++)
+      {
+        gameVal[i] = 0;
+      }
       gameStage = RESET;
       selMenu = mainM;
       aniModeSet(breed, a_idle);
@@ -96,14 +271,15 @@ void cardflip()
         weight = RESET;
       else
         weight--;
-      //INT INCREASE ISN'T SUPPOSED TO HAPPEN IN THIS GAME
-      Int = Int + 1;
 
-      if (bor + gamebonus > max_stats)
-        bor = max_stats;
+      if (Dis < max_traits)
+        Dis++;
+
+      if (hap + gamebonus > max_stats)
+        hap = max_stats;
       else
-        bor = bor + gamebonus;
-        
+        hap = hap + gamebonus;
+
       display.setCursor(80, 48);
       display.setTextColor(1);
       display.setTextSize(1);
@@ -142,8 +318,12 @@ void cardflip()
   }
 }
 
+/*========================================================================================================================*/
+
 void bitshifter()
 {
+
+  animate(16, 12);
 
   if (gameStage == 0)
   {
@@ -161,7 +341,7 @@ void bitshifter()
 
     display.clearDisplay();
 
-    display.setCursor(48, 16);
+    display.setCursor(80, 16);
     display.setTextColor(1);
     display.setTextSize(2);
 
@@ -171,7 +351,7 @@ void bitshifter()
       display.print(F("0"));
     display.print(gameVal[gbs_goalbyte]);
 
-    display.setCursor(40, 32);
+    display.setCursor(72, 32);
     display.setTextSize(1);
 
     for (int i = 7; i >= 0; i--)
@@ -226,6 +406,10 @@ void bitshifter()
       beep(beep_HiLo1);
       //do stuff when button is HIGH
       butNOW[2] = false; //Set the button to not enable again
+      for (int i = 0; i <= 9; i++)
+      {
+        gameVal[i] = 0;
+      }
       gameStage = RESET;
       selMenu = mainM;
       ocCursor = RESET;
@@ -240,20 +424,14 @@ void bitshifter()
     {
       gameVal[gbs_point] = RESET;
 
-      //WEIGHT DROP ISN'T SUPPOSED TO HAPPEN IN THIS GAME
-      if (weight <= 1)
-        weight = RESET;
-      else
-        weight--;
-      //WEIGHT DROP ISN'T SUPPOSED TO HAPPEN IN THIS GAME
-      
-      Int = Int + 1;
-      
+      if (Int < max_traits)
+        Int++;
+
       if (bor + gamebonus > max_stats)
         bor = max_stats;
       else
         bor = bor + gamebonus;
-        
+
       display.setCursor(80, 48);
       display.setTextColor(1);
       display.setTextSize(1);

@@ -1,3 +1,32 @@
+### September 12th, 2017 [alpha v0.010] Minor
+
+[Changes]
+- WiFi can now be toggled to save power
+- Atmega328 IOPU button pins switched due to fix error in DevKit1
+- Getting buttons from IOPU over i2c now uses 1 byte instead of 8
+
+### September 6th, 2017 [alpha v0.009] Major
+Wifi + Play Update
+
+[Changes]
+- ESP-01 and NodeMCU now broadcast a soft Access Point, where users can connect and interact through a web browser!
+- Added Ball Catch Minigame
+- Food (now Protein, Fat, and Carbs) now complete!
+- Games now complete!
+- Added Energy. Each time a stat drain Energy charges by one. In the future, this will be used to play games and if left full can be automatically used to find meds and loot
+- Protein rolls against Ath to gain 1 weight, charges hun, and drains Ath.
+- Fat rolls against Ath to gain 1 weight, adds 1 weight, greatly charges hap, and drains Dis.
+- Carbs rolls against Ath to gain 1 weight, adds 1 weight, greatly charges bor, and drains Int.
+- Ball Catch charges Ath, and drains/charges weight closer to a healthy weight.
+- Card Flip charges hap and Dis.
+- Bitshifter charges bor and Int.
+- Food and Games menus now show what stats are changed by playing.
+- Fixed a bug that allowed muted sounds to play
+- Fixed animations in games
+- Added animation to bitshifter
+- animate() now passes X and Y values for the position of the animation
+- Moved location of some critter parameters around (breed and metabolism to Clock menu. Energy and Health bars to Biospecs)
+
 ### September 1st, 2017 [alpha v0.008]
 
 [Changes]
