@@ -5,6 +5,13 @@
 
 //oc on ESP-01 with Arduino I/O Processing Unit
 #ifdef ESP8266
+#define oc_nodemcu false
+#define hrt_pin     0   //D5 14
+#define Abut_pin    0   //D0 16
+#define Bbut_pin    0   //D1 5
+#define Cbut_pin    0   //D2 4
+#define beeper_pin  0   //D6 12
+#define rumble_pin  0   //D8 13
 //i2c and uart comms
 #define i2cSDA 0
 #define i2cSCL 2

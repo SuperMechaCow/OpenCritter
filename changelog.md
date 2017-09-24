@@ -4,6 +4,12 @@
 - WiFi can now be toggled to save power
 - Atmega328 IOPU button pins switched due to fix error in DevKit1
 - Getting buttons from IOPU over i2c now uses 1 byte instead of 8
+- Critter can now die from having more than four stacks of sickness
+- Added new *unfinished* "Lazer Chiken" game. Enable "debugMode" and select Ball Catcher to play.
+
+[Known Bugs]
+- Wifi Enable/Disable is buggy. Does not always enable WiFi
+- Changing the beeper mute status also changes the buzzer mute status for some reason
 
 ### September 6th, 2017 [alpha v0.009] Major
 Wifi + Play Update

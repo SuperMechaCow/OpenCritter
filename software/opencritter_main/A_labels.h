@@ -201,6 +201,23 @@
 #define gbc_incspeed      2     //How fast the speed charges
 #define gbc_decspeed      1     //How fast the speed drains per tick
 
+//lazerchiken gameVals
+#define lcc_balls         0     //How many balls are in play?
+#define lcc_position      1     //Position of the "paddle"
+#define lcc_speed         2     //speed of the paddle
+#define lcc_1X            3     //X position of ball 1
+#define lcc_1Y            4     //Y position of ball 1
+#define lcc_2X            5     //X position of ball 2
+#define lcc_2Y            6     //Y position of ball 2
+#define lcc_lazerX        7     //X position of ball 3
+#define lcc_lazerY        8     //Y position of ball 3
+#define lcc_score         9     //Score of the game. Also affects game speed
+//ballcatch misc values
+#define lcc_maxspeed      10    //The fastest the paddle can go
+#define lcc_incspeed      2     //How fast the speed charges
+#define lcc_decspeed      1     //How fast the speed drains per tick
+#define lcc_lazersize     8     //How long is the lazer?
+
 //card Flip gameVals
 #define gcf_nextcard      0
 #define gcf_thiscard      1

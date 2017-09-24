@@ -1,0 +1,1 @@
+This contains all reference material, such as datasheets, diagrams, pinouts, and schematics that are used throughout this project

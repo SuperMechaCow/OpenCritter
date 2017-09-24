@@ -2,7 +2,6 @@
    Handles all menus in the game
 
    Note that this does not actually draw the screen. It only handles the "behind the scenes".
-   See updateScreen() and animate() for drawing menus.
 */
 
 /*== Update BPM ==========================================================================================================*/

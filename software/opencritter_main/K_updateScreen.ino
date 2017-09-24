@@ -317,6 +317,10 @@ void updateScreen()
       display.setCursor(8, 48);
       display.print(F("WiFi Enabled: "));
       display.print(wifiEnabled);
+      display.setCursor(8, 56);
+      display.print(F("Ver: "));
+      display.print(versionnum);
+      
       break;
 
     /*========================================================================================================================*/

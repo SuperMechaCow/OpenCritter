@@ -1,0 +1,3 @@
+This contains the various Arduino sketches for different devices that opencritter uses
+
+It also contains a folder for pre-compiled code

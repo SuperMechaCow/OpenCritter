@@ -1,4 +1,4 @@
-#define versionnum "0.01"
+#define versionnum "a0.010"
 #define branchnum "0.00"
 #define release "091217"
 
@@ -47,6 +47,7 @@ byte weight = 10;               // How much the critter "weighs"
 
 
 // Bio-functions
+bool deadcritter = false;
 unsigned int heartbeats = 0;    // How many heartbeats have been... beaten?
 float hrtBPM = 0;               // Beats per minute. Not vital to the game. Good for the user's imagination, though.
 byte metaBonus = 0;             // A flat modifier of the metabolism from lifestage and medicines, etc.

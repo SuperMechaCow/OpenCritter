@@ -73,11 +73,21 @@ void handleRoot() {
       Int = 100;
       NRG = 100;
     }
+    if (server.argName(i) == "kill") { //If the user wants to max the params
+      deadcritter = true;
+      beep(beep_DnChirp);
+      display.clearDisplay();
+      for (int i = 0; i < 32; i++) {
+        display.drawBitmap(i * 16, (i / 8) * 16, gfx_icon_sick, 16, 16, 1); //Show alert icon
+      }
+      display.display();
+    }
   }
 
   pageString += F("<form action='' method='get'>Name: <input type='text' name='name'><input type='submit' value='Send'></form>"); // Input critter name
   pageString += F("<form action='' method='get'>Beep: <input type='text' name='beep'><input type='submit' value='Send'></form>"); // Send a beepmode
-  pageString += F("<form action='' method='get'>Beep: <input type='submit' name='maxhealth' value='maxhealth'></form>");
+  pageString += F("<form action='' method='get'>Max Health: <input type='submit' name='maxhealth' value='maxhealth'></form>");
+  pageString += F("<form action='' method='get'>KILL!: <input type='submit' name='kill' value='kill'></form>");
   pageString += F("</center></body></html>"); //Zip up the body and html and get ready to send
   server.send(200, "text / html", pageString); //Send the page buffer
 }

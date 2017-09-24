@@ -1,0 +1,9 @@
+codes
+
+Contains all tools to put graphics onto the Arduino/ESP as code.
+
+LCDAssistant.exe - converts your monochrome bitmaps into a C++ variable. You can copy this code into the opencritter project.
+
+datauri_convert.html - Simply displays bitmaps in a simple web page. Viewing this web page with advanced browser tools allows you to get the data URI for each image, so that you can pass images as html5 data from the opencritter device
+
+Files without extensions - Simply the C++ code for each graphic

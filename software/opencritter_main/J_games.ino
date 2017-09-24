@@ -71,9 +71,9 @@ void ballcatch()
   if (gameStage == 1)
   {
     //Make a ball drop... *snicker*
-    gameVal[gbc_balls + 3] = random(0, 112);
-    gameVal[gbc_balls + 4] = RESET;
-    gameVal[gbc_balls]++;
+    gameVal[gbc_balls + 3] = random(0, 112);  //Pick a random X value to drop from
+    gameVal[gbc_balls + 4] = RESET;           //Reset the Y position to the top of the screen
+    gameVal[gbc_balls]++;                     //Add a ball to the current number of balls in play
     //clears screen
     display.clearDisplay();
     updateScreen();
@@ -455,6 +455,188 @@ void bitshifter()
     if (CLK[baseCLK] - CLK[timeCLK] > 1000)
     {
       gameStage = RESET;
+    }
+  }
+}
+
+
+/*========================================================================================================================*/
+
+
+void lazerchiken()
+{
+
+  //I really wanted to have multiple balls dropping, but this game is good enough
+
+  if (gameStage == 0) //Splash screen
+  {
+    display.clearDisplay();
+    display.setTextColor(1);
+    display.setTextSize(2);
+    display.setCursor(4, 0);
+    display.print(F("Ball Catch"));
+    display.setTextSize(1);
+    display.setCursor(28, 20);
+    display.print(F("Move catcher"));
+    display.setCursor(32, 28);
+    display.print(F("with A + B."));
+    display.setCursor(37, 36);
+    display.print(F("Catch the"));
+    display.setCursor(24, 44);
+    display.print(F("falling balls!"));
+    display.setCursor(22, 56);
+    display.print(F("Energy: "));
+    display.print(NRGcost);
+    display.print(F(" ("));
+    display.print(NRG);
+    display.print(F(")"));
+    updateScreen();
+
+    //A OR B button is pressed
+    if (butNOW[0] || butNOW[1])
+    {
+      butNOW[0] = false; //Set the button to not enable again
+      if (NRG >= NRGcost) { //If we have enough energy to start a game
+        beep(beep_UpChirp);
+        NRG -= NRGcost; //Remove that energy cost from the available amount
+        gameStage++;
+      }
+      else { //If we don't have enough energy, just beep
+        beep(beep_HiLo1);
+      }
+    }
+
+    //C button is pressed
+    if (butNOW[2])
+    { //ABORT! Cancel the game...
+      beep(beep_HiLo1);
+      //do stuff when button is HIGH
+      butNOW[2] = false; //Set the button to not enable again
+      for (int i = 0; i <= 9; i++)
+      {
+        gameVal[i] = 0;
+      }
+      gameStage = RESET;
+      selMenu = mainM;
+      aniModeSet(breed, a_idle);
+      display.clearDisplay();
+    }
+
+  }
+
+  //Start up
+  if (gameStage == 1)
+  {
+    //Make a ball drop... *snicker*
+    gameVal[lcc_balls + 3] = 128;             //Right edge of screen
+    gameVal[lcc_balls + 4] = random(1, 48);   //Anywhere up and down on the right edge without leaving the bottom of the screen
+    gameVal[lcc_balls]++;
+    //clears screen
+    display.clearDisplay();
+    updateScreen();
+    gameStage++;
+  }
+
+  else if (gameStage == 2)
+  {
+    if (CLK[timeCLK] - CLK[baseCLK] >= (baseHRT_speed * metabolism) / 4) {
+
+      //Move the target
+      gameVal[lcc_1X] -= 1 + (gameVal[lcc_score] / 3); //Gets a little faster every three points!
+
+      //Move the laser
+      if (gameVal[lcc_lazerX] != RESET)
+        gameVal[lcc_lazerX] += (1 + (gameVal[lcc_score] / 3)) * 3; //Gets a little faster every three points!
+      if (gameVal[lcc_lazerX] >= 128)
+        gameVal[lcc_lazerX] = RESET;
+
+      //Move the paddle
+      gameVal[lcc_position] += gameVal[lcc_speed];
+      if (gameVal[lcc_position] < 0) {
+        gameVal[lcc_position] = 0;
+        gameVal[lcc_speed] = 0;
+      }
+      if (gameVal[lcc_position] > 48) {
+        gameVal[lcc_position] = 48;
+        gameVal[lcc_speed] = (gameVal[lcc_speed] * -1) / 2;
+      }
+      if (gameVal[lcc_speed] > -10)
+        gameVal[lcc_speed] += 1;
+
+      //Draw everything
+      display.clearDisplay();
+      display.setTextColor(1);
+      display.setTextSize(2);
+      display.setCursor(0, 0);
+      display.print(gameVal[lcc_score]);
+      display.drawBitmap(gameVal[lcc_1X], gameVal[lcc_1Y], gfx_icon_clok, 16, 16, 1); // Draw ball
+      display.drawBitmap(0, gameVal[lcc_position], gfx_icon_poop, 16, 16, 1); // Draw character at left edge of screen in it's position
+      if (gameVal[lcc_lazerX] != RESET)
+        display.drawLine(gameVal[lcc_lazerX], gameVal[lcc_lazerY], gameVal[lcc_lazerX] + lcc_lazersize, gameVal[lcc_lazerY], 1);
+      updateScreen();
+
+      //See if there's a collision
+      if (gameVal[lcc_lazerY] - gameVal[lcc_1Y] < 16 && gameVal[lcc_lazerY] - gameVal[lcc_1Y] > -16 && gameVal[lcc_1X] - (gameVal[lcc_lazerX] + lcc_lazersize) <= 0) {
+        gameVal[lcc_lazerX] = RESET;
+        gameVal[lcc_lazerY] = RESET;
+        beep(beep_UpChirp);
+        gameVal[lcc_score]++;
+        gameVal[lcc_balls]--;
+        gameStage = 1;
+
+        //Reward
+        if (weight < nominal_w)
+          if (random(0, 101) <= Ath)
+            weight++;
+        if (weight > nominal_w)
+          if (random(0, 101) <= Ath)
+            weight--;
+        if (Ath < max_traits)
+          Ath++;
+      }
+
+      //See if the balls dropped... *SNICKER*
+      if (gameVal[lcc_1X] <= 0) {
+        beep(beep_DnChirp);
+        gameVal[lcc_balls]--;
+        gameStage = RESET;
+        gameVal[lcc_score] = 0;
+      }
+
+      if (butNOW[0])
+      {
+        //butNOW[0] = false; //Set the button to not enable again
+        gameVal[lcc_speed] -= 2;
+        if (gameVal[lcc_speed] <= -10)
+          gameVal[lcc_speed] = -10;
+      }
+
+      //B button is pressed
+      if (butNOW[1])
+      {
+        butNOW[1] = false; //Set the button to not enable again
+        if (gameVal[lcc_lazerX] == RESET) {
+          beep(beep_Bip);
+          gameVal[lcc_lazerX] = 1;
+          gameVal[lcc_lazerY] = gameVal[lcc_position] + 8;
+        }
+      }
+
+      //C button is pressed
+      if (butNOW[2])
+      { //ABORT! Cancel the game...
+        beep(beep_HiLo1);
+        //do stuff when button is HIGH
+        butNOW[2] = false; //Set the button to not enable again
+        for (int i = 0; i <= 9; i++)
+        {
+          gameVal[i] = 0;
+        }
+        gameStage = RESET;
+        selMenu = mainM;
+        aniModeSet(breed, a_idle);
+        display.clearDisplay();
+      }
     }
   }
 }

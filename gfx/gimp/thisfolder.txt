@@ -1,0 +1,1 @@
+Contains the GIMP project files for the various in-game graphics
