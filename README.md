@@ -11,15 +11,12 @@ Anyone is invited to work on the project for as long as they stick to the follow
 ## Community
 
 **Main GitHub:**
-
 https://github.com/SuperMechaCow/OpenCritter
 
-**Subreddit**
-
+**Subreddit:**
 https://www.reddit.com/r/OpenCritter/
 
 **Discord Channel:**
-
 https://discord.gg/VW9fjV9
 
 
