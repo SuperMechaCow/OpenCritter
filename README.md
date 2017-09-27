@@ -8,6 +8,15 @@ Anyone is invited to work on the project for as long as they stick to the follow
 - OpenCritter software is all-ages and gender nuetral.
 - Mods are encouraged! But too much deviation from the "core experience" should be listed as a new branch.
 
+## Community
+
+**Main GitHub:**
+https://github.com/SuperMechaCow/OpenCritter
+**Subreddit**
+https://www.reddit.com/r/OpenCritter/
+**Discord Channel:**
+https://discord.gg/VW9fjV9
+
 ## Hardware
 
 OpenCritter is currently being developed for ESP-01 and NodeMCU in the Arduino IDE. A branch is being made for Atmega328p-based "Lite" versions.
