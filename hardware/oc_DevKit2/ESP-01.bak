@@ -1,0 +1,238 @@
+EESchema Schematic File Version 2
+LIBS:power
+LIBS:device
+LIBS:transistors
+LIBS:conn
+LIBS:linear
+LIBS:regul
+LIBS:74xx
+LIBS:cmos4000
+LIBS:adc-dac
+LIBS:memory
+LIBS:xilinx
+LIBS:microcontrollers
+LIBS:dsp
+LIBS:microchip
+LIBS:analog_switches
+LIBS:motorola
+LIBS:texas
+LIBS:intel
+LIBS:audio
+LIBS:interface
+LIBS:digital-audio
+LIBS:philips
+LIBS:display
+LIBS:cypress
+LIBS:siliconi
+LIBS:opto
+LIBS:atmel
+LIBS:contrib
+LIBS:valves
+LIBS:switches
+LIBS:motors
+LIBS:oc_DevKit2-cache
+EELAYER 25 0
+EELAYER END
+$Descr USLetter 11000 8500
+encoding utf-8
+Sheet 2 5
+Title "OpenCritter Pro"
+Date "2017-09-29"
+Rev "1"
+Comp "MechaMods"
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+Text HLabel 3400 3750 0    60   Input ~ 0
+TX
+Text HLabel 4200 3650 2    60   Input ~ 0
+SCL
+Text HLabel 4400 3450 2    60   Input ~ 0
+RX
+$Comp
+L GND #PWR011
+U 1 1 5984B719
+P 4100 3750
+F 0 "#PWR011" H 4100 3500 50  0001 C CNN
+F 1 "GND" H 4100 3600 50  0000 C CNN
+F 2 "" H 4100 3750 50  0001 C CNN
+F 3 "" H 4100 3750 50  0001 C CNN
+	1    4100 3750
+	1    0    0    -1  
+$EndComp
+Text HLabel 4300 3550 2    60   Input ~ 0
+SDA
+$Comp
+L CONN_02X04 J6
+U 1 1 59878263
+P 3750 3600
+F 0 "J6" H 3750 3850 50  0000 C CNN
+F 1 "ESP" H 3750 3350 50  0000 C CNN
+F 2 "oc_footprints:ESP-01" H 3750 2400 50  0001 C CNN
+F 3 "" H 3750 2400 50  0001 C CNN
+	1    3750 3600
+	-1   0    0    1   
+$EndComp
+$Comp
+L SW_SPST SW1
+U 1 1 599A6510
+P 6000 3400
+F 0 "SW1" H 6000 3525 50  0000 C CNN
+F 1 "GPIO0" H 6000 3300 50  0000 C CNN
+F 2 "Buttons_Switches_SMD:SW_SPST_SKQG" H 6000 3400 50  0001 C CNN
+F 3 "" H 6000 3400 50  0001 C CNN
+	1    6000 3400
+	1    0    0    -1  
+$EndComp
+$Comp
+L SW_SPST SW2
+U 1 1 599A6785
+P 6000 3850
+F 0 "SW2" H 6000 3975 50  0000 C CNN
+F 1 "RESET" H 6000 3750 50  0000 C CNN
+F 2 "Buttons_Switches_SMD:SW_SPST_SKQG" H 6000 3850 50  0001 C CNN
+F 3 "" H 6000 3850 50  0001 C CNN
+	1    6000 3850
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR012
+U 1 1 599D029E
+P 6400 3400
+F 0 "#PWR012" H 6400 3150 50  0001 C CNN
+F 1 "GND" H 6400 3250 50  0000 C CNN
+F 2 "" H 6400 3400 50  0001 C CNN
+F 3 "" H 6400 3400 50  0001 C CNN
+	1    6400 3400
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR013
+U 1 1 599D02E5
+P 6400 3850
+F 0 "#PWR013" H 6400 3600 50  0001 C CNN
+F 1 "GND" H 6400 3700 50  0000 C CNN
+F 2 "" H 6400 3850 50  0001 C CNN
+F 3 "" H 6400 3850 50  0001 C CNN
+	1    6400 3850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4100 3750 4000 3750
+Wire Wire Line
+	3150 3650 3500 3650
+Wire Wire Line
+	3050 3550 3500 3550
+Wire Wire Line
+	3150 3450 3500 3450
+Wire Wire Line
+	3400 3750 3500 3750
+Wire Wire Line
+	4000 3450 4400 3450
+Wire Wire Line
+	4000 3550 4300 3550
+Wire Wire Line
+	4000 3650 4200 3650
+Wire Wire Line
+	6400 3400 6200 3400
+Wire Wire Line
+	6400 3850 6200 3850
+Wire Wire Line
+	5100 3850 5300 3850
+Wire Wire Line
+	5600 3850 5800 3850
+Wire Wire Line
+	5700 3850 5700 3650
+Wire Wire Line
+	5400 3650 6600 3650
+Connection ~ 5700 3850
+Wire Wire Line
+	5700 3400 5700 3200
+Wire Wire Line
+	5700 3200 6600 3200
+Wire Wire Line
+	5100 4150 6600 4150
+Text HLabel 6600 3200 2    60   Input ~ 0
+SDA
+Wire Notes Line
+	2650 3000 4850 3000
+Wire Notes Line
+	4850 3000 4850 4100
+Wire Notes Line
+	4850 4100 2650 4100
+Wire Notes Line
+	2650 4100 2650 3000
+Wire Notes Line
+	4950 3000 7150 3000
+Wire Notes Line
+	7150 3000 7150 4300
+Wire Notes Line
+	7150 4300 4950 4300
+Wire Notes Line
+	4950 4300 4950 3000
+Text Notes 2700 3100 0    60   ~ 0
+ESP-01 Dock
+Text Notes 5000 3100 0    60   ~ 0
+Programmer
+$Comp
+L +3.3V #PWR014
+U 1 1 59CAC40C
+P 3150 3450
+F 0 "#PWR014" H 3150 3300 50  0001 C CNN
+F 1 "+3.3V" H 3150 3590 50  0000 C CNN
+F 2 "" H 3150 3450 50  0001 C CNN
+F 3 "" H 3150 3450 50  0001 C CNN
+	1    3150 3450
+	1    0    0    -1  
+$EndComp
+$Comp
+L +3.3V #PWR015
+U 1 1 59CAC447
+P 5100 3850
+F 0 "#PWR015" H 5100 3700 50  0001 C CNN
+F 1 "+3.3V" H 5100 3990 50  0000 C CNN
+F 2 "" H 5100 3850 50  0001 C CNN
+F 3 "" H 5100 3850 50  0001 C CNN
+	1    5100 3850
+	1    0    0    -1  
+$EndComp
+$Comp
+L +3.3V #PWR016
+U 1 1 59CAC461
+P 5100 4150
+F 0 "#PWR016" H 5100 4000 50  0001 C CNN
+F 1 "+3.3V" H 5100 4290 50  0000 C CNN
+F 2 "" H 5100 4150 50  0001 C CNN
+F 3 "" H 5100 4150 50  0001 C CNN
+	1    5100 4150
+	1    0    0    -1  
+$EndComp
+$Comp
+L R R3
+U 1 1 59CB2550
+P 5450 3850
+F 0 "R3" V 5530 3850 50  0000 C CNN
+F 1 "10K" V 5450 3850 50  0000 C CNN
+F 2 "Resistors_SMD:R_0805_HandSoldering" V 5380 3850 50  0001 C CNN
+F 3 "" H 5450 3850 50  0001 C CNN
+	1    5450 3850
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	5800 3400 5700 3400
+Text Label 6600 4150 0    60   ~ 0
+CHIP_EN
+Text Label 3150 3650 0    60   ~ 0
+CHIP_EN
+Text Label 3050 3550 0    60   ~ 0
+EXT_RSTB
+Text Label 6600 3650 0    60   ~ 0
+EXT_RSTB
+Text HLabel 5400 3400 0    60   Input ~ 0
+RESET
+Wire Wire Line
+	5400 3650 5400 3400
+Connection ~ 5700 3650
+$EndSCHEMATC

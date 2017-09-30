@@ -5,7 +5,8 @@
 
 //oc on ESP-01 with Arduino I/O Processing Unit
 #ifdef ESP8266
-#define oc_nodemcu false
+#define oc_esp8266  true
+#define oc_nodemcu  false
 #define hrt_pin     0   //D5 14
 #define Abut_pin    0   //D0 16
 #define Bbut_pin    0   //D1 5
@@ -21,6 +22,7 @@
 //oc on NodeMCU standalone
 // THERE IS NO CODE FOR HANDLING INPUT AND OUTPUT WITHOUT AN IOPU YET!
 #ifdef ARDUINO_ESP8266_NODEMCU
+#define oc_esp8266  false
 #define oc_nodemcu true
 //Input/Output Pins
 #define hrt_pin     D5   //D5 14

@@ -8,36 +8,31 @@
 
 void updateScreen()
 {
-  switch (selMenu)
+  switch (selMenu) //selMenu is the
   {
     /*========================================================================================================================*/
     case mainM: // Main Menu
-      //if (debugMode)
-      //  Serial.println(F("Drawing main menu"));
-      //draw icons
-      //      getGFX(icon_clok); //all of the "getGFX()" are from older EEPROM-reading versions
-      display.drawBitmap(8, 0, gfx_icon_clok, 16, 16, 1);
-      //      getGFX(icon_stat);
-      display.drawBitmap(8, 16, gfx_icon_stat, 16, 16, 1);
-      //      getGFX(icon_food);
-      display.drawBitmap(8, 32, gfx_icon_food, 16, 16, 1);
-      //      getGFX(icon_game);
-      display.drawBitmap(8, 48, gfx_icon_game, 16, 16, 1);
-      //      getGFX(icon_meds);
-      display.drawBitmap(104, 0, gfx_icon_meds, 16, 16, 1);
-      //      getGFX(icon_conf);
-      display.drawBitmap(104, 16, gfx_icon_conf, 16, 16, 1);
-      //      getGFX(icon_poop);
-      display.drawBitmap(104, 32, gfx_icon_poop, 16, 16, 1);
-      //      getGFX(icon_sick);
-      if (Alert)
-        display.drawBitmap(104, 48, gfx_icon_sick, 16, 16, 1); //Show alert icon
-      else
-        display.fillRect(104, 48, 16, 16, 0); //Erase icon region
+      /*
+          This section draws the main menu screen
+      */
+
+      //draw icons and both sides of the screen
+      display.drawBitmap(8, 0, gfx_icon_clok, 16, 16, 1);       //Left top icon
+      display.drawBitmap(8, 16, gfx_icon_stat, 16, 16, 1);      //Left middle upper icon
+      display.drawBitmap(8, 32, gfx_icon_food, 16, 16, 1);      //Left middle lower icon
+      display.drawBitmap(8, 48, gfx_icon_game, 16, 16, 1);      //Left bottom icon
+      display.drawBitmap(104, 0, gfx_icon_meds, 16, 16, 1);     //Right top icon
+      display.drawBitmap(104, 16, gfx_icon_conf, 16, 16, 1);    //Right middle upper icon
+      display.drawBitmap(104, 32, gfx_icon_poop, 16, 16, 1);    //Right middle lower icon
+      if (Alert == true)                                        //If Alert is active, then we draw the right bottom icon, too
+        display.drawBitmap(104, 48, gfx_icon_sick, 16, 16, 1);  //Show alert icon
+      else                                                      //If Alert is not active
+        display.fillRect(104, 48, 16, 16, 0);                   //Erase icon region
 
       //draw ocCursor
-      display.fillRect(0, 0, 8, 64, 0);
-      display.fillRect(121, 0, 8, 64, 0);
+      display.fillRect(0, 0, 8, 64, 0);                         //Erase the left side of the cursor region
+      display.fillRect(121, 0, 8, 64, 0);                       //Erase the right side of the cursor region
+      //Draw the cursor. This calculation is a little confusing, but it reads the location of the cursor and draws it up, down, left, right accordingly
       display.drawChar((ocCursor / 4) * 121, ((ocCursor * 16) % 64) + 4, int(16 + (ocCursor / 4)), 1, 0, 1);
 
       //draw illnesses
@@ -94,23 +89,7 @@ void updateScreen()
       display.setTextSize(1);
       display.setCursor(0, 16);
       display.print(F("Breed: "));
-      switch (breed) {
-        case egg:
-          display.print(F("Egg"));
-          break;
-        case wibbur:
-          display.print(F("Wibbur"));
-          break;
-        case snek:
-          display.print(F("SNEK!!"));
-          break;
-        case tribbur:
-          display.print(F("Tribbur"));
-          break;
-        default:
-          display.print(F("Unknown!"));
-          break;
-      }
+      display.print(breed);
       display.setCursor(0, 24);
 
       //This part needs rewritten
@@ -177,18 +156,21 @@ void updateScreen()
         display.setCursor(0, 16);
         display.print(F("Weight: "));
         display.setCursor(88, 16);
-        switch (breed) {
-          case egg:
+        switch (lifestage) {
+          case egged:
             display.print(weight + egg_w);
             break;
-          case wibbur:
-            display.print(weight + wibbur_w);
+          case baby:
+            display.print(weight + baby_w);
             break;
-          case snek:
-            display.print(weight + snek_w);
+          case teen:
+            display.print(weight + teen_w);
             break;
-          case tribbur:
-            display.print(weight + tribbur_w);
+          case adult:
+            display.print(weight + adult_w);
+            break;
+          case senior:
+            display.print(weight + senior_w);
             break;
         }
         display.setCursor(0, 24);
@@ -320,7 +302,7 @@ void updateScreen()
       display.setCursor(8, 56);
       display.print(F("Ver: "));
       display.print(versionnum);
-      
+
       break;
 
     /*========================================================================================================================*/

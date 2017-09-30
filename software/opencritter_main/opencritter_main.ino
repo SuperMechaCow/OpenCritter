@@ -9,7 +9,7 @@
 //Include custom files
 #include "A_labels.h"
 #include "B_boardselect.h"
-#include "C_setup.h"d
+#include "C_setup.h"
 #include "Z_gfx.h"
 
 //
@@ -26,6 +26,7 @@ void setup()
     pinMode(Cbut_pin, INPUT);
     pinMode(beeper_pin, OUTPUT);
     pinMode(rumble_pin, OUTPUT);
+    IOPUattached = false;
   }
 
   /*== Start Comms =========================================================================================================*/
@@ -60,8 +61,8 @@ void setup()
   //If the debugging is on, let the user know over serial
   if (debugMode) {
     Serial.println(F("Ready for command..."));
-    NRG = 255;
-    beepMute = true;
+    NRG = 255;  //I don't want to wait for energy to build up to test-play games
+    beepMute = true;  //These get annoying after awhile
   }
 
   metaBonus = egg_m;
@@ -80,23 +81,25 @@ void setup()
 
   /*== WebAP Setup =========================================================================================================*/
 
+  //  We set the default state in the firmware for this. This is actually incredibly touchy and inconsistent.
+  //  If we don't explicitly shut the WiFi off, it uses 50mA more current as if it's broadcasting, even after reset.
+
   if (wifiEnabled) {
-    WiFiMode(WIFI_AP);
+    WiFiMode(WIFI_AP);                  //Set WiFi mode to Access Point
     WiFi.softAP(ssid, password);        //Start a WiFi AP with this Name and Password
-    IPAddress myIP = WiFi.softAPIP();
-    server.on("/", handleRoot);         //Root
-    server.begin();
+    IPAddress myIP = WiFi.softAPIP();   //Make it assign it's own default IP address (192.168.4.1)
+    server.on("/", handleRoot);         //Run handleroot() if the URL after the IP is just "/" (Root. '192.168.4.1/')
+    server.begin();                     //Start a 
   }
   else {
-    WiFiMode(WIFI_STA);
-    WiFi.disconnect();
-    WiFi.mode(WIFI_OFF);
-    WiFi.forceSleepBegin();
-    delay(100);
+    WiFiMode(WIFI_STA);                 //Set the mode to Station, so it's not constantly broadcasting
+    WiFi.disconnect();                  //If there is any connection, stop it.
+    WiFi.mode(WIFI_OFF);                //The official command to turn WiFi off, but it doesn't seem to work
+    WiFi.forceSleepBegin();             //So we force the WiFi portion of the chip to sleep
+    delay(100);                         //If Arduino code tries to run before the sleep is complete, it won't work at all
   }
 
   /*== End Setup ===========================================================================================================*/
-
 }
 
 void loop() {

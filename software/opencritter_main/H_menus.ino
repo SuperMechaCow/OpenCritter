@@ -235,7 +235,7 @@ void foodMenu()
         if (random(0, 101) >= Ath)
           weight += 1;
 
-        aniMode = ani_wibbur_eat;
+        aniModeSet(breed, a_eat);
         aniStage = RESET;
         aniLast = RESET;
         selMenu = mainM;
@@ -254,7 +254,7 @@ void foodMenu()
         if (Dis > 0)
           Dis -= 1;
 
-        aniMode = ani_wibbur_eat;
+        aniModeSet(breed, a_eat);
         aniStage = RESET;
         aniLast = RESET;
         selMenu = mainM;
@@ -272,7 +272,7 @@ void foodMenu()
         if (Int > 0)
           Int -= 1;
 
-        aniMode = ani_wibbur_eat;
+        aniModeSet(breed, a_eat);
         aniStage = RESET;
         aniLast = RESET;
         selMenu = mainM;

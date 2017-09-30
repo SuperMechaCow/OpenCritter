@@ -322,10 +322,66 @@ void cardflip()
 
 void bitshifter()
 {
+  if (gameStage == 0) {
 
-  animate(16, 12);
+    display.clearDisplay();
+    display.setTextColor(1);
+    display.setTextSize(2);
+    display.setCursor(4, 0);
+    display.print(F("Bit Shifter"));
+    display.setTextSize(1);
+    display.setCursor(0, 20);
+    display.print(F("Rotate bits with A."));
+    display.setCursor(0, 28);
+    display.print(F("When the byte matches"));
+    display.setCursor(0, 36);
+    display.print(F("the number above,"));
+    display.setCursor(0, 44);
+    display.print(F("confirm with B."));
+    display.setCursor(22, 56);
+    display.print(F("Energy: "));
+    display.print(NRGcost);
+    display.print(F(" ("));
+    display.print(NRG);
+    display.print(F(")"));
+    updateScreen();
 
-  if (gameStage == 0)
+    //A OR B button is pressed
+    if (butNOW[0] || butNOW[1])
+    {
+      butNOW[0] = false; //Set the button to not enable again
+      if (NRG >= NRGcost) { //If we have enough energy to start a game
+        beep(beep_UpChirp);
+        NRG -= NRGcost; //Remove that energy cost from the available amount
+        gameStage++;
+      }
+      else { //If we don't have enough energy, just beep
+        beep(beep_HiLo1);
+      }
+    }
+
+    //C button is pressed
+    if (butNOW[2])
+    { //ABORT! Cancel the game...
+      beep(beep_HiLo1);
+      //do stuff when button is HIGH
+      butNOW[2] = false; //Set the button to not enable again
+      for (int i = 0; i <= 9; i++)
+      {
+        gameVal[i] = 0;
+      }
+      gameStage = RESET;
+      selMenu = mainM;
+      aniModeSet(breed, a_idle);
+      display.clearDisplay();
+    }
+  }
+  else {
+    //The critter animation plays on every screen except the title screen
+    animate(16, 12);
+  }
+
+  if (gameStage == 1)
   {
 
     //pick a random
@@ -336,7 +392,7 @@ void bitshifter()
     gameStage++;
   }
 
-  else if (gameStage == 1)
+  else if (gameStage == 2)
   {
 
     display.clearDisplay();
@@ -345,11 +401,16 @@ void bitshifter()
     display.setTextColor(1);
     display.setTextSize(2);
 
-    if (gameVal[gbs_goalbyte] < 100)
-      display.print(F("0"));
-    if (gameVal[gbs_goalbyte] < 10)
-      display.print(F("0"));
-    display.print(gameVal[gbs_goalbyte]);
+    if (gameVal[gbs_score] > 3) {
+      display.print(gameVal[gbs_goalbyte], HEX);
+    }
+    else {
+      if (gameVal[gbs_goalbyte] < 100)
+        display.print(F("0"));
+      if (gameVal[gbs_goalbyte] < 10)
+        display.print(F("0"));
+      display.print(gameVal[gbs_goalbyte]);
+    }
 
     display.setCursor(72, 32);
     display.setTextSize(1);
@@ -358,13 +419,15 @@ void bitshifter()
     {
       display.print((gameVal[gbs_goalbyte] >> ((i + ocCursor) % 8)) % 2);
     }
-
+    display.setCursor(0, 0);
+    display.setTextSize(2);
+    display.print(gameVal[gbs_score]);
     updateScreen();
 
     gameStage++;
   }
 
-  else if (gameStage == 2)
+  else if (gameStage == 3)
   {
 
     //A button is pressed
@@ -391,10 +454,13 @@ void bitshifter()
 
         beep(beep_UpChirp);
         gameVal[gbs_point] = 1;
+        gameVal[gbs_score]++;
       }
       else
       {
+        beep(beep_DnChirp);
         gameVal[gbs_point] = 0;
+        gameVal[gbs_score] = RESET;
       }
       gameStage++;
     }
@@ -418,7 +484,7 @@ void bitshifter()
     }
   }
 
-  else if (gameStage == 3)
+  else if (gameStage == 4)
   {
     if (gameVal[gbs_point])
     {
@@ -436,6 +502,11 @@ void bitshifter()
       display.setTextColor(1);
       display.setTextSize(1);
       display.print(F("YOU WIN!"));
+      //Wait to reset
+      if (CLK[baseCLK] - CLK[timeCLK] > 1000)
+      {
+        gameStage = 1;
+      }
     }
     else
     {
@@ -443,19 +514,14 @@ void bitshifter()
       display.setTextColor(1);
       display.setTextSize(1);
       display.print(F("You lose"));
+      //Wait to reset
+      if (CLK[baseCLK] - CLK[timeCLK] > 1000)
+      {
+        gameStage = RESET;
+      }
     }
     CLK[timeCLK] = CLK[baseCLK];
     updateScreen();
-    gameStage++;
-  }
-
-  else if (gameStage == 4)
-  {
-    //Wait to reset
-    if (CLK[baseCLK] - CLK[timeCLK] > 1000)
-    {
-      gameStage = RESET;
-    }
   }
 }
 

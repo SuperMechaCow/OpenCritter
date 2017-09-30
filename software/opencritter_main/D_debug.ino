@@ -17,131 +17,151 @@ void debug()
 
       //serial commands:
       //1 - change menu
+      //  0 - Main
+      //  1 - Clock
+      //  2 - Stats
+      //  3 - Food
+      //  4 - Games
+      //  5 - Config
       //2 - change stat
-      //3 - test sound
+      //  1 - breed
+      //  2 - hun
+      //  3 - hap
+      //  4 - bor
+      //  5 - Ath
+      //  6 - Dis
+      //  7 - Int
 
       case 1:
         Serial.println(F("Which menu?"));
         while (!Serial.available()) {}
         switch (Serial.parseInt()) {
           case 0:
-            Serial.println(F("0: Clock Menu"));
+            Serial.println(F("Main"));
+            selMenu = mainM;
+            display.clearDisplay();
+            break;
+          case 1:
+            Serial.println(F("Clock"));
             CLK[timeCLK] = CLK[baseCLK];
             selMenu = clockM;
             display.clearDisplay();
             break;
-          case 1:
-            Serial.println(F("1: Stats Menu"));
+          case 2:
+            Serial.println(F("Stats"));
             CLK[timeCLK] = CLK[baseCLK];
             selMenu = statsM;
             display.clearDisplay();
             break;
-          case 8:
-            Serial.println(F("8: Main Menu"));
-            selMenu = mainM;
+          case 3:
+            Serial.println(F("Food"));
+            CLK[timeCLK] = CLK[baseCLK];
+            selMenu = foodM;
             display.clearDisplay();
+            break;
+          case 4:
+            Serial.println(F("Games"));
+            CLK[timeCLK] = CLK[baseCLK];
+            selMenu = gameM;
+            display.clearDisplay();
+            break;
+          case 5:
+            Serial.println(F("Config"));
+            CLK[timeCLK] = CLK[baseCLK];
+            selMenu = confM;
+            display.clearDisplay();
+            break;
           default:
             break;
         }
         break;
       case 2:
-        Serial.println(F("Change what stat?"));
+        Serial.println(F("change parameter: "));
         while (!Serial.available())
         {
         }
         switch (Serial.parseInt())
         {
-          case 1: //metabolism
-            Serial.print(F(" Metabolism: "));
-            Serial.print(metabolism);
-            Serial.println(F("  New value:"));
-            while (!Serial.available())
-            {
-            }
-            metabolism = Serial.parseFloat();
-            Serial.print(F("Changed to: "));
-            Serial.println(metabolism);
-            break;
-          case 2: //hunger
-            Serial.print(F(" Hunger: "));
-            Serial.print(hun);
-            Serial.println(F("  New value:"));
-            while (!Serial.available())
-            {
-            }
-            hun = Serial.parseFloat();
-            Serial.print(F("Changed to: "));
-            Serial.println(hun);
-            break;
-          case 3: //Happiness
-            Serial.print(F(" Happiness: "));
-            Serial.print(hap);
-            Serial.println(F("  New value:"));
-            while (!Serial.available())
-            {
-            }
-            hap = Serial.parseFloat();
-            Serial.print(F("Changed to: "));
-            Serial.println(hap);
-            break;
-          case 4: //boredom
-            Serial.print(F(" Boredom: "));
-            Serial.print(bor);
-            Serial.println(F("  New value:"));
-            while (!Serial.available())
-            {
-            }
-            bor = Serial.parseFloat();
-            Serial.print(F("Changed to: "));
-            Serial.println(bor);
-            break;
-          case 5: //breed
-            Serial.print(F(" Breed: "));
+          case 1: //breed
+            Serial.print(F(" breed: "));
             Serial.print(breed);
-            Serial.println(F("  New value:"));
+            Serial.println(F(" new val:"));
             while (!Serial.available())
             {
             }
             breed  = Serial.parseFloat();
-            Serial.print(F("Changed to: "));
+            Serial.print(F("changed: "));
             Serial.println(breed);
             break;
+          case 2: //hunger
+            Serial.print(F(" hun: "));
+            Serial.print(hun);
+            Serial.println(F(" new val:"));
+            while (!Serial.available())
+            {
+            }
+            hun = Serial.parseFloat();
+            Serial.print(F("changed: "));
+            Serial.println(hun);
+            break;
+          case 3: //Happiness
+            Serial.print(F(" hap: "));
+            Serial.print(hap);
+            Serial.println(F(" new val:"));
+            while (!Serial.available())
+            {
+            }
+            hap = Serial.parseFloat();
+            Serial.print(F("changed: "));
+            Serial.println(hap);
+            break;
+          case 4: //boredom
+            Serial.print(F(" bor: "));
+            Serial.print(bor);
+            Serial.println(F(" new val:"));
+            while (!Serial.available())
+            {
+            }
+            bor = Serial.parseFloat();
+            Serial.print(F("changed: "));
+            Serial.println(bor);
+            break;
+          case 5: //Ath
+            Serial.print(F(" Ath: "));
+            Serial.print(Ath);
+            Serial.println(F("  new val:"));
+            while (!Serial.available())
+            {
+            }
+            Ath = Serial.parseFloat();
+            Serial.print(F("changed: "));
+            Serial.println(Ath);
+            break;
+          case 6: //Dis
+            Serial.print(F(" Dis: "));
+            Serial.print(Dis);
+            Serial.println(F(" new val:"));
+            while (!Serial.available())
+            {
+            }
+            Dis = Serial.parseFloat();
+            Serial.print(F("changed: "));
+            Serial.println(Dis);
+            break;
+          case 7: //Int
+            Serial.print(F(" Int: "));
+            Serial.print(Int);
+            Serial.println(F(" new val:"));
+            while (!Serial.available())
+            {
+            }
+            Int = Serial.parseFloat();
+            Serial.print(F("changed: "));
+            Serial.println(Int);
+            break;
+
         }
         break;
-      case 3:
-        byte addrspot;
-        Serial.println(F("Test which sound?"));
-        while (!Serial.available())
-        {
-        }
-        beep(Serial.parseInt());
-        break;
-      case 4:
-        Serial.println(F("Testing rumble: "));
-        rumbleMode = 1;
-        break;
-      //      case 5:
-      //        Serial.println(F("Write what address?"));
-      //        while (!Serial.available())
-      //        {
-      //        }
-      //        addrspot = Serial.parseInt();
-      //        Serial.print(F("Writing 'weight' to EEPROM address "));
-      //        Serial.println(addrspot);
-      //        EEPROM.write(weight, addrspot);
-      //        Serial.println(weight);
-      //        break;
-      //      case 6:
-      //        Serial.println(F("What address?"));
-      //        while (!Serial.available())
-      //        {
-      //        }
-      //        addrspot = Serial.parseInt();
-      //        Serial.print(F("Reading 'weight' from EEPROM address "));
-      //        Serial.println(addrspot);
-      //        weight = EEPROM.read(addrspot);
-      //        Serial.println(weight);
-      //        break;
       default:
         break;
     }

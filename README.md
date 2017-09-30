@@ -4,9 +4,21 @@ OpenCritter is an open source digital pet. The software is totally free, and the
 
 Anyone is invited to work on the project for as long as they stick to the following principles:
 
-- The hardware and software toolchain must be *NEWB FRIENDLY* above all else. A complete novice should be able to obtain and breadboard the hardware easily and upload the firmware without problem. Add-on modules/functionality can be more complex, but any human should be able to have a fully-functional "base game".
-- OpenCritter software is all-ages and gender nuetral.
-- Mods are encouraged! But too much deviation from the "core experience" should be listed as a new branch.
+- OpenCritter is for all levels of skill and expertise. Novices should be able to build their own from scratch, and experts can lead the project development.
+- OpenCritter is all-ages and gender nuetral.
+- OpenCritter is for makers *and* hackers. Create and destroy!
+- Mods are encouraged! But anything that conflicts "core experience" ofthe game should be listed as a new branch.
+
+## Community
+
+**Main GitHub:**
+https://github.com/SuperMechaCow/OpenCritter
+
+**Subreddit:**
+https://www.reddit.com/r/OpenCritter/
+
+**Discord Channel:**
+https://discord.gg/VW9fjV9
 
 ## Hardware
 

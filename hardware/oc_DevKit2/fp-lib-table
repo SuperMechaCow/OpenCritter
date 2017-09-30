@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name oc_footprints)(type KiCad)(uri C:/Users/christopher.smith/ownCloud/Projects/OpenCritter/hardware/oc_footprints.pretty)(options "")(descr ""))
+)

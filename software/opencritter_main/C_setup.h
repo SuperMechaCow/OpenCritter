@@ -1,6 +1,6 @@
-#define versionnum "a0.010"
+#define versionnum "a0.011"
 #define branchnum "0.00"
-#define release "091217"
+#define release "093017"
 
 //Setup Access Point
 const char *ssid = "OpenCritter";

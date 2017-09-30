@@ -1,3 +1,21 @@
+### September 24th, 2017 [alpha v0.011]
+
+[Changes]
+- Added 7 new breeds (two babies and five teenagers): xorby, goob, moops, shansy, hwooty, lugerd, and flip.
+- Which baby you get is now determined by the highest STAT of the egg when hatching
+- Teens are now determined by the lowest trait, and if that lowest trait is above or below 50
+- Finally fixed eating animation to always match current breed!
+- Cleaned up debug-over-serial console
+- Bit Shifter now has a title screen and scorekeeper. After three points the game switches the decimal number to hexadecimal. Costs 10 Energy to play.
+
+[Known Bugs]
+- Hwooty's eye is a little weird, lol
+
+[Repo Changes]
+- Tweaked folder structure. Most folders contain a text file explaining the contents thereof.
+- Added files for work-in-progress files for OpenCritter Pro 1, a practical, playable version of the hardware.
+- Added evolution_graphics.png and evolution_params.png to /gfx/ folder for reference. Gimp files in /gfx/gimp/
+
 ### September 12th, 2017 [alpha v0.010] Minor
 
 [Changes]

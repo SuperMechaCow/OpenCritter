@@ -14,55 +14,163 @@ void evolveHandler()
 
 
   selMenu = mainM;
-  display.clearDisplay();
-  //aniModeSet(EVOLVEANIMAITONHERE);
   gameStage = RESET;
   ocCursor = RESET;
+  display.clearDisplay();
+  //add a function here to play the animation. have the function return whether it is active or not. use that to determine if it should continue or not
 
-  switch (breed) {
-    case egg:
-      breed = wibbur;
+  switch (lifestage) {
+
+    //If the critter is an egg and is hatching
+    //Determine the breed by the highest stat
+    //(This basically makes it random which baby you will get
+    case egged:
+      if (hun > hap && hun > bor) { //If hun is that highest stat
+        breed = xorby;
+      }
+      else if (bor > hun && bor > hap) {
+        breed = goob;
+      }
+      else {
+        breed = wibbur;
+      }
       metaBonus = baby_m;
       lifestage++;
       break;
-    case wibbur:
-      breed = snek;
+    //If the critter is a baby becoming a teen
+    //Determine the breed by it's lowest trait, and if that trait is higher than 50
+    //You will get a critter based on it's top two stats, plus how well taken care of it is
+    case baby:
+      switch (breed) {
+
+        //
+        //goob can become a snek, shansy, or hwooty
+        case goob:
+          //If Ath is it's lowest stat, it's farthest from the Ath critters
+          if (Ath < Dis && Ath < Int) {
+            if (Ath > 50) {
+              breed = snek;
+            }
+            else {
+              breed = shansy;
+            }
+          }
+          //If Int is it's lowest stat, then it's furthest from Int Critters
+          else if (Int < Ath && Int < Dis) {
+            if (Int > 50) {
+              breed = shansy;
+            }
+            else {
+              breed = hwooty;
+            }
+          }
+          //If Dis is it's lowest stat, then it stays in the middle
+          else {
+            breed = hwooty;
+          }
+          break;
+
+        //
+        //xorby can become lugerd, flip, or moops. Basically the polar opposite of goob
+        case xorby:
+          //If Ath is it's lowest stat, it's farthest from the Ath critters
+          if (Ath < Dis && Ath < Int) {
+            if (Ath > 50) {
+              breed = moops;
+            }
+            else {
+              breed = flip;
+            }
+          }
+          //If Int is it's lowest stat, then it's furthest from Int Critters
+          else if (Int < Ath && Int < Dis) {
+            if (Int > 50) {
+              breed = lugerd;
+            }
+            else {
+              breed = flip;
+            }
+          }
+          //If Dis is it's lowest stat, then it stays in the middle
+          else {
+            breed = flip;
+          }
+          break;
+        //
+        //wibbur can become shansy, hwooty, moops, or flip
+        case wibbur:
+          //If Ath is it's lowest stat, it's farthest from the Ath critters
+          if (Ath < Dis && Ath < Int) {
+            if (Ath > 50) {
+              breed = shansy;
+            }
+            else {
+              breed = hwooty;
+            }
+          }
+          //If Int is it's lowest stat, then it's furthest from Int Critters
+          else if (Int < Ath && Int < Dis) {
+            if (Int > 50) {
+              breed = flip;
+            }
+            else {
+              breed = moops;
+            }
+          }
+          //If Dis is it's lowest stat, then it stays in the middle...
+          //... but the middle is two differnt critters! I did not think this out!
+          else {
+            if (random(0, 100) >= 50)
+              breed = moops;
+            else
+              breed = hwooty;
+          }
+          break;
+      }
       metaBonus = teen_m;
       lifestage++;
       break;
-    case snek:
+
+    case teen:
       breed = tribbur;
       metaBonus = adult_m;
       lifestage++;
       break;
-    case tribbur:
+
+    case adult:
       metaBonus = senior_m;
       lifestage = 4;
       break;
+
     default:
       break;
   }
 
   beep(beep_UpChirp);
   aniModeSet(breed, a_idle);
+  sysShock();
+
+}
+
+void sysShock() {
+  // Major biological events, such as evovling and hatching, can shock the critter's system
   hun = hun / 2;
   hap = hap / 2;
   bor = bor / 2;
   Ath = Ath / 2;
   Dis = Dis / 2;
   Int = Int / 2;
-
 }
 
 void cryHandler() {
   if (breed != egg) { //Eggs can't cry
     rollResult = random(max_sickChance);
-    if (debugMode) {
-      Serial.print("CRY  ");
-      Serial.print(rollResult);
-      Serial.print(" >= ");
-      Serial.println(((hun + hap + bor) / 3) + (Dis * 2));
-    }
+    //    if (debugMode) {
+    //      Serial.print("CRY  ");
+    //      Serial.print(rollResult);
+    //      Serial.print(" >= ");
+    //      Serial.println(((hun + hap + bor) / 3) + (Dis * 2));
+    //    }
     if (rollResult >= ((hun + hap + bor) / 3) + (Dis * 2)) { //If a roll is higher than the average of the stats plus the Dis "bonus"
       beep(beep_HiLo3); //Cry wolf!
       Alert = true; //Make the alert icon appear on the screen
@@ -74,12 +182,12 @@ void sickHandler() {
 
   if (breed != egg) {
     rollResult = random(sick_thresh);
-    if (debugMode) {
-      Serial.print("SICK ");
-      Serial.print(rollResult);
-      Serial.print(" >= ");
-      Serial.println((hun + hap + bor) / 3);
-    }
+    //    if (debugMode) {
+    //      Serial.print("SICK ");
+    //      Serial.print(rollResult);
+    //      Serial.print(" >= ");
+    //      Serial.println((hun + hap + bor) / 3);
+    //    }
     if (rollResult >= ((hun + hap + bor) / 3)) {
       if (sickCount < 4) {//Four is the max number of illnesses
         sickCount++; //Add additional illness
@@ -107,12 +215,12 @@ void sickHandler() {
 void poopHandler() {
   if (breed != egg) {
     rollResult = random(max_poopChance);
-    if (debugMode) {
-      Serial.print("POOP ");
-      Serial.print(rollResult + nominal_w);
-      Serial.print(" <= ");
-      Serial.println(weight);
-    }
+    //    if (debugMode) {
+    //      Serial.print("POOP ");
+    //      Serial.print(rollResult + nominal_w);
+    //      Serial.print(" <= ");
+    //      Serial.println(weight);
+    //    }
     if (rollResult + nominal_w <= weight) { //The fatter they are, the more they poops
       if (poopCount < 4) {//Four is the max number of poops
         poopCount++; //Add additional poops

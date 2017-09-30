@@ -1,0 +1,15 @@
+USB micro port
+onboard power circuit. power from usb
+3.3v regulator (make efficient!)
+ftdi chip connected to usb
+logic level shifter or ftdi configuration
+remove esp8266 circuit footprints
+power switch
+;switch to control uart connection to esp-01 or iopu (only if using atmega328)
+replace atmega iopu with attiny iopu
+larger game buttons, smaller reset/program buttons
+One i2c bus header. cart edge?
+upgrade module header to multi-purpose rather than i2c bus (sleep pin, aux power pin, rx/tx?)
+battery by module
+esp-01/iopu sleep circuit
+onboard LED to replace i2c module
