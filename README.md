@@ -20,6 +20,18 @@ https://www.reddit.com/r/OpenCritter/
 **Discord Channel:**
 https://discord.gg/VW9fjV9
 
+## Community
+
+**Main GitHub:**
+https://github.com/SuperMechaCow/OpenCritter
+
+**Subreddit:**
+https://www.reddit.com/r/OpenCritter/
+
+**Discord Channel:**
+https://discord.gg/VW9fjV9
+
+
 ## Hardware
 
 OpenCritter is currently being developed for ESP-01 and NodeMCU in the Arduino IDE. A branch is being made for Atmega328p-based "Lite" versions.
