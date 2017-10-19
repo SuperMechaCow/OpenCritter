@@ -21,7 +21,7 @@ void updateScreen()
       display.drawBitmap(8, 16, gfx_icon_stat, 16, 16, 1);      //Left middle upper icon
       display.drawBitmap(8, 32, gfx_icon_food, 16, 16, 1);      //Left middle lower icon
       display.drawBitmap(8, 48, gfx_icon_game, 16, 16, 1);      //Left bottom icon
-      display.drawBitmap(104, 0, gfx_icon_meds, 16, 16, 1);     //Right top icon
+      display.drawBitmap(104, 0, gfx_icon_pack, 16, 16, 1);     //Right top icon
       display.drawBitmap(104, 16, gfx_icon_conf, 16, 16, 1);    //Right middle upper icon
       display.drawBitmap(104, 32, gfx_icon_poop, 16, 16, 1);    //Right middle lower icon
       if (Alert == true)                                        //If Alert is active, then we draw the right bottom icon, too
@@ -45,6 +45,29 @@ void updateScreen()
       display.fillRect(32, 48, 64, 16, 0);
       for (byte i = 0; i < poopCount; i++) {
         display.drawBitmap(32 + (i * 16), 48, gfx_icon_poop, 16, 16, 1);
+      }
+
+      if (Inventory[inv_meds_slot][inv_owned] > Inventory[inv_meds_slot][inv_acked]) {
+        display.fillRect(16, 38, 96, 20, 0);
+        display.drawRect(16, 38, 96, 20, 1);
+        display.drawBitmap(26, 40, gfx_icon_meds, 16, 16, 1);
+        display.setTextColor(1);
+        display.setTextSize(1);
+        display.setCursor(44, 44);
+        display.print(F("+"));
+        display.print(Inventory[inv_meds_slot][inv_owned] - Inventory[inv_meds_slot][inv_acked]);
+        display.print(F(" Meds!"));
+      }
+      else if (Inventory[inv_soda_slot][inv_owned] > Inventory[inv_soda_slot][inv_acked]) {
+        display.fillRect(16, 38, 96, 20, 0);
+        display.drawRect(16, 38, 96, 20, 1);
+        display.drawBitmap(26, 40, gfx_icon_soda, 16, 16, 1);
+        display.setTextColor(1);
+        display.setTextSize(1);
+        display.setCursor(44, 44);
+        display.print(F("+"));
+        display.print(Inventory[inv_soda_slot][inv_owned] - Inventory[inv_soda_slot][inv_acked]);
+        display.print(F(" Soda!"));
       }
 
       break;
@@ -121,134 +144,141 @@ void updateScreen()
       display.setTextColor(1);
       display.setTextSize(2);
       display.setCursor(0, 0);
-      if (ocCursor == 0) {
-        display.print(F("Stats"));
-      }
-      else if (ocCursor == 1) {
-        display.fillRect(64, 5, 63, 7, 0);
-        display.print(F("Traits"));
-      }
-      else {
-        display.fillRect(64, 5, 63, 7, 0);
-        display.print(F("BioSpecs"));
-      }
-      display.setTextSize(1);
-      if (ocCursor == 0) {
-        //First Slot, First Page <------------------------------------|
-        display.setCursor(0, 16);
-        display.print(F("Hunger: "));
-        display.setCursor(88, 16);
-        display.print(hun);
-        display.drawRect(0, 24, 128, 5, 1); //Meter outline
-        display.drawLine(2, 26, map(hun, 0, 255, 3, 127), 26, 1); //Meter value
-      }
-      else if (ocCursor == 1) {
-        //First Slot, Second Page <------------------------------------|
-        display.setCursor(0, 16);
-        display.print(F("Ath: "));
-        display.setCursor(88, 16);
-        display.print(Ath);
-        display.drawRect(0, 24, 128, 5, 1);
-        display.drawLine(2, 26, map(Ath, 0, 100, 3, 127), 26, 1);
-      }
-      else {
-        //First Slot, Third Page <------------------------------------|
-        display.setCursor(0, 16);
-        display.print(F("Weight: "));
-        display.setCursor(88, 16);
-        switch (lifestage) {
-          case egged:
-            display.print(weight + egg_w);
-            break;
-          case baby:
-            display.print(weight + baby_w);
-            break;
-          case teen:
-            display.print(weight + teen_w);
-            break;
-          case adult:
-            display.print(weight + adult_w);
-            break;
-          case senior:
-            display.print(weight + senior_w);
-            break;
-        }
-        display.setCursor(0, 24);
-        display.print(F("Metabolism: "));
-        display.setCursor(88, 24);
-        display.print(metabolism);
-      }
-      if (ocCursor == 0) {
-        //Second Slot, First Page <------------------------------------|
-        display.setCursor(0, 32);
-        display.print(F("Happiness: "));
-        display.setCursor(88, 32);
-        display.print(hap);
-        display.drawRect(0, 40, 128, 5, 1);
-        display.drawLine(2, 42, map(hap, 0, 255, 3, 127), 42, 1);
-      }
-      else if (ocCursor == 1) {
-        //Second Slot, Second Page <------------------------------------|
-        display.drawRect(0, 40, 128, 5, 1);
-        display.setCursor(0, 32);
-        display.print(F("Dis: "));
-        display.setCursor(88, 32);
-        display.print(Dis);
-        display.drawLine(2, 42, map(Dis, 0, 100, 3, 127), 42, 1);
-      }
-      else {
-        //Second Slot, Third Page <------------------------------------|
-        display.setCursor(0, 32);
-        display.print(F("Energy: "));
-        display.setCursor(88, 32);
-        display.print(NRG);
-        display.drawRect(0, 40, 128, 5, 1);
-        display.drawLine(2, 42, map(NRG, 0, 255, 3, 127), 42, 1);
-      }
-      //
-      if (ocCursor == 0) {
-        //Third Slot, First Page <------------------------------------|
-        display.setCursor(0, 48);
-        display.print(F("Boredom: "));
-        display.setCursor(88, 48);
-        display.print(bor);
-        display.drawRect(0, 56, 128, 5, 1);
-        display.drawLine(2, 58, map(bor, 0, 255, 3, 127), 58, 1);
-      }
-      else if (ocCursor == 1) {
-        //Third Slot, Second Page <------------------------------------|
-        display.setCursor(0, 48);
-        display.print(F("Int: "));
-        display.setCursor(88, 48);
-        display.print(Int);
-        display.drawRect(0, 56, 128, 5, 1);
-        display.drawLine(2, 58, map(Int, 0, 100, 3, 127), 58, 1);
-      }
-      else {
-        //Third Slot, Third Page <------------------------------------|
-        display.setCursor(0, 48);
-        display.print(F("Health: "));
-        display.setCursor(70, 48);
-        display.print(((hun + hap + bor) / 3));
-        display.print(F(" ("));
-        display.print(sick_thresh);
-        display.print(F(")"));
-        //Sickness threshold bar
-        byte sickt;
-        sickt = map(sick_thresh, 0, 255, 3, 127);
-        //Outer box
-        display.drawRect(0, 56, 128, 5, 1);
-        //Current stats average
-        display.drawLine(2, 58, map(((hun + hap + bor) / 3), 0, 255, 3, 127), 58, 1);
 
-        /* //The old mini-bar
-          display.drawRect(64, 6, 63, 5, 1);
-          display.drawLine(66, 8, map(((hun + hap + bor) / 3), 0, 255, 66, 127), 8, 1);
-          display.drawLine(sickt, 5, sickt, 11, 1);
-        */
 
-        //Stats threshold marker
-        display.drawLine(sickt, 55, sickt, 61, 1);
+      switch (ocCursor) {
+        case 0:
+          display.fillRect(64, 5, 63, 7, 0);
+          display.print(F("Stats"));
+          display.setTextSize(1);
+          //First Slot <------------------------------------|
+          display.setCursor(0, 16);
+          display.print(F("Energy: "));
+          display.setCursor(88, 16);
+          display.print(Energy);
+          display.drawRect(0, 24, 128, 5, 1);
+          display.drawLine(2, 26, map(Energy, 0, max_energy, 3, 127), 26, 1);
+          //Second Slot <------------------------------------|
+          display.setCursor(0, 32);
+          display.print(F("Health: "));
+          display.setCursor(70, 32);
+          display.print(getHealth());
+          display.print(F(" ("));
+          display.print(sick_thresh);
+          display.print(F(")"));
+          display.drawRect(0, 40, 128, 5, 1);
+          display.drawLine(2, 42, map(getHealth(), 0, max_health, 3, 127), 42, 1);
+          //Sickness threshold bar
+          display.drawLine(map(sick_thresh, 0, 255, 3, 127), 39, map(sick_thresh, 0, 255, 3, 127), 45, 1);
+          //Third Slot <------------------------------------|
+          display.setCursor(0, 48);
+          display.print(F("Power: "));
+          display.setCursor(88, 48);
+          display.print(getPower());
+          //Outer box
+          display.drawRect(0, 56, 128, 5, 1);
+          //Current power average
+          display.drawLine(2, 58, map(getPower(), 0, max_power, 3, 127), 58, 1);
+          break;
+        case 1:
+          display.fillRect(64, 5, 63, 7, 0);
+          display.print(F("Energy"));
+          display.setTextSize(1);
+          //The old mini-bar
+          display.drawRect(74, 6, 54, 5, 1);
+          display.drawLine(76, 8, map(Energy, 0, 255, 76, 126), 8, 1);
+          //First Slot <------------------------------------|
+          display.setCursor(0, 16);
+          display.print(F("Weight: "));
+          display.setCursor(88, 16);
+          switch (lifestage) {
+            case egged:
+              display.print(weight + egg_w);
+              break;
+            case baby:
+              display.print(weight + baby_w);
+              break;
+            case teen:
+              display.print(weight + teen_w);
+              break;
+            case adult:
+              display.print(weight + adult_w);
+              break;
+            case senior:
+              display.print(weight + senior_w);
+              break;
+          }
+          display.drawRect(0, 24, 128, 5, 1); //Meter outline
+          display.drawLine(2, 26, map(weight, 0, 10, 3, 127), 26, 1); //Meter value
+          display.drawLine(64, 23, 64, 29, 1);
+          //Second Slot <------------------------------------|
+          display.setCursor(0, 32);
+          display.print(F("Metabolism: "));
+          display.setCursor(88, 32);
+          display.print(metabolism);
+          display.drawRect(0, 40, 128, 5, 1);
+          display.drawLine(2, 42, map(metabolism, 1, max_metabolism, 127, 3), 42, 1);
+          break;
+        case 2:
+          display.fillRect(64, 5, 63, 7, 0);
+          display.print(F("Health"));
+          display.setTextSize(1);
+          //The old mini-bar
+          display.drawRect(74, 6, 54, 5, 1);
+          display.drawLine(76, 8, map(getHealth(), 0, max_health, 76, 126), 8, 1);
+          //First Slot <------------------------------------|
+          display.setCursor(0, 16);
+          display.print(F("Hunger: "));
+          display.setCursor(88, 16);
+          display.print(hun);
+          display.drawRect(0, 24, 128, 5, 1); //Meter outline
+          display.drawLine(2, 26, map(hun, 0, max_health, 3, 127), 26, 1); //Meter value
+          //Second Slot <------------------------------------|
+          display.setCursor(0, 32);
+          display.print(F("Happiness: "));
+          display.setCursor(88, 32);
+          display.print(hap);
+          display.drawRect(0, 40, 128, 5, 1);
+          display.drawLine(2, 42, map(hap, 0, max_health, 3, 127), 42, 1);
+          //Third Slot <------------------------------------|
+          display.setCursor(0, 48);
+          display.print(F("Boredom: "));
+          display.setCursor(88, 48);
+          display.print(bor);
+          display.drawRect(0, 56, 128, 5, 1);
+          display.drawLine(2, 58, map(bor, 0, max_health, 3, 127), 58, 1);
+          break;
+        case 3:
+          display.fillRect(64, 5, 63, 7, 0);
+          display.print(F("Power"));
+          display.setTextSize(1);
+          //The old mini-bar
+          display.drawRect(74, 6, 54, 5, 1);
+          display.drawLine(76, 8, map(getPower(), 0, max_power, 76, 126), 8, 1);
+          //First Slot <------------------------------------|
+          display.setCursor(0, 16);
+          display.print(F("Ath: "));
+          display.setCursor(88, 16);
+          display.print(Ath);
+          display.drawRect(0, 24, 128, 5, 1);
+          display.drawLine(2, 26, map(Ath, 0, max_power, 3, 127), 26, 1);
+          //Second Slot <------------------------------------|
+          display.drawRect(0, 40, 128, 5, 1);
+          display.setCursor(0, 32);
+          display.print(F("Dis: "));
+          display.setCursor(88, 32);
+          display.print(Dis);
+          display.drawLine(2, 42, map(Dis, 0, max_power, 3, 127), 42, 1);
+          //Third Slot <------------------------------------|
+          display.setCursor(0, 48);
+          display.print(F("Int: "));
+          display.setCursor(88, 48);
+          display.print(Int);
+          display.drawRect(0, 56, 128, 5, 1);
+          display.drawLine(2, 58, map(Int, 0, max_power, 3, 127), 58, 1);
+          break;
+        default:
+          break;
       }
       break;
 
@@ -276,6 +306,9 @@ void updateScreen()
       display.setCursor(8, 56);
       display.print(F("  ++bor ++Wgt -Int"));
       break;
+
+    /*========================================================================================================================*/
+
     case confM:
       display.clearDisplay(); //Erase Screen
       display.setTextColor(1);
@@ -302,7 +335,6 @@ void updateScreen()
       display.setCursor(8, 56);
       display.print(F("Ver: "));
       display.print(versionnum);
-
       break;
 
     /*========================================================================================================================*/
@@ -331,6 +363,7 @@ void updateScreen()
       break;
 
     /*========================================================================================================================*/
+
     case c_clockset: //Clock set menu
       display.clearDisplay();
       display.setTextColor(1);
@@ -369,6 +402,38 @@ void updateScreen()
       display.print(F("*"));
       break;
     default:
+      break;
+
+    /*========================================================================================================================*/
+
+    case inventM:
+      display.clearDisplay();
+      display.setTextColor(1);
+      display.setTextSize(1);
+      display.drawChar(((ocCursor % 4) * 32), ((ocCursor / 4) * 16) + 5, 16 , 1, 0, 1);
+      for (int i = 0; i < inv_max_itemtypes; i++) {
+        switch (i) {
+          case inv_meds_slot:
+            display.drawBitmap(((i % 4) * 32) + 4, (i / 4) * 16, gfx_icon_meds, 16, 16, 1);
+            display.setCursor(((i % 4) * 32) + 20, ((i / 4) * 16) + 5);
+            if (Inventory[inv_meds_slot][inv_owned] < 10)
+              display.print(F("0"));
+            display.print(Inventory[inv_meds_slot][inv_owned]);
+            break;
+          case inv_soda_slot:
+            display.drawBitmap(((i % 4) * 32) + 4, (i / 4) * 16, gfx_icon_soda, 16, 16, 1);
+            display.setCursor(((i % 4) * 32) + 20, ((i / 4) * 16) + 5);
+            if (Inventory[inv_soda_slot][inv_owned] < 10)
+              display.print(F("0"));
+            display.print(Inventory[inv_soda_slot][inv_owned]);
+            break;
+          default:
+            display.drawBitmap(((i % 4) * 32) + 4, (i / 4) * 16, gfx_icon_unon, 16, 16, 1);
+            display.setCursor(((i % 4) * 32) + 20, ((i / 4) * 16) + 5);
+            display.print("00");
+            break;
+        }
+      }
       break;
   }
   display.display();

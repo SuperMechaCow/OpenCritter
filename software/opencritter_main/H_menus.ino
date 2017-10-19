@@ -26,94 +26,111 @@ void mainMenu()
   animate(48, 16);
 
   //Figure out how to handle the buttons that  getButtons() found
-  if (butNOW[0]) //A button is pressed
-  {
-
-    beep(beep_NegBeep);
-    //do stuff when button is HIGH
-    butNOW[0] = false; //Set the button to not enable again
-    ocCursor++;
-    if (ocCursor >= 8)
-      ocCursor = RESET;
-    updateScreen();
-  }
-  if (butNOW[1]) //B button is pressed
-  {
-    //do stuff when button is HIGH
-    butNOW[1] = false; //Set the button to not enable again
-    beep(beep_PosBeep);
-    switch (ocCursor)
-    {
-      case 0:
-        selMenu = clockM;
-        ocCursor = RESET;
-        break;
-      case 1:
-        selMenu = statsM;
-        ocCursor = 2;
-        break;
-      case 2:
-        if (breed > 0) {
-          selMenu = foodM;
-          ocCursor = RESET;
-        }
-        else {
-          beep(beep_HiLo1);
-        }
-        break;
-      case 3:
-        if (breed > 0) {
-          selMenu = playM;
-          ocCursor = RESET;
-        }
-        else {
-          beep(beep_HiLo1);
-        }
-        break;
-      case 4:
-        if (breed > 0) {
-          if (sickCount > 0) { //If there's sickness to remove
-            sickCount--; //Cure one sickness
-            beep(beep_HiLo3);
-          }
-        }
-        else {
-          beep(beep_HiLo1);
-        }
-        break;
-      case 5:
-        selMenu = confM;
-        ocCursor = RESET;
-        break;
-      case 6:
-        if (breed > 0) {
-          if (poopCount > 0) { //If there's poop to clean
-            poopCount--; //Clean one poop
-            beep(beep_HiLo3);
-          }
-        }
-        else {
-          beep(beep_HiLo1);
-        }
-        break;
-      case 7:
-        clearAlert();
-        ocCursor = RESET;
-        break;
-      default:
-        break;
+  if (Inventory[inv_meds_slot][inv_owned] > Inventory[inv_meds_slot][inv_acked]) {
+    if (butNOW[0] || butNOW[1] || butNOW[2]) {
+      butNOW[0] = false;
+      butNOW[1] = false;
+      butNOW[2] = false;
+      beep(beep_PosBeep);
+      Inventory[inv_meds_slot][inv_acked] = Inventory[inv_meds_slot][inv_owned];
+      display.clearDisplay();
+      updateScreen();
     }
-    updateScreen();
   }
-  if (butNOW[2]) //C button is pressed
-  {
-    beep(beep_NegBeep);
-    //do stuff when button is HIGH
-    butNOW[2] = false; //Set the button to not enable again
-    if (ocCursor == 0)
-      ocCursor = 8;
-    ocCursor--;
-    updateScreen();
+  else if (Inventory[inv_soda_slot][inv_owned] > Inventory[inv_soda_slot][inv_acked]) {
+    if (butNOW[0] || butNOW[1] || butNOW[2]) {
+      butNOW[0] = false;
+      butNOW[1] = false;
+      butNOW[2] = false;
+      beep(beep_PosBeep);
+      Inventory[inv_soda_slot][inv_acked] = Inventory[inv_soda_slot][inv_owned];
+      display.clearDisplay();
+      updateScreen();
+    }
+  }
+  else {
+    if (butNOW[0]) //A button is pressed
+    {
+
+      beep(beep_NegBeep);
+      //do stuff when button is HIGH
+      butNOW[0] = false; //Set the button to not enable again
+      ocCursor++;
+      if (ocCursor >= 8)
+        ocCursor = RESET;
+      updateScreen();
+    }
+    if (butNOW[1]) //B button is pressed
+    {
+      //do stuff when button is HIGH
+      butNOW[1] = false; //Set the button to not enable again
+      beep(beep_PosBeep);
+      switch (ocCursor)
+      {
+        case 0:
+          selMenu = clockM;
+          ocCursor = RESET;
+          break;
+        case 1:
+          selMenu = statsM;
+          ocCursor = RESET;
+          break;
+        case 2:
+          if (breed > 0) {
+            selMenu = foodM;
+            ocCursor = RESET;
+          }
+          else {
+            beep(beep_HiLo1);
+          }
+          break;
+        case 3:
+          if (breed > 0) {
+            selMenu = playM;
+            ocCursor = RESET;
+          }
+          else {
+            beep(beep_HiLo1);
+          }
+          break;
+        case 4:
+          selMenu = inventM;
+          ocCursor = RESET;
+          break;
+        case 5:
+          selMenu = confM;
+          ocCursor = RESET;
+          break;
+        case 6:
+          if (breed > 0) {
+            if (poopCount > 0) { //If there's poop to clean
+              poopCount--; //Clean one poop
+              beep(beep_HiLo3);
+            }
+          }
+          else {
+            beep(beep_HiLo1);
+          }
+          break;
+        case 7:
+          ocCursor = RESET;
+          clearAlert();
+          break;
+        default:
+          break;
+      }
+      updateScreen();
+    }
+    if (butNOW[2]) //C button is pressed
+    {
+      beep(beep_NegBeep);
+      //do stuff when button is HIGH
+      butNOW[2] = false; //Set the button to not enable again
+      if (ocCursor == 0)
+        ocCursor = 8;
+      ocCursor--;
+      updateScreen();
+    }
   }
 }
 
@@ -166,17 +183,15 @@ void statsMenu()
   //Figure out how to handle the buttons that  getButtons() found
   if (butNOW[0])
   {
-
     beep(beep_NegBeep);
     butNOW[0] = false; //Set the button to not enable again
     ocCursor++;
-    if (ocCursor >= 3)
+    if (ocCursor >= 4)
       ocCursor = RESET;
     updateScreen();
   }
   if (butNOW[1])
   {
-
     beep(beep_PosBeep);
     butNOW[1] = false; //Set the button to not enable again
     if (ocCursor <= 0)
@@ -228,53 +243,24 @@ void foodMenu()
     {
       case 0: //Protein!
 
-        if (hun <= max_stats - foodbonus)
-          hun += foodbonus;
-        else
-          hun = max_stats;
-        if (random(0, 101) >= Ath)
-          weight += 1;
+        eatProtein();
 
-        aniModeSet(breed, a_eat);
-        aniStage = RESET;
-        aniLast = RESET;
         selMenu = mainM;
         display.clearDisplay();
         ocCursor = 2;
         break;
       case 1: //Fat!
 
-        if (hap <= max_stats - (foodbonus * 2))
-          hap += foodbonus * 2;
-        else
-          hap = max_stats;
-        if (random(0, 101) >= Ath)
-          weight += 1;
-        weight += 1;
-        if (Dis > 0)
-          Dis -= 1;
+        eatFat();
 
-        aniModeSet(breed, a_eat);
-        aniStage = RESET;
-        aniLast = RESET;
         selMenu = mainM;
         display.clearDisplay();
         ocCursor = 2;
         break;
-      case 2: //Food 3
-        if (bor <= max_stats - (foodbonus * 2))
-          bor += foodbonus  * 2;
-        else
-          bor = max_stats;
-        if (random(0, 101) >= Ath)
-          weight += 1;
-        weight += 1;
-        if (Int > 0)
-          Int -= 1;
+      case 2: //Carbs!
 
-        aniModeSet(breed, a_eat);
-        aniStage = RESET;
-        aniLast = RESET;
+        eatCarbs();
+
         selMenu = mainM;
         display.clearDisplay();
         ocCursor = 2;
@@ -314,7 +300,7 @@ void playMenu()
     //do stuff when button is HIGH
     butNOW[0] = false; //Set the button to not enable again
     ocCursor++;
-    if (ocCursor >= 3)
+    if (ocCursor >= 4)
       ocCursor = RESET;
     updateScreen();
   }
@@ -336,6 +322,9 @@ void playMenu()
         break;
       case 2: // Bit Shift
         selMenu = g_bitshifter;
+        ocCursor = RESET;
+      case 3: // Bit Shift
+        selMenu = g_lazerchiken;
         ocCursor = RESET;
         break;
       default:
@@ -493,6 +482,63 @@ void clockset()
     butNOW[2] = false; //Set the button to not enable again
     selMenu = confM;
     ocCursor = RESET;
+    display.clearDisplay();
+  }
+}
+
+/*== Inventory ===========================================================================================================*/
+
+void inventMenu()
+{
+  if (butNOW[0])
+  {
+    beep(beep_NegBeep);
+    butNOW[0] = false; //Set the button to not enable again
+    ocCursor++;
+    if (ocCursor >= inv_max_itemtypes)
+      ocCursor = RESET;
+    updateScreen();
+  }
+  if (butNOW[1])
+  {
+    beep(beep_NegBeep);
+    butNOW[1] = false;
+    switch (ocCursor) {
+      case inv_meds_slot:
+        //Use medicine
+        if (breed > 0 && sickCount > 0 && Inventory[inv_meds_slot][inv_owned] > 0) {
+          Inventory[inv_meds_slot][inv_owned]--;
+          Inventory[inv_meds_slot][inv_acked]--;
+          sickCount--; //Cure one sickness
+          beep(beep_HiLo3);
+          updateScreen();
+        }
+        else {
+          beep(beep_HiLo1);
+        }
+        //End use medicine
+        break;
+      case inv_soda_slot:
+        if (Inventory[inv_soda_slot][inv_owned] > 0) {
+          Inventory[inv_soda_slot][inv_owned]--;
+          Inventory[inv_soda_slot][inv_acked]--;
+          beep(beep_HiLo3);
+          updateScreen();
+        }
+        else {
+          beep(beep_HiLo1);
+        }
+        break;
+      default:
+        break;
+    }
+  }
+  if (butNOW[2])
+  {
+    beep(beep_HiLo1);
+    //do stuff when button is HIGH
+    butNOW[2] = false; //Set the button to not enable again
+    selMenu = mainM;
     display.clearDisplay();
   }
 }

@@ -1,8 +1,5 @@
 #include <Wire.h>
 
-//#include <TinyWireS.h>
-
-
 //Include custom files
 #include "A_labels.h"
 #include "B_boardselect.h"

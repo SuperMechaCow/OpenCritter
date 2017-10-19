@@ -19,7 +19,7 @@ void debug()
       //1 - change menu
       //  0 - Main
       //  1 - Clock
-      //  2 - Stats
+      //  2 - Health
       //  3 - Food
       //  4 - Games
       //  5 - Config
@@ -48,7 +48,7 @@ void debug()
             display.clearDisplay();
             break;
           case 2:
-            Serial.println(F("Stats"));
+            Serial.println(F("Health"));
             CLK[timeCLK] = CLK[baseCLK];
             selMenu = statsM;
             display.clearDisplay();

@@ -1,4 +1,42 @@
-### September 24th, 2017 [alpha v0.011]
+### October 18th, 2017 [alpha v0.012] Inventory Update
+
+Inventory system was added!
+Some much-needed change to terminology was needed to reduce the confusing game mechanics!
+Animation frame selection was reworked to save a lot of space and time! Reduced lines of code from 1,111 to 172!
+
+[Changes]
+- Removed "use Medicine" option and replaced with the Inventory Menu (icon is the same).
+- Added "Meds" item to Inventory.
+- Added "Soda" to item Inventory, but it has no effect yet.
+- When the critter's Energy bar is full, it will drain down to it's health bar's status and add one Meds to your inventory.
+- Energy bar now increases with heartbeat in addition to health stat drain.
+- Removed aniModeSet() and went back to just using aniMode.
+- getFrame() can now fetch the frame's name of the current breed depending on what anaimation frame you want.
+- Animations now just assume you want to use the animations for your current breed.
+- Critter parameters are now broken into Energy, Health, and Power categories (previously BioSpecs, Health, and Traits).
+- Every critter parameter is now a "stat" of it's "category". (Stats are now "health stats", Traits are now "power stats", and BioSpecs are now "Energy stats").
+- In addition, "Energy", "Health", and "Power" are their own stats, derived from a combination of the respective category's stats.
+- Split the stats menu into four pages to easily visualize.
+- Power stats now scale from 1 to 255 instead of 1 to 100 for consistency's sake.
+- Critters can not gain more than twice their nominal weight (nominal_w * 2).
+- OLED will turn off to save power after two minutes of no buttons being pressed. Press any button to turn on.
+- Added 9 new icon graphics. balf, ball, carb, fats, jetl, jetr, pack, pail, soda.
+- Fixed up BitShifter's UI. Added a guide and new graphics. Fixed animation flickering on button press.
+- BitShifter now switched to a hexidecimal number after 3 consecutive won rounds.
+- Finished graphics for BallCatch.
+- Fixed up Card Flip UI. Added score and other graphics.
+- Card Flip is now the best of 5 flips. You still receive rewards for each card guessed correctly, but only if you guess more than 3 of the five slips correctly.
+- Added lazerchiken as a "hidden game" in the games menu.
+- Selecting the Alert icon will take you to the Stats menu if the critter is actually in danger of being sick.
+- Merged both versions of E_humanIO_* into E_InputOutput. Now each function can tell if the board has it's own IO or there is an IOPU attached.
+- Switched position of I_animate and J_games to I_games and J_animate to keep similar functions together.
+
+[Known Bugs]
+- Pressing both A and B with cancel playing a game?
+- Button presses are sometimes repeating without being released, esepcially on various submenus.
+- OLED sometimes gets stuck off. Not sure of the cause yet.
+
+### September 24th, 2017 [alpha v0.011] Teenager Update
 
 [Changes]
 - Added 7 new breeds (two babies and five teenagers): xorby, goob, moops, shansy, hwooty, lugerd, and flip.

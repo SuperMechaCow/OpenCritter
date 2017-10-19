@@ -35,12 +35,12 @@ void handleRoot() {
       break;
   }
 
-  pageString += F("<table border='1'><tr><td colspan='2'><b>Stats</b></td><td colspan='2'><b>Traits</b></td><td colspan='2'><b>BioSpecs</b></td></tr><tr><td>Hunger</td><td>");
+  pageString += F("<table border='1'><tr><td colspan='2'><b>Health</b></td><td colspan='2'><b>Power</b></td><td colspan='2'><b>Energy</b></td></tr><tr><td>Hunger</td><td>");
   pageString += hun;
   pageString += F("</td><td>Athleticism</td><td>");
   pageString += Ath;
   pageString += F("</td><td>Energy</td><td>");
-  pageString += NRG;
+  pageString += Energy;
   pageString += F("</td></tr><tr><td>Happiness</td><td>");
   pageString += hap;
   pageString += F("</td><td>Discipline</td><td>");
@@ -71,7 +71,7 @@ void handleRoot() {
       Ath = 100;
       Dis = 100;
       Int = 100;
-      NRG = 100;
+      Energy = 100;
     }
     if (server.argName(i) == "kill") { //If the user wants to max the params
       deadcritter = true;

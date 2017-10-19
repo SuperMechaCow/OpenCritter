@@ -1,10 +1,11 @@
-#define versionnum "a0.011"
+#define versionnum "a0.012"
 #define branchnum "0.00"
-#define release "093017"
+#define release "101817"
 
 //Setup Access Point
 const char *ssid = "OpenCritter";
 const char *password = "Wibbur77";
+//Start the server
 ESP8266WebServer server(80);
 
 //Start OLED
@@ -26,16 +27,16 @@ int i2c_devices[] = {0};
 // Critter parameters
 //Misc.
 String crittername = "";
-// Stats
-byte Ath = 50;                  // Athleticism. How fast Hunger drains
-byte Dis = 50;                  // Discipline. How fast happiness drains
-byte Int = 50;                  // Intelligence. How fast Boredom drains
+// Health Stats
+byte Ath = 128;                  // Athleticism. How fast Hunger drains
+byte Dis = 128;                  // Discipline. How fast happiness drains
+byte Int = 128;                  // Intelligence. How fast Boredom drains
 // Trait
 byte hun = 255;                 // Hunger
 byte hap = 255;                 // Happiness
 byte bor = 255;                 // Boredom
-// Biostat
-byte NRG = 0;                   // How much Energy the critter has to complete tasks
+// Energy Stats
+byte Energy = 0;                   // How much Energy the critter has to complete tasks
 byte metabolism = 50;           // The frequency at which heartbeats occur
 byte weight = 10;               // How much the critter "weighs"
 /*========================================================================================================================*/
@@ -52,7 +53,7 @@ unsigned int heartbeats = 0;    // How many heartbeats have been... beaten?
 float hrtBPM = 0;               // Beats per minute. Not vital to the game. Good for the user's imagination, though.
 byte metaBonus = 0;             // A flat modifier of the metabolism from lifestage and medicines, etc.
 byte lifestage = 0;             // What stage
-int sick_thresh = 0;            // Roll for sickness on a sickness heartbeat if average stats are under this number
+int sick_thresh = 0;            // Roll for sickness on a sickness heartbeat if average health stats are under this number
 int sick_thresh_bonus = 0;      // An additive modifier to the sick threshold
 int queueBeats = 0;             // How many beats are we waiting to roll on?
 byte poopCount = 0;             // How many poops are on the floor
@@ -62,21 +63,27 @@ bool Alert = false;             // Does the critter want/need attention?
 byte rollResult = 0;            //
 byte breed = 0;                 // What breed in the breed index (see _labels.h) the critter is
 
+//Inventory Items
+byte Inventory[inv_max_itemtypes][3] = {{0}}; //A table of items with three properties. "total owned", "total acknowledged", and "max limit".
+
 //Menu and cursor funtions
 byte selMenu = 0;               // The currently selected menu
 byte ocCursor = 0;              // The current position of the cursor
 
-unsigned long CLK[7] = {0};     // The various clocks used in the game. See _labels.h for details
+unsigned long CLK[8] = {0};     // The various clocks used in the game. See _labels.h for details
 
 byte gfxBuffer[128] = {0};      // Used to store graphics for rendering on screen
 
 /*========================================================================================================================*/
 
 // OpenCritter supports 8 buttons, though it has 3 by default
+bool butREAD[8] = {0};
 bool butNOW[8] = {0};           // state of button to use
 bool butTHEN[8] = {0};          // previous state of each button
 //bool butREAD[8] = {0};          // State of the button received from IOPU
 byte buttbyte = 0;
+
+bool deviceSleep = false;
 
 /*========================================================================================================================*/
 

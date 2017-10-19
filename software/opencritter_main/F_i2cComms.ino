@@ -1,3 +1,9 @@
+/*
+ * 
+ * Most of this doesn;t work, but this is the section that's supposed to handle multiple i2c modules.
+ * I stopped working on it because as of right now there's only one module and other base features need finished before modules can be made.
+ * 
+ */
 
 void i2c_scanbus() { // Run during setup(), called from in-game menu, and/or periodically to check for new devices
   //checks to see if IOPU, GPU, etc. is installed about loads appropriate software (turns off handling graphics/IO when devices plug in)
