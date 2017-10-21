@@ -7,7 +7,7 @@ Anyone is invited to work on the project for as long as they stick to the follow
 - OpenCritter is for all levels of skill and expertise. Novices should be able to build their own from scratch, and experts can lead the project development.
 - OpenCritter is all-ages and gender nuetral.
 - OpenCritter is for makers *and* hackers. Create and destroy!
-- Mods are encouraged! But anything that conflicts "core experience" ofthe game should be listed as a new branch.
+- Mods are encouraged! But anything that conflicts with the "core experience" of the game should be listed as a new branch.
 
 ## Community
 
