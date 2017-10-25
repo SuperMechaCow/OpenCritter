@@ -78,7 +78,7 @@ void handleRoot() {
       beep(beep_DnChirp);
       display.clearDisplay();
       for (int i = 0; i < 32; i++) {
-        display.drawBitmap(i * 16, (i / 8) * 16, gfx_icon_sick, 16, 16, 1); //Show alert icon
+        display.drawBitmap(i * 16, (i / 8) * 16, gfx_icon_sick, icon_dimensions, icon_dimensions, 1); //Show alert icon
       }
       display.display();
     }

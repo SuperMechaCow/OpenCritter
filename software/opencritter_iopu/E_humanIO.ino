@@ -193,6 +193,26 @@ void beep() {
         }
       }
       break;
+          case beep_noise: //noise
+      if (beepStage == 0)
+      {
+        CLK[beepCLK] = CLK[baseCLK];
+        beepStage = 1;
+      }
+      if (beepStage == 1)
+      {
+        if (CLK[baseCLK] - CLK[beepCLK] > 200)
+        {
+          noTone(beeper_pin);
+          beepMode = RESET;
+          beepStage = RESET;
+        }
+        else
+        {
+          tone(beeper_pin, random(1000,2000));
+        }
+      }
+      break;
     default:
       //Serial.println(F("Invalid beeper!"));
       break;

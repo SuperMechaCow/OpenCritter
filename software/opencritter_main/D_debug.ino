@@ -31,6 +31,8 @@ void debug()
       //  5 - Ath
       //  6 - Dis
       //  7 - Int
+      //  8 - heartbeats
+      //  9 - distressbeats
 
       case 1:
         Serial.println(F("Which menu?"));
@@ -38,37 +40,37 @@ void debug()
         switch (Serial.parseInt()) {
           case 0:
             Serial.println(F("Main"));
-            selMenu = mainM;
+            selMenu = m_main;
             display.clearDisplay();
             break;
           case 1:
             Serial.println(F("Clock"));
             CLK[timeCLK] = CLK[baseCLK];
-            selMenu = clockM;
+            selMenu = m_clockset;
             display.clearDisplay();
             break;
           case 2:
             Serial.println(F("Health"));
             CLK[timeCLK] = CLK[baseCLK];
-            selMenu = statsM;
+            selMenu = m_stats;
             display.clearDisplay();
             break;
           case 3:
             Serial.println(F("Food"));
             CLK[timeCLK] = CLK[baseCLK];
-            selMenu = foodM;
+            selMenu = m_food;
             display.clearDisplay();
             break;
           case 4:
             Serial.println(F("Games"));
             CLK[timeCLK] = CLK[baseCLK];
-            selMenu = gameM;
+            selMenu = m_play;
             display.clearDisplay();
             break;
           case 5:
             Serial.println(F("Config"));
             CLK[timeCLK] = CLK[baseCLK];
-            selMenu = confM;
+            selMenu = m_conf;
             display.clearDisplay();
             break;
           default:
@@ -159,7 +161,27 @@ void debug()
             Serial.print(F("changed: "));
             Serial.println(Int);
             break;
-
+          case 8: //heartbeats
+            Serial.print(F(" beats: "));
+            Serial.print(heartbeats);
+            Serial.println(F(" new val:"));
+            while (!Serial.available())
+            {
+            }
+            heartbeats = Serial.parseFloat();
+            Serial.print(F("changed: "));
+            Serial.println(heartbeats);
+            break;
+          case 9: //distressbeats
+            Serial.print(F(" dbeats: "));
+            Serial.print(distressbeats);
+            Serial.println(F(" new val:"));
+            while (!Serial.available())
+            {
+            }
+            distressbeats = Serial.parseFloat();
+            Serial.print(F("changed: "));
+            Serial.println(distressbeats);
         }
         break;
       default:

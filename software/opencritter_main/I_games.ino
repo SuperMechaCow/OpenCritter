@@ -19,13 +19,11 @@ void ballcatch() {
     display.setCursor(4, 0);
     display.print(F("Ball Catch"));
     display.setTextSize(1);
-    display.setCursor(28, 20);
-    display.print(F("Move catcher"));
-    display.setCursor(32, 28);
-    display.print(F("with A + B."));
-    display.setCursor(37, 36);
-    display.print(F("Catch the"));
-    display.setCursor(24, 44);
+    display.setCursor(0, 20);
+    display.print(F("Move catcher with"));
+    display.setCursor(0, 28);
+    display.print(F("A + B. Catch the"));
+    display.setCursor(0, 36);
     display.print(F("falling balls!"));
     display.setCursor(22, 56);
     display.print(F("Energy: "));
@@ -60,7 +58,7 @@ void ballcatch() {
         gameVal[i] = 0;
       }
       gameStage = RESET;
-      selMenu = mainM;
+      selMenu = m_main;
       aniMode = a_idle;
       display.clearDisplay();
     }
@@ -109,14 +107,14 @@ void ballcatch() {
       display.setCursor(0, 0);
       display.print(gameVal[gbc_score]);
       if (!gameVal[gbc_ballframe]) {
-        display.drawBitmap(gameVal[gbc_1X], gameVal[gbc_1Y], gfx_icon_ball, 16, 16, 1); // Draw ball
+        display.drawBitmap(gameVal[gbc_1X], gameVal[gbc_1Y], gfx_icon_ball, icon_dimensions, icon_dimensions, 1); // Draw ball
         gameVal[gbc_ballframe] = 1;
       }
       else {
-        display.drawBitmap(gameVal[gbc_1X], gameVal[gbc_1Y], gfx_icon_balf, 16, 16, 1); // Draw ball
+        display.drawBitmap(gameVal[gbc_1X], gameVal[gbc_1Y], gfx_icon_balf, icon_dimensions, icon_dimensions, 1); // Draw ball
         gameVal[gbc_ballframe] = 0;
       }
-      display.drawBitmap(gameVal[gbc_position], 48, gfx_icon_pail, 16, 16, 1); // Draw character at bottom of screen in it's position
+      display.drawBitmap(gameVal[gbc_position], 48, gfx_icon_pail, icon_dimensions, icon_dimensions, 1); // Draw character at bottom of screen in it's position
       updateScreen();
 
       //See if there's a collision
@@ -127,14 +125,15 @@ void ballcatch() {
         gameStage = 1;
 
         //Reward
-        if (weight < nominal_w)
-          if (random(0, 101) <= Ath)
+
+        if (random(0, max_power + 1) <= Ath) {
+          if (weight < nominal_w)
             weight++;
-        if (weight > nominal_w)
-          if (random(0, 101) <= Ath)
+          else if (weight > nominal_w)
             weight--;
+        }
         if (Ath < max_power)
-          Ath++;
+          Ath = Ath + gamebonus_power;
       }
 
       //See if the balls dropped... *SNICKER*
@@ -173,7 +172,7 @@ void ballcatch() {
           gameVal[i] = 0;
         }
         gameStage = RESET;
-        selMenu = mainM;
+        selMenu = m_main;
         aniMode = a_idle;
         display.clearDisplay();
       }
@@ -234,14 +233,14 @@ void cardflip() {
         gameVal[i] = 0;
       }
       gameStage = RESET;
-      selMenu = mainM;
+      selMenu = m_main;
       aniMode = a_idle;
       display.clearDisplay();
     }
 
   }
   else {
-    animate(24, 16);
+    animate(24, 16, breed);
   }
 
   //Start up
@@ -329,7 +328,7 @@ void cardflip() {
         gameVal[i] = 0;
       }
       gameStage = RESET;
-      selMenu = mainM;
+      selMenu = m_main;
       aniMode = a_idle;
       display.clearDisplay();
     }
@@ -376,11 +375,11 @@ void cardflip() {
         for (int i = 0; i < gameVal[gcf_score]; i++) {
           //give the typical bonus
           if (Dis < max_power)
-            Dis++;
-          if (hap + gamebonus > max_health)
+            Dis = Dis + gamebonus_power;
+          if (hap + gamebonus_health > max_health)
             hap = max_health;
           else
-            hap = hap + gamebonus;
+            hap = hap + gamebonus_health;
         }
       }
       gameStage = 5; //Gameover Screen
@@ -481,14 +480,14 @@ void bitshifter() {
         gameVal[i] = 0;
       }
       gameStage = RESET;
-      selMenu = mainM;
+      selMenu = m_main;
       aniMode = a_idle;
       display.clearDisplay();
     }
   }
   else {
     //The critter animation plays on every screen except the title screen
-    animate(16, 12);
+    animate(16, 12, breed);
   }
 
   if (gameStage == 1)
@@ -597,7 +596,7 @@ void bitshifter() {
         gameVal[i] = 0;
       }
       gameStage = RESET;
-      selMenu = mainM;
+      selMenu = m_main;
       ocCursor = RESET;
       aniMode = a_idle;
       display.clearDisplay();
@@ -608,12 +607,12 @@ void bitshifter() {
     if (gameVal[gbs_point]) //If they scored a point!
     {
       if (Int < max_power)
-        Int++;
+        Int = Int + gamebonus_power;
 
-      if (bor + gamebonus > max_health)
+      if (bor + gamebonus_health > max_health)
         bor = max_health;
       else
-        bor = bor + gamebonus;
+        bor = bor + gamebonus_health;
 
       display.setCursor(72, 40);
       display.setTextColor(1);
@@ -651,7 +650,7 @@ void bitshifter() {
 
 /*========================================================================================================================*/
 
-void lazerchiken() {
+void lazerjet() {
 
   if (gameStage == 0) //Splash screen
   {
@@ -659,17 +658,15 @@ void lazerchiken() {
     display.setTextColor(1);
     display.setTextSize(2);
     display.setCursor(4, 0);
-    display.print(F("Ball Catch"));
+    display.print(F("Lazer Jet"));
     display.setTextSize(1);
-    display.setCursor(28, 20);
-    display.print(F("Move catcher"));
-    display.setCursor(32, 28);
-    display.print(F("with A + B."));
-    display.setCursor(37, 36);
-    display.print(F("Catch the"));
-    display.setCursor(24, 44);
-    display.print(F("falling balls!"));
-    display.setCursor(22, 56);
+    display.setCursor(0, 20);
+    display.print(F("Ascend with A. Shoot"));
+    display.setCursor(0, 28);
+    display.print(F("with B. Destroy the"));
+    display.setCursor(0, 36);
+    display.print(F("enemy jets!"));
+    display.setCursor(0, 56);
     display.print(F("Energy: "));
     display.print(EnergyCost);
     display.print(F(" ("));
@@ -702,7 +699,7 @@ void lazerchiken() {
         gameVal[i] = 0;
       }
       gameStage = RESET;
-      selMenu = mainM;
+      selMenu = m_main;
       aniMode = a_idle;
       display.clearDisplay();
     }
@@ -754,8 +751,8 @@ void lazerchiken() {
       display.setTextSize(2);
       display.setCursor(0, 0);
       display.print(gameVal[lcc_score]);
-      display.drawBitmap(gameVal[lcc_1X], gameVal[lcc_1Y], gfx_icon_jetl, 16, 16, 1); // Draw ball
-      display.drawBitmap(0, gameVal[lcc_position], gfx_icon_jetr, 16, 16, 1); // Draw character at left edge of screen in it's position
+      display.drawBitmap(gameVal[lcc_1X], gameVal[lcc_1Y], gfx_icon_jetl, icon_dimensions, icon_dimensions, 1); // Draw ball
+      display.drawBitmap(0, gameVal[lcc_position], gfx_icon_jetr, icon_dimensions, icon_dimensions, 1); // Draw character at left edge of screen in it's position
       if (gameVal[lcc_lazerX] != RESET)
         display.drawLine(gameVal[lcc_lazerX], gameVal[lcc_lazerY], gameVal[lcc_lazerX] + lcc_lazersize, gameVal[lcc_lazerY], 1);
       updateScreen();
@@ -764,7 +761,7 @@ void lazerchiken() {
       if (gameVal[lcc_lazerY] - gameVal[lcc_1Y] < 16 && gameVal[lcc_lazerY] - gameVal[lcc_1Y] > -16 && gameVal[lcc_1X] - (gameVal[lcc_lazerX] + lcc_lazersize) <= 0) {
         gameVal[lcc_lazerX] = RESET;
         gameVal[lcc_lazerY] = RESET;
-        beep(beep_UpChirp);
+        beep(beep_noise);
         gameVal[lcc_score]++;
         gameVal[lcc_balls]--;
         gameStage = 1;
@@ -777,7 +774,7 @@ void lazerchiken() {
           if (random(0, max_power + 1) <= Ath)
             weight--;
         if (Ath < max_power)
-          Ath++;
+          Ath = Ath + gamebonus_power;
       }
 
       //See if the balls dropped... *SNICKER*
@@ -818,7 +815,7 @@ void lazerchiken() {
           gameVal[i] = 0;
         }
         gameStage = RESET;
-        selMenu = mainM;
+        selMenu = m_main;
         aniMode = a_idle;
         display.clearDisplay();
       }

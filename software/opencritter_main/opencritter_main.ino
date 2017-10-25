@@ -4,11 +4,13 @@
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
+
 //Include custom files
 #include "A_labels.h"
 #include "B_boardselect.h"
 #include "C_setup.h"
 #include "Z_gfx.h"
+#include "Z_strings.h"
 
 //
 // All of the variable declarations are in _setup.h
@@ -45,9 +47,9 @@ void setup()
   /*== Start Graphics ======================================================================================================*/
 
   if (!GPUattached) { //If there's no GPU, do your own graphics
-    //start an OLED screen object
+    // start an OLED screen object
     display.begin(SSD1306_SWITCHCAPVCC, OLED_device);
-    //Display the buffer image
+    // Display the buffer image
     display.display();
     // Clear the buffer
     display.clearDisplay();
@@ -58,38 +60,12 @@ void setup()
   //Reset the seed
   randomSeed(analogRead(0));
 
-  //If the debugging is on, let the user know over serial
-  if (debugMode) {
-    Serial.println(F("Ready for command..."));
-    Energy = 255;  //I don't want to wait for energy to build up to test-play games
-    beepMute = true;  //These get annoying after awhile
-  }
-
   metaBonus = egg_m;
-
-  /*== Create Inventory ====================================================================================================*/
-
-  for (int i = 0; i < inv_max_itemtypes; i++) {
-    switch (i) {
-      case inv_meds_slot: //If we are dealing with meds
-        Inventory[inv_meds_slot][inv_owned] = inv_meds_start;       //Set owned to starting value
-        Inventory[inv_meds_slot][inv_acked] = inv_meds_start;       //Set acknoledged to starting value
-        Inventory[inv_meds_slot][inv_maxnumber] = inv_meds_max;     //Set max to maximum value
-        break;
-      case inv_soda_slot: //If we are dealing with meds
-        Inventory[inv_soda_slot][inv_owned] = inv_soda_start;       //Set owned to starting value
-        Inventory[inv_soda_slot][inv_acked] = inv_soda_start;       //Set acknoledged to starting value
-        Inventory[inv_soda_slot][inv_maxnumber] = inv_soda_max;     //Set max to maximum value
-        break;
-      default:
-        break;
-    }
-  }
 
   /*== Animation Setup =====================================================================================================*/
 
   //Get the starting variables ready for the various functions
-  selMenu = mainM;            //Start the menus with the "Main Menu" play screen
+  selMenu = m_main;            //Start the menus with the "Main Menu" play screen
   aniMode = a_idle;  //First animation to play is the egg
   aniStage = RESET;           //prime animation stage
   aniLast = RESET;            //Set the placeholder for previous animation
@@ -119,6 +95,14 @@ void setup()
   }
 
   /*== End Setup ===========================================================================================================*/
+
+  //If the debugging is on, let the user know over serial
+  if (debugMode) {
+    Serial.println(F("Ready for command..."));
+    Energy = 255;  //I don't want to wait for energy to build up to test-play games
+    beepMute = true;  //These get annoying after awhile
+  }
+
 }
 
 void loop() {
@@ -131,27 +115,10 @@ void loop() {
 
     /*== Start Loop ==========================================================================================================*/
 
-    //Calculate metabolism
-    //Start with average value of health mapped to 0 to 100
-    metabolism = map(getHealth(), 0, max_health, 100, 0);;
-    //Add in average value of power and invert the value
-    metabolism = metabolism + map(getPower(), 0, max_power, 100, 0);
-    //Add in metabolism bonus from breed
-    metabolism = metabolism + metaBonus;
-    //Take the average of the prior three values
-    metabolism = metabolism / 3;
-    //Modulate by how far away from a healthy weight the critter is
-    metabolism = metabolism + abs(weight - nominal_w);
-    //Make sure metabolism is at least 1 or else we will be dividing by zero later on and ripping holes in the universe
-    if (metabolism <= 0)
-      metabolism = 1;
 
-    //Calculate the sickness threshold
-    sick_thresh = (sick_multi * (poopCount + sickCount + lifestage)) + sick_base;
+
     /*== Heartbeat Events ====================================================================================================*/
 
-    if (sick_thresh > 255)
-      sick_thresh = 255;
 
     /*HEARTBEATS AND CLOCK CHECKING
        The timing in this game is linked to Metabolism and Heartbeats, which are the frequency of "game ticks", respectively.
@@ -172,6 +139,36 @@ void loop() {
       for (int i = 0; i < queueBeats; i++) { //For each heartbeat that has happened since we last checked we have to "roll" for changes
 
         heartbeats++; //Add one heartbeat before we "roll" each loop
+        if (Alert)
+          distressbeats++;
+
+        //Calculate metabolism
+        //Start with average value of health mapped to 0 to 100
+        metabolism = map(getHealth(), 0, max_health, 100, 0);;
+        //Add in average value of power and invert the value
+        metabolism = metabolism + map(getPower(), 0, max_power, 100, 0);
+        //Add in metabolism bonus from breed
+        metabolism = metabolism + metaBonus;
+        //Take the average of the prior three values
+        metabolism = metabolism / 3;
+        //Modulate by how far away from a healthy weight the critter is
+        metabolism = metabolism + abs(weight - nominal_w);
+        if (boostActive) {
+          if (boostBeat <= heartbeats)
+            boostActive = false;
+          else
+            metabolism = metabolism * sodaBonusMulti;
+        }
+        //Make sure metabolism is at least 1 or else we will be dividing by zero later on and ripping holes in the universe
+        if (metabolism <= 0)
+          metabolism = 1;
+        if (metabolism > max_metabolism)
+          metabolism = max_metabolism;
+
+        //Calculate the sickness threshold
+        sick_thresh = (sick_multi * (poopCount + sickCount + lifestage)) + sick_base;
+        if (sick_thresh > 255)
+          sick_thresh = 255;
 
         //Each opencritter has three temporary health stats and three "power stats"
         //Each power stat evolves over time and effects short term change of health
@@ -190,21 +187,21 @@ void loop() {
           if (random(0, max_drainChance) > Ath - (sick_penalty * sickCount)) { //High power stats reduce chance of health stat drain. Each stack of sickness increases chance.
             if (hun > 0)
               hun--; //hunger = athleticism
-            if (Energy < max_health)
+            if (Energy < max_energy)
               Energy++;
             beep(beep_Tick);
           }
           if (random(0, max_drainChance) > Dis - (sick_penalty * sickCount)) {
             if (hap > 0)
               hap--; //happiness = Dis
-            if (Energy < max_health)
+            if (Energy < max_energy)
               Energy++;
             beep(beep_Tick);
           }
           if (random(0, max_drainChance) > Int - (sick_penalty * sickCount)) {
             if (bor > 0)
               bor--; //boredom = Int
-            if (Energy < max_health)
+            if (Energy < max_energy)
               Energy++;
             beep(beep_Tick);
           }
@@ -231,7 +228,7 @@ void loop() {
         }
 
         //Check for evolution
-        if (heartbeats % evolve_beat == 0 && lifestage < adult) {
+        if (heartbeats % evolve_beat == 0) {
           evolveHandler();
         }
 
@@ -240,8 +237,19 @@ void loop() {
           discovery();
         }
 
-        if (heartbeats % EnergyC_beat == 0 && Energy != max_energy) {
+        if (heartbeats % energy_beat == 0 && Energy != max_energy) {
           Energy++;
+        }
+
+        //Change the position of the critter (not egg) to be written when the main menu is being shown (see H_menus)
+        //This is otherwise known as moving around the "playpen"
+        if (breed != egg && breed != crosh) {
+          //playPen_then = playPen_now;
+          playPen_now = playPen_now + random(-8, 9);
+          if (playPen_now < pp_min)
+            playPen_now = pp_min;
+          if (playPen_now > pp_max)
+            playPen_now = pp_max;
         }
 
       }
@@ -271,28 +279,34 @@ void loop() {
     {
       //
       // Menus
-      case mainM:
+      case m_main:
         mainMenu();
         break;
-      case clockM:
+      case m_clock:
         clockMenu();
-      case statsM:
+      case m_stats:
         statsMenu();
         break;
-      case foodM:
+      case m_food:
         foodMenu();
         break;
-      case confM:
+      case m_conf:
         confMenu();
         break;
-      case playM:
+      case m_play:
         playMenu();
         break;
-      case inventM:
+      case m_invent:
         inventMenu();
         break;
-      case c_clockset:
-        clockset();
+      case m_detail:
+        detailMenu();
+        break;
+      case m_clockset:
+        clockSet();
+        break;
+      case m_pedia:
+        pediaMenu();
         break;
       //
       // Games
@@ -304,8 +318,9 @@ void loop() {
         break;
       case g_bitshifter:
         bitshifter();
-      case g_lazerchiken:
-        lazerchiken();
+        break;
+      case g_lazerjet:
+        lazerjet();
         break;
       default:
         break;

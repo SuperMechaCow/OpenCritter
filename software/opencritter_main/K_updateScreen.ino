@@ -11,21 +11,21 @@ void updateScreen()
   switch (selMenu) //selMenu is the
   {
     /*========================================================================================================================*/
-    case mainM: // Main Menu
+    case m_main: // Main Menu
       /*
           This section draws the main menu screen
       */
 
       //draw icons and both sides of the screen
-      display.drawBitmap(8, 0, gfx_icon_clok, 16, 16, 1);       //Left top icon
-      display.drawBitmap(8, 16, gfx_icon_stat, 16, 16, 1);      //Left middle upper icon
-      display.drawBitmap(8, 32, gfx_icon_food, 16, 16, 1);      //Left middle lower icon
-      display.drawBitmap(8, 48, gfx_icon_game, 16, 16, 1);      //Left bottom icon
-      display.drawBitmap(104, 0, gfx_icon_pack, 16, 16, 1);     //Right top icon
-      display.drawBitmap(104, 16, gfx_icon_conf, 16, 16, 1);    //Right middle upper icon
-      display.drawBitmap(104, 32, gfx_icon_poop, 16, 16, 1);    //Right middle lower icon
+      display.drawBitmap(8, 0, gfx_icon_clok, icon_dimensions, icon_dimensions, 1);       //Left top icon
+      display.drawBitmap(8, 16, gfx_icon_stat, icon_dimensions, icon_dimensions, 1);      //Left middle upper icon
+      display.drawBitmap(8, 32, gfx_icon_food, icon_dimensions, icon_dimensions, 1);      //Left middle lower icon
+      display.drawBitmap(8, 48, gfx_icon_game, icon_dimensions, icon_dimensions, 1);      //Left bottom icon
+      display.drawBitmap(104, 0, gfx_icon_pack, icon_dimensions, icon_dimensions, 1);     //Right top icon
+      display.drawBitmap(104, 16, gfx_icon_conf, icon_dimensions, icon_dimensions, 1);    //Right middle upper icon
+      display.drawBitmap(104, 32, gfx_icon_poop, icon_dimensions, icon_dimensions, 1);    //Right middle lower icon
       if (Alert == true)                                        //If Alert is active, then we draw the right bottom icon, too
-        display.drawBitmap(104, 48, gfx_icon_sick, 16, 16, 1);  //Show alert icon
+        display.drawBitmap(104, 48, gfx_icon_sick, icon_dimensions, icon_dimensions, 1);  //Show alert icon
       else                                                      //If Alert is not active
         display.fillRect(104, 48, 16, 16, 0);                   //Erase icon region
 
@@ -38,19 +38,19 @@ void updateScreen()
       //draw illnesses
       display.fillRect(32, 0, 64, 16, 0);
       for (byte i = 0; i < sickCount; i++) {
-        display.drawBitmap(32 + (i * 16), 0, gfx_icon_sick, 16, 16, 1);
+        display.drawBitmap(32 + (i * 16), 0, gfx_icon_sick, icon_dimensions, icon_dimensions, 1);
       }
 
       //draw poops
       display.fillRect(32, 48, 64, 16, 0);
       for (byte i = 0; i < poopCount; i++) {
-        display.drawBitmap(32 + (i * 16), 48, gfx_icon_poop, 16, 16, 1);
+        display.drawBitmap(32 + (i * 16), 48, gfx_icon_poop, icon_dimensions, icon_dimensions, 1);
       }
 
       if (Inventory[inv_meds_slot][inv_owned] > Inventory[inv_meds_slot][inv_acked]) {
         display.fillRect(16, 38, 96, 20, 0);
         display.drawRect(16, 38, 96, 20, 1);
-        display.drawBitmap(26, 40, gfx_icon_meds, 16, 16, 1);
+        display.drawBitmap(26, 40, gfx_icon_meds, icon_dimensions, icon_dimensions, 1);
         display.setTextColor(1);
         display.setTextSize(1);
         display.setCursor(44, 44);
@@ -61,7 +61,7 @@ void updateScreen()
       else if (Inventory[inv_soda_slot][inv_owned] > Inventory[inv_soda_slot][inv_acked]) {
         display.fillRect(16, 38, 96, 20, 0);
         display.drawRect(16, 38, 96, 20, 1);
-        display.drawBitmap(26, 40, gfx_icon_soda, 16, 16, 1);
+        display.drawBitmap(26, 40, gfx_icon_soda, icon_dimensions, icon_dimensions, 1);
         display.setTextColor(1);
         display.setTextSize(1);
         display.setCursor(44, 44);
@@ -69,11 +69,22 @@ void updateScreen()
         display.print(Inventory[inv_soda_slot][inv_owned] - Inventory[inv_soda_slot][inv_acked]);
         display.print(F(" Soda!"));
       }
+      else if (Inventory[inv_star_slot][inv_owned] > Inventory[inv_star_slot][inv_acked]) {
+        display.fillRect(16, 38, 96, 20, 0);
+        display.drawRect(16, 38, 96, 20, 1);
+        display.drawBitmap(26, 40, gfx_icon_star, icon_dimensions, icon_dimensions, 1);
+        display.setTextColor(1);
+        display.setTextSize(1);
+        display.setCursor(44, 44);
+        display.print(F("+"));
+        display.print(Inventory[inv_star_slot][inv_owned] - Inventory[inv_star_slot][inv_acked]);
+        display.print(F(" Star!"));
+      }
 
       break;
 
     /*========================================================================================================================*/
-    case clockM: //Clock Menu
+    case m_clock: //Clock Menu
       display.clearDisplay();
       // Master Clock
       display.setCursor(16, 0);
@@ -129,17 +140,14 @@ void updateScreen()
       updateBPM();
       display.print(hrtBPM);
       display.setCursor(0, 48);
-      display.print(F("Metabolism: "));
-      display.print(metabolism);
+      display.print(F("Distress: "));
+      display.print(distressbeats);
       display.setCursor(0, 56);
       display.print(F("Days Alive: "));
-      if (dnow < 10)
-        display.print(F("0"));
-      display.print(dnow);
       break;
 
     /*========================================================================================================================*/
-    case statsM:
+    case m_stats:
       display.clearDisplay(); // Erase screen
       display.setTextColor(1);
       display.setTextSize(2);
@@ -155,17 +163,20 @@ void updateScreen()
           display.setCursor(0, 16);
           display.print(F("Energy: "));
           display.setCursor(88, 16);
-          display.print(Energy);
+          if (Inventory[inv_biok_slot][inv_owned] >= 1)
+            display.print(Energy);
           display.drawRect(0, 24, 128, 5, 1);
           display.drawLine(2, 26, map(Energy, 0, max_energy, 3, 127), 26, 1);
           //Second Slot <------------------------------------|
           display.setCursor(0, 32);
           display.print(F("Health: "));
-          display.setCursor(70, 32);
-          display.print(getHealth());
-          display.print(F(" ("));
-          display.print(sick_thresh);
-          display.print(F(")"));
+          if (Inventory[inv_biok_slot][inv_owned] >= 1) {
+            display.setCursor(70, 32);
+            display.print(getHealth());
+            display.print(F(" ("));
+            display.print(sick_thresh);
+            display.print(F(")"));
+          }
           display.drawRect(0, 40, 128, 5, 1);
           display.drawLine(2, 42, map(getHealth(), 0, max_health, 3, 127), 42, 1);
           //Sickness threshold bar
@@ -174,7 +185,8 @@ void updateScreen()
           display.setCursor(0, 48);
           display.print(F("Power: "));
           display.setCursor(88, 48);
-          display.print(getPower());
+          if (Inventory[inv_biok_slot][inv_owned] >= 1)
+            display.print(getPower());
           //Outer box
           display.drawRect(0, 56, 128, 5, 1);
           //Current power average
@@ -191,31 +203,34 @@ void updateScreen()
           display.setCursor(0, 16);
           display.print(F("Weight: "));
           display.setCursor(88, 16);
-          switch (lifestage) {
-            case egged:
-              display.print(weight + egg_w);
-              break;
-            case baby:
-              display.print(weight + baby_w);
-              break;
-            case teen:
-              display.print(weight + teen_w);
-              break;
-            case adult:
-              display.print(weight + adult_w);
-              break;
-            case senior:
-              display.print(weight + senior_w);
-              break;
+          if (Inventory[inv_biok_slot][inv_owned] >= 1) {
+            switch (lifestage) {
+              case egged:
+                display.print(weight + egg_w);
+                break;
+              case baby:
+                display.print(weight + baby_w);
+                break;
+              case teen:
+                display.print(weight + teen_w);
+                break;
+              case adult:
+                display.print(weight + adult_w);
+                break;
+              case senior:
+                display.print(weight + senior_w);
+                break;
+            }
           }
           display.drawRect(0, 24, 128, 5, 1); //Meter outline
-          display.drawLine(2, 26, map(weight, 0, 10, 3, 127), 26, 1); //Meter value
+          display.drawLine(2, 26, map(weight, 0, 20, 3, 127), 26, 1); //Meter value
           display.drawLine(64, 23, 64, 29, 1);
           //Second Slot <------------------------------------|
           display.setCursor(0, 32);
           display.print(F("Metabolism: "));
           display.setCursor(88, 32);
-          display.print(metabolism);
+          if (Inventory[inv_biok_slot][inv_owned] >= 1)
+            display.print(metabolism);
           display.drawRect(0, 40, 128, 5, 1);
           display.drawLine(2, 42, map(metabolism, 1, max_metabolism, 127, 3), 42, 1);
           break;
@@ -230,21 +245,24 @@ void updateScreen()
           display.setCursor(0, 16);
           display.print(F("Hunger: "));
           display.setCursor(88, 16);
-          display.print(hun);
+          if (Inventory[inv_biok_slot][inv_owned] >= 1)
+            display.print(hun);
           display.drawRect(0, 24, 128, 5, 1); //Meter outline
           display.drawLine(2, 26, map(hun, 0, max_health, 3, 127), 26, 1); //Meter value
           //Second Slot <------------------------------------|
           display.setCursor(0, 32);
           display.print(F("Happiness: "));
           display.setCursor(88, 32);
-          display.print(hap);
+          if (Inventory[inv_biok_slot][inv_owned] >= 1)
+            display.print(hap);
           display.drawRect(0, 40, 128, 5, 1);
           display.drawLine(2, 42, map(hap, 0, max_health, 3, 127), 42, 1);
           //Third Slot <------------------------------------|
           display.setCursor(0, 48);
           display.print(F("Boredom: "));
           display.setCursor(88, 48);
-          display.print(bor);
+          if (Inventory[inv_biok_slot][inv_owned] >= 1)
+            display.print(bor);
           display.drawRect(0, 56, 128, 5, 1);
           display.drawLine(2, 58, map(bor, 0, max_health, 3, 127), 58, 1);
           break;
@@ -259,7 +277,8 @@ void updateScreen()
           display.setCursor(0, 16);
           display.print(F("Ath: "));
           display.setCursor(88, 16);
-          display.print(Ath);
+          if (Inventory[inv_biok_slot][inv_owned] >= 1)
+            display.print(Ath);
           display.drawRect(0, 24, 128, 5, 1);
           display.drawLine(2, 26, map(Ath, 0, max_power, 3, 127), 26, 1);
           //Second Slot <------------------------------------|
@@ -267,13 +286,15 @@ void updateScreen()
           display.setCursor(0, 32);
           display.print(F("Dis: "));
           display.setCursor(88, 32);
-          display.print(Dis);
+          if (Inventory[inv_biok_slot][inv_owned] >= 1)
+            display.print(Dis);
           display.drawLine(2, 42, map(Dis, 0, max_power, 3, 127), 42, 1);
           //Third Slot <------------------------------------|
           display.setCursor(0, 48);
           display.print(F("Int: "));
           display.setCursor(88, 48);
-          display.print(Int);
+          if (Inventory[inv_biok_slot][inv_owned] >= 1)
+            display.print(Int);
           display.drawRect(0, 56, 128, 5, 1);
           display.drawLine(2, 58, map(Int, 0, max_power, 3, 127), 58, 1);
           break;
@@ -283,7 +304,7 @@ void updateScreen()
       break;
 
     /*========================================================================================================================*/
-    case foodM:
+    case m_food:
       display.clearDisplay(); //Erase Screen
       display.setTextColor(1);
       display.setTextSize(2);
@@ -309,7 +330,7 @@ void updateScreen()
 
     /*========================================================================================================================*/
 
-    case confM:
+    case m_conf:
       display.clearDisplay(); //Erase Screen
       display.setTextColor(1);
       display.setTextSize(2);
@@ -338,7 +359,7 @@ void updateScreen()
       break;
 
     /*========================================================================================================================*/
-    case playM:
+    case m_play:
       display.clearDisplay(); //Erase Screen
       display.setTextColor(1);
       display.setTextSize(2);
@@ -364,7 +385,7 @@ void updateScreen()
 
     /*========================================================================================================================*/
 
-    case c_clockset: //Clock set menu
+    case m_clockset: //Clock set menu
       display.clearDisplay();
       display.setTextColor(1);
       display.setTextSize(2);
@@ -406,35 +427,396 @@ void updateScreen()
 
     /*========================================================================================================================*/
 
-    case inventM:
+    case m_invent:
       display.clearDisplay();
       display.setTextColor(1);
       display.setTextSize(1);
       display.drawChar(((ocCursor % 4) * 32), ((ocCursor / 4) * 16) + 5, 16 , 1, 0, 1);
       for (int i = 0; i < inv_max_itemtypes; i++) {
-        switch (i) {
-          case inv_meds_slot:
-            display.drawBitmap(((i % 4) * 32) + 4, (i / 4) * 16, gfx_icon_meds, 16, 16, 1);
-            display.setCursor(((i % 4) * 32) + 20, ((i / 4) * 16) + 5);
-            if (Inventory[inv_meds_slot][inv_owned] < 10)
-              display.print(F("0"));
-            display.print(Inventory[inv_meds_slot][inv_owned]);
-            break;
-          case inv_soda_slot:
-            display.drawBitmap(((i % 4) * 32) + 4, (i / 4) * 16, gfx_icon_soda, 16, 16, 1);
-            display.setCursor(((i % 4) * 32) + 20, ((i / 4) * 16) + 5);
-            if (Inventory[inv_soda_slot][inv_owned] < 10)
-              display.print(F("0"));
-            display.print(Inventory[inv_soda_slot][inv_owned]);
-            break;
-          default:
-            display.drawBitmap(((i % 4) * 32) + 4, (i / 4) * 16, gfx_icon_unon, 16, 16, 1);
-            display.setCursor(((i % 4) * 32) + 20, ((i / 4) * 16) + 5);
-            display.print("00");
-            break;
-        }
+        display.drawBitmap(((i % 4) * 32) + 4, (i / 4) * 16, getIcon(i), icon_dimensions, icon_dimensions, 1);
+        display.setCursor(((i % 4) * 32) + 20, ((i / 4) * 16) + 5);
+        if (Inventory[i][inv_owned] < 10)
+          display.print(F("0"));
+        display.print(Inventory[i][inv_owned]);
       }
       break;
+
+    /*========================================================================================================================*/
+
+    case m_detail:
+      display.clearDisplay();
+      display.setTextColor(1);
+      display.setTextSize(2);
+      display.drawBitmap(4, 0 , getIcon(ocCursor), icon_dimensions, icon_dimensions, 1);
+      switch (ocCursor) {
+        case inv_meds_slot:
+          display.setCursor(30, 0);
+          display.print(F("Meds"));
+          display.setTextSize(1);
+          display.setCursor(0, 24);
+          display.print(F("Removes one level of"));
+          display.setCursor(0, 32);
+          display.print(F("sickness from your"));
+          display.setCursor(0, 40);
+          display.print(F("critter."));
+          break;
+        case inv_soda_slot:
+          display.setCursor(30, 0);
+          display.print(F("Soda"));
+          display.setTextSize(1);
+          display.setCursor(0, 24);
+          display.print(F("Boosts metabolism"));
+          display.setCursor(0, 32);
+          display.print(F("for "));
+          display.print(sodaBonusBeats);
+          display.print(F(" heartbeats."));
+          break;
+        case inv_star_slot:
+          display.setCursor(30, 0);
+          display.print(F("Star"));
+          display.setTextSize(1);
+          display.setCursor(0, 24);
+          display.print(F("Boosts all health"));
+          display.setCursor(0, 32);
+          display.print(F("stats of critter!"));
+          break;
+        case inv_biok_slot:
+          display.setCursor(30, 0);
+          display.print(F("Lab Kit"));
+          display.setTextSize(1);
+          display.setCursor(0, 24);
+          display.print(F("Shows the numerical"));
+          display.setCursor(0, 32);
+          display.print(F("value of each stat."));
+          break;
+        case inv_pedia_slot:
+          display.setCursor(30, 0);
+          display.print(F("Pedia"));
+          display.setTextSize(1);
+
+          display.setCursor(0, 24);
+          display.print(F("An Encyclopedia on"));
+          display.setCursor(0, 32);
+          display.print(F("all of the breeds of"));
+          display.setCursor(0, 40);
+          display.print(F("critters in the game."));
+          break;
+        default:
+          display.setCursor(30, 0);
+          display.print(F("Nothing?"));
+          display.setTextSize(1);
+          display.setCursor(0, 24);
+          display.print(F("Data not found!"));
+          break;
+      }
+      display.setCursor(12, 55);
+      display.print(F("x"));
+      if (Inventory[ocCursor][inv_owned] < 10)
+        display.print(F("0"));
+      display.print(Inventory[ocCursor][inv_owned]);
+      display.drawRect(43, 53, 42, 11, 1);
+      display.setCursor(55, 55);
+      display.print(F("USE"));
+      display.drawRect(86, 53, 42, 11, 1);
+      display.setCursor(90, 55);
+      display.print(F("Cancel"));
+      break;
+
+    /*========================================================================================================================*/
+
+    case m_pedia:
+      display.clearDisplay();
+      display.setTextColor(1);
+      display.setTextSize(2);
+      display.drawBitmap(0, 0 , getFrame(frame_main, ocCursor), crit_dimensions, crit_dimensions, 1);
+
+      //      //First I tried this really fancy code
+      //      if (strings_pedia[ocCursor * pedia_pages] == "") {
+      //        display.print(F("Unknown"));
+      //      }
+      //      for (int i = 1; i < pedia_pages; i++) {
+      //        display.setCursor(i / 3, 48 - (i * 8));
+      //        display.print(strings_pedia[ocCursor * (pedia_pages - i)]);
+      //      }
+
+      //      //Then I tried this simple code
+      //      String output;
+      //      display.setCursor(32, 0);
+      //      output = strings_pedia[ocCursor + 1];
+      //      display.print(output);
+      //      display.setTextSize(1);
+      //      display.setCursor(32, 24);
+      //      output = strings_pedia[ocCursor + 1];
+      //      display.print(output);
+      //      display.setCursor(0, 32);
+      //      output = strings_pedia[ocCursor + 2];
+      //      display.print(output);
+      //      display.setCursor(0, 40);
+      //      output = strings_pedia[ocCursor + 3];
+      //      display.print(output);
+
+      //This is what ended up working :(
+      switch (ocCursor) {
+        case egg:
+          display.setCursor(34, 0);
+          display.print(F("Egg"));
+          display.setTextSize(1);
+          display.setCursor(34, 25);
+          display.print(F("The very"));
+          display.setCursor(0, 34);
+          display.print(F("beginning. Best"));
+          display.setCursor(0, 43);
+          display.print(F("stats in the game."));
+          break;
+        case goob:
+          display.setCursor(34, 0);
+          display.print(F("Goob"));
+          display.setTextSize(1);
+          display.setCursor(34, 25);
+          display.print(F("Very curious,"));
+          display.setCursor(0, 34);
+          display.print(F("but everything makes"));
+          display.setCursor(0, 43);
+          display.print(F("it nervous."));
+          break;
+        case wibbur:
+          display.setCursor(34, 0);
+          display.print(F("Wibbur"));
+          display.setTextSize(1);
+          display.setCursor(34, 25);
+          display.print(F("Its two wiggly"));
+          display.setCursor(0, 34);
+          display.print(F("feet are just going"));
+          display.setCursor(0, 43);
+          display.print(F("with the flow."));
+          break;
+        case xorby:
+          display.setCursor(34, 0);
+          display.print(F("Xorby"));
+          display.setTextSize(1);
+          display.setCursor(34, 25);
+          display.print(F("It's always"));
+          display.setCursor(0, 34);
+          display.print(F("trying to use its"));
+          display.setCursor(0, 43);
+          display.print(F("limbs to play!"));
+          break;
+        case snek:
+          display.setCursor(34, 0);
+          display.print(F("Snek"));
+          display.setTextSize(1);
+          display.setCursor(34, 25);
+          display.print(F("It might not"));
+          display.setCursor(0, 34);
+          display.print(F("have any limbs, but"));
+          display.setCursor(0, 43);
+          display.print(F("it's very clever."));
+          break;
+        case shansy:
+          display.setCursor(34, 0);
+          display.print(F("Shansy"));
+          display.setTextSize(1);
+          display.setCursor(34, 25);
+          display.print(F("It sings a song"));
+          display.setCursor(0, 34);
+          display.print(F("while it twirls its"));
+          display.setCursor(0, 43);
+          display.print(F("tentacles around."));
+          break;
+        case moops:
+          display.setCursor(34, 0);
+          display.print(F("Moops"));
+          display.setTextSize(1);
+          display.setCursor(34, 25);
+          display.print(F("Shuffles around"));
+          display.setCursor(0, 34);
+          display.print(F("on its suction-cup"));
+          display.setCursor(0, 43);
+          display.print(F("feet and moos."));
+          break;
+        case hwooty:
+          display.setCursor(34, 0);
+          display.print(F("Hwooty"));
+          display.setTextSize(1);
+          display.setCursor(34, 25);
+          display.print(F("Staring into"));
+          display.setCursor(0, 34);
+          display.print(F("space seems to be its"));
+          display.setCursor(0, 43);
+          display.print(F("favorite pastime."));
+          break;
+        case flip:
+          display.setCursor(34, 0);
+          display.print(F("Flip"));
+          display.setTextSize(1);
+          display.setCursor(34, 25);
+          display.print(F("Can't fly, but"));
+          display.setCursor(0, 34);
+          display.print(F("runs very fast every-"));
+          display.setCursor(0, 43);
+          display.print(F("where it goes."));
+          break;
+        case lugerd:
+          display.setCursor(34, 0);
+          display.print(F("Lugerd"));
+          display.setTextSize(1);
+          display.setCursor(34, 25);
+          display.print(F("Gets grouchy"));
+          display.setCursor(0, 34);
+          display.print(F("when it's not allowed"));
+          display.setCursor(0, 43);
+          display.print(F("to hit things."));
+          break;
+        case culu:
+          display.setCursor(34, 0);
+          display.print(F("Culu"));
+          display.setTextSize(1);
+          display.setCursor(34, 25);
+          display.print(F("You can feel it"));
+          display.setCursor(0, 34);
+          display.print(F("in your mind..."));
+          break;
+        case shent:
+          display.setCursor(34, 0);
+          display.print(F("Shent"));
+          display.setTextSize(1);
+          display.setCursor(34, 25);
+          display.print(F("It's very smart"));
+          display.setCursor(0, 34);
+          display.print(F("but it also gets"));
+          display.setCursor(0, 43);
+          display.print(F("bored very easily."));
+          break;
+        case slorp:
+          display.setCursor(34, 0);
+          display.print(F("Slorp"));
+          display.setTextSize(1);
+          display.setCursor(34, 25);
+          display.print(F("It hides in its"));
+          display.setCursor(0, 34);
+          display.print(F("spiral shell when it"));
+          display.setCursor(0, 43);
+          display.print(F("feels threatened."));
+          break;
+        case zeta:
+          display.setCursor(34, 0);
+          display.print(F("Zeta"));
+          display.setTextSize(1);
+          display.setCursor(34, 25);
+          display.print(F("It's a slippery,"));
+          display.setCursor(0, 34);
+          display.print(F("zippidy-zappy, shocky"));
+          display.setCursor(0, 43);
+          display.print(F("water snake."));
+          break;
+        case butters:
+          display.setCursor(34, 0);
+          display.print(F("Butters"));
+          display.setTextSize(1);
+          display.setCursor(34, 25);
+          display.print(F("A highly mobile"));
+          display.setCursor(0, 34);
+          display.print(F("source of specific"));
+          display.setCursor(0, 43);
+          display.print(F("dairy products."));
+          break;
+        case tribbur:
+          display.setCursor(34, 0);
+          display.print(F("Tribbur"));
+          display.setTextSize(1);
+          display.setCursor(34, 25);
+          display.print(F("Nobody knows"));
+          display.setCursor(0, 34);
+          display.print(F("how it eats food with"));
+          display.setCursor(0, 43);
+          display.print(F("out a mouth."));
+          break;
+        case corine:
+          display.setCursor(34, 0);
+          display.print(F("Corine"));
+          display.setTextSize(1);
+          display.setCursor(34, 25);
+          display.print(F("It always looks"));
+          display.setCursor(0, 34);
+          display.print(F("like it's ready to be"));
+          display.setCursor(0, 43);
+          display.print(F("photgraphed."));
+          break;
+        case pyre:
+          display.setCursor(34, 0);
+          display.print(F("Pyre"));
+          display.setTextSize(1);
+          display.setCursor(34, 25);
+          display.print(F("A fiery atti-"));
+          display.setCursor(0, 34);
+          display.print(F("tude to match it's "));
+          display.setCursor(0, 43);
+          display.print(F("fiery body."));
+          break;
+        case rajur:
+          display.setCursor(34, 0);
+          display.print(F("Rajur"));
+          display.setTextSize(1);
+          display.setCursor(34, 25);
+          display.print(F("It will destroy"));
+          display.setCursor(0, 34);
+          display.print(F("anything that gets in"));
+          display.setCursor(0, 43);
+          display.print(F("its way."));
+          break;
+        case crosh:
+          display.setCursor(34, 0);
+          display.print(F("Crosh"));
+          display.setTextSize(1);
+          display.setCursor(34, 25);
+          display.print(F("It only moves"));
+          display.setCursor(0, 34);
+          //-----------(F("0123456789ABCDEF01234"));
+          display.print(F("to hit things with"));
+          display.setCursor(0, 43);
+          display.print(F("its hammer."));
+          break;
+        default:
+          display.setCursor(34, 0);
+          display.print(F("Unknown"));
+          display.setTextSize(1);
+          display.setCursor(0, 34);
+          display.print(F("Data not found!"));
+          break;
+      }
+
+      //Find its lifestage and draw it on the screen under the critter's name
+      display.setCursor(34, 16);
+      if (ocCursor == 0)
+        display.print(F("Egg"));
+      else if (ocCursor <= 3)
+        display.print(F("Baby"));
+      else if (ocCursor <= 9)
+        display.print(F("Teen"));
+      else if (ocCursor <= 19)
+        display.print(F("Adult"));
+      else if (ocCursor <= 25)
+        display.print(F("Senior"));
+      else if (ocCursor <= 28)
+        display.print(F("Ancient"));
+      else
+        display.print(F("Ultimate"));
+
+      display.setCursor(116, 0);
+      if (ocCursor < 10)
+        display.print(F("0"));
+      display.print(ocCursor);
+      display.drawRect(0, 53, 42, 11, 1);
+      display.setCursor(18, 55);
+      display.print(F("<"));
+      display.drawRect(43, 53, 42, 11, 1);
+      display.setCursor(62, 55);
+      display.print(F(">"));
+      display.drawRect(86, 53, 42, 11, 1);
+      display.setCursor(90, 55);
+      display.print(F("Cancel"));
+      break;
+
   }
   display.display();
 }

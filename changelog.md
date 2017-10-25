@@ -1,7 +1,33 @@
+### October 24th, 2017 [alpha v0.013] Adults Update
+
+[Changes]
+- Added nine new adult breeds: Culu, Shent, Slorp, Zeta, Butters, Corine, Pyre, Rajur, and Crosh.
+- Greatly reduced evolvehandler() code.
+- Put breed selection for animations and frame fetching back in.
+- Added icon graphics "labk", "book", "biok" and "tome".
+- Fixed code that incorrectly read the incoming button byte from IOPUs. You can now press two buttons at once.
+- Added "debug button" IOPU sketch that adds a fourth button (pin A1) to the game for debugging purposes.
+- Changed Lazer Chiken to Lazer Jet.
+- Added beep_noise to IOPU for Lazer Jet game.
+- Added Soda effect. Boosts metabolism for 1000 heartbeats.
+- Added Star item. Adds double food bonus to all health stats without penalty.
+- Added Bio Kit item. Shows numerical values of all stats.
+- Added a "Pedia" item that shows details about each critter.
+- Stats numbers are now hidden, showing only bars.
+- Making a "discovery" now has equal chances of finding Meds, Soda, or a Star
+- Critter can now walk around the "playpen" when on the main menu.
+- Fixed games menu not selecting BitShifter
+
+[Known Bugs]
+- Some of the adults may not be able to be evolved into naturally through gameplay.
+- The Lab Kit is in the game, but currently does nothing.
+
 ### October 18th, 2017 [alpha v0.012] Inventory Update
 
 Inventory system was added!
-Some much-needed change to terminology was needed to reduce the confusing game mechanics!
+
+Some much-needed change to terminology was done to reduce the confusing game mechanics!
+
 Animation frame selection was reworked to save a lot of space and time! Reduced lines of code from 1,111 to 172!
 
 [Changes]
@@ -30,6 +56,7 @@ Animation frame selection was reworked to save a lot of space and time! Reduced 
 - Selecting the Alert icon will take you to the Stats menu if the critter is actually in danger of being sick.
 - Merged both versions of E_humanIO_* into E_InputOutput. Now each function can tell if the board has it's own IO or there is an IOPU attached.
 - Switched position of I_animate and J_games to I_games and J_animate to keep similar functions together.
+- Added evolution and death animations.
 
 [Known Bugs]
 - Pressing both A and B with cancel playing a game?

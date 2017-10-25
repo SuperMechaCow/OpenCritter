@@ -13,7 +13,7 @@ void updateBPM() {
 }
 
 /*== Update Clock ========================================================================================================*/
-void updateClock() {
+void updateclockMenu() {
   hnow = ((((clockOFFSET + millis()) / 1000) / 60) / 60);
   mnow = (((clockOFFSET + millis()) / 1000) / 60) % 60;
   snow = ((clockOFFSET + millis()) / 1000) % 60;
@@ -22,8 +22,10 @@ void updateClock() {
 /*== Main Menu ===========================================================================================================*/
 void mainMenu()
 {
+
   //Show the critter doing stuff
-  animate(48, 16);
+  display.fillRect(24, 16, 80, 32, 0); //Erase where the critter was standing
+  animate(playPen_now, 16, breed);
 
   //Figure out how to handle the buttons that  getButtons() found
   if (Inventory[inv_meds_slot][inv_owned] > Inventory[inv_meds_slot][inv_acked]) {
@@ -48,7 +50,21 @@ void mainMenu()
       updateScreen();
     }
   }
+  else if (Inventory[inv_star_slot][inv_owned] > Inventory[inv_star_slot][inv_acked]) {
+    if (butNOW[0] || butNOW[1] || butNOW[2]) {
+      butNOW[0] = false;
+      butNOW[1] = false;
+      butNOW[2] = false;
+      beep(beep_PosBeep);
+      Inventory[inv_star_slot][inv_acked] = Inventory[inv_star_slot][inv_owned];
+      display.clearDisplay();
+      updateScreen();
+    }
+  }
   else {
+    /////
+    //A//
+    /////
     if (butNOW[0]) //A button is pressed
     {
 
@@ -60,6 +76,9 @@ void mainMenu()
         ocCursor = RESET;
       updateScreen();
     }
+    /////
+    //B//
+    /////
     if (butNOW[1]) //B button is pressed
     {
       //do stuff when button is HIGH
@@ -68,16 +87,16 @@ void mainMenu()
       switch (ocCursor)
       {
         case 0:
-          selMenu = clockM;
+          selMenu = m_clock;
           ocCursor = RESET;
           break;
         case 1:
-          selMenu = statsM;
+          selMenu = m_stats;
           ocCursor = RESET;
           break;
         case 2:
           if (breed > 0) {
-            selMenu = foodM;
+            selMenu = m_food;
             ocCursor = RESET;
           }
           else {
@@ -86,7 +105,7 @@ void mainMenu()
           break;
         case 3:
           if (breed > 0) {
-            selMenu = playM;
+            selMenu = m_play;
             ocCursor = RESET;
           }
           else {
@@ -94,11 +113,11 @@ void mainMenu()
           }
           break;
         case 4:
-          selMenu = inventM;
+          selMenu = m_invent;
           ocCursor = RESET;
           break;
         case 5:
-          selMenu = confM;
+          selMenu = m_conf;
           ocCursor = RESET;
           break;
         case 6:
@@ -121,6 +140,9 @@ void mainMenu()
       }
       updateScreen();
     }
+    /////
+    //C//
+    /////
     if (butNOW[2]) //C button is pressed
     {
       beep(beep_NegBeep);
@@ -130,6 +152,19 @@ void mainMenu()
         ocCursor = 8;
       ocCursor--;
       updateScreen();
+    }
+    /////
+    //D//
+    /////
+    if (butNOW[3] && debugMode == true) //C button is pressed
+    {
+      beep(beep_noise);
+      butNOW[3] = false; //Set the button to not enable again
+      //do stuff when button is HIGH
+      if (breed >= max_breeds - 1)
+        breed = RESET;
+      else
+        breed++;
     }
   }
 }
@@ -141,7 +176,7 @@ void clockMenu()
   if (CLK[baseCLK] - CLK[timeCLK] > ref_int)
   {
     CLK[timeCLK] = CLK[baseCLK];
-    updateClock();
+    updateclockMenu();
     updateScreen();
   }
 
@@ -164,7 +199,7 @@ void clockMenu()
     beep(beep_HiLo1);
     //do stuff when button is HIGH
     butNOW[2] = false; //Set the button to not enable again
-    selMenu = mainM;
+    selMenu = m_main;
     display.clearDisplay();
   }
 }
@@ -195,7 +230,7 @@ void statsMenu()
     beep(beep_PosBeep);
     butNOW[1] = false; //Set the button to not enable again
     if (ocCursor <= 0)
-      ocCursor = 3;
+      ocCursor = 4;
     ocCursor--;
     updateScreen();
   }
@@ -205,7 +240,7 @@ void statsMenu()
     beep(beep_HiLo1);
     //do stuff when button is HIGH
     butNOW[2] = false; //Set the button to not enable again
-    selMenu = mainM;
+    selMenu = m_main;
     display.clearDisplay();
   }
 }
@@ -245,7 +280,7 @@ void foodMenu()
 
         eatProtein();
 
-        selMenu = mainM;
+        selMenu = m_main;
         display.clearDisplay();
         ocCursor = 2;
         break;
@@ -253,7 +288,7 @@ void foodMenu()
 
         eatFat();
 
-        selMenu = mainM;
+        selMenu = m_main;
         display.clearDisplay();
         ocCursor = 2;
         break;
@@ -261,7 +296,7 @@ void foodMenu()
 
         eatCarbs();
 
-        selMenu = mainM;
+        selMenu = m_main;
         display.clearDisplay();
         ocCursor = 2;
         break;
@@ -275,7 +310,7 @@ void foodMenu()
     beep(beep_HiLo1);
     //do stuff when button is HIGH
     butNOW[2] = false; //Set the button to not enable again
-    selMenu = mainM;
+    selMenu = m_main;
     display.clearDisplay();
     ocCursor = RESET;
   }
@@ -323,8 +358,9 @@ void playMenu()
       case 2: // Bit Shift
         selMenu = g_bitshifter;
         ocCursor = RESET;
-      case 3: // Bit Shift
-        selMenu = g_lazerchiken;
+        break;
+      case 3: // Lazer jet
+        selMenu = g_lazerjet;
         ocCursor = RESET;
         break;
       default:
@@ -337,7 +373,7 @@ void playMenu()
     beep(beep_HiLo1);
     //do stuff when button is HIGH
     butNOW[2] = false; //Set the button to not enable again
-    selMenu = mainM;
+    selMenu = m_main;
     display.clearDisplay();
     ocCursor = RESET;
   }
@@ -374,7 +410,7 @@ void confMenu()
     {
       case 0: //Set Clock
         beep(beep_PosBeep);
-        selMenu = c_clockset;
+        selMenu = m_clockset;
         ocCursor = RESET;
         break;
       case 1: //12 hour mode
@@ -419,19 +455,19 @@ void confMenu()
     beep(beep_HiLo1);
     //do stuff when button is HIGH
     butNOW[2] = false; //Set the button to not enable again
-    selMenu = mainM;
+    selMenu = m_main;
     display.clearDisplay();
   }
 }
 
 /*== Clock Set ===========================================================================================================*/
-void clockset()
+void clockSet()
 {
   //Update the screen each standard refresh interval
   if (CLK[baseCLK] - CLK[timeCLK] > ref_int)
   {
     CLK[timeCLK] = CLK[baseCLK];
-    updateClock();
+    updateclockMenu();
     updateScreen();
   }
 
@@ -445,7 +481,7 @@ void clockset()
     ocCursor++;
     if (ocCursor >= 3)
       ocCursor = RESET;
-    updateClock();
+    updateclockMenu();
     updateScreen();
   }
   if (butNOW[1])
@@ -471,7 +507,7 @@ void clockset()
       if (clockOFFSET >= 86400000)
         clockOFFSET -= 86400000;
     }
-    updateClock();
+    updateclockMenu();
     updateScreen();
   }
   if (butNOW[2])
@@ -480,7 +516,7 @@ void clockset()
     beep(beep_HiLo1);
     //do stuff when button is HIGH
     butNOW[2] = false; //Set the button to not enable again
-    selMenu = confM;
+    selMenu = m_conf;
     ocCursor = RESET;
     display.clearDisplay();
   }
@@ -490,6 +526,9 @@ void clockset()
 
 void inventMenu()
 {
+  /////
+  //A//
+  /////
   if (butNOW[0])
   {
     beep(beep_NegBeep);
@@ -499,10 +538,64 @@ void inventMenu()
       ocCursor = RESET;
     updateScreen();
   }
+
+  /////
+  //B//
+  /////
   if (butNOW[1])
   {
     beep(beep_NegBeep);
     butNOW[1] = false;
+    selMenu = m_detail;
+    display.clearDisplay();
+    updateScreen();
+  }
+
+  /////
+  //C//
+  /////
+  if (butNOW[2])
+  {
+    beep(beep_HiLo1);
+    //do stuff when button is HIGH
+    butNOW[2] = false; //Set the button to not enable again
+    selMenu = m_main;
+    display.clearDisplay();
+  }
+
+  /////
+  //D//
+  /////
+  if (butNOW[3] && debugMode == true)
+  {
+    beep(beep_HiLo1);
+    butNOW[3] = false; //Set the button to not enable again
+    Inventory[ocCursor][inv_owned]++;
+    Inventory[ocCursor][inv_acked]++;
+    updateScreen();
+  }
+
+}
+
+/*========================================================================================================================*/
+
+void detailMenu() {
+  /////
+  //A//
+  /////
+  if (butNOW[0])
+  {
+    beep(beep_NegBeep);
+    butNOW[0] = false; //Set the button to not enable again
+  }
+
+  /////
+  //B//
+  /////
+  if (butNOW[1])
+  {
+    beep(beep_NegBeep);
+    butNOW[1] = false; //Set the button to not enable again
     switch (ocCursor) {
       case inv_meds_slot:
         //Use medicine
@@ -510,7 +603,7 @@ void inventMenu()
           Inventory[inv_meds_slot][inv_owned]--;
           Inventory[inv_meds_slot][inv_acked]--;
           sickCount--; //Cure one sickness
-          beep(beep_HiLo3);
+          beep(beep_UpChirp);
           updateScreen();
         }
         else {
@@ -522,7 +615,53 @@ void inventMenu()
         if (Inventory[inv_soda_slot][inv_owned] > 0) {
           Inventory[inv_soda_slot][inv_owned]--;
           Inventory[inv_soda_slot][inv_acked]--;
-          beep(beep_HiLo3);
+          boostActive = true;
+          boostBeat = heartbeats + sodaBonusBeats;
+          beep(beep_UpChirp);
+          updateScreen();
+        }
+        else {
+          beep(beep_HiLo1);
+        }
+        break;
+      case inv_star_slot:
+        if (Inventory[inv_star_slot][inv_owned] > 0) {
+          Inventory[inv_star_slot][inv_owned]--;
+          Inventory[inv_star_slot][inv_acked]--;
+          if (hun + (foodbonus * 2) > max_health)
+            hun = max_health;
+          else
+            hun = hun + (foodbonus * 2);
+          if (hap + (foodbonus * 2) > max_health)
+            hap = max_health;
+          else
+            hap = hap + (foodbonus * 2);
+          if (bor + (foodbonus * 2) > max_health)
+            bor = max_health;
+          else
+            bor = bor + (foodbonus * 2);
+          beep(beep_UpChirp);
+          updateScreen();
+        }
+        else {
+          beep(beep_HiLo1);
+        }
+        break;
+      case inv_biok_slot:
+        if (Inventory[inv_biok_slot][inv_owned] > 0) {
+          selMenu = m_stats;
+          beep(beep_UpChirp);
+          updateScreen();
+        }
+        else {
+          beep(beep_HiLo1);
+        }
+        break;
+      case inv_pedia_slot:
+        if (Inventory[inv_pedia_slot][inv_owned] > 0) {
+          selMenu = m_pedia;
+          ocCursor = RESET;
+          beep(beep_UpChirp);
           updateScreen();
         }
         else {
@@ -533,12 +672,76 @@ void inventMenu()
         break;
     }
   }
+
+  /////
+  //C//
+  /////
+  if (butNOW[2])
+  {
+    beep(beep_HiLo1);
+    butNOW[2] = false; //Set the button to not enable again
+    selMenu = m_invent;
+    display.clearDisplay();
+    updateScreen();
+  }
+
+}
+
+/*========================================================================================================================*/
+
+void pediaMenu() {
+
+  /////
+  //A//
+  /////
+  if (butNOW[0])
+  {
+    beep(beep_NegBeep);
+    butNOW[0] = false; //Set the button to not enable again
+    if (ocCursor <= 0)
+      ocCursor = max_breeds - 1;
+    else
+      ocCursor--;
+    updateScreen();
+  }
+
+  /////
+  //B//
+  /////
+  if (butNOW[1])
+  {
+    beep(beep_NegBeep);
+    butNOW[1] = false;
+
+    if (ocCursor >= max_breeds - 1)
+      ocCursor = RESET;
+    else
+      ocCursor++;
+    updateScreen();
+  }
+
+  /////
+  //C//
+  /////
   if (butNOW[2])
   {
     beep(beep_HiLo1);
     //do stuff when button is HIGH
     butNOW[2] = false; //Set the button to not enable again
-    selMenu = mainM;
+    selMenu = m_main;
     display.clearDisplay();
   }
+
+  /////
+  //D//
+  /////
+  if (butNOW[3] && debugMode == true)
+  {
+    beep(beep_HiLo1);
+    butNOW[3] = false; //Set the button to not enable again
+    breed = ocCursor;
+    updateScreen();
+  }
+
 }
+

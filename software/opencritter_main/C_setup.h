@@ -1,6 +1,6 @@
-#define versionnum "a0.012"
+#define versionnum "a0.0013"
 #define branchnum "0.00"
-#define release "101817"
+#define release "102417"
 
 //Setup Access Point
 const char *ssid = "OpenCritter";
@@ -28,28 +28,22 @@ int i2c_devices[] = {0};
 //Misc.
 String crittername = "";
 // Health Stats
-byte Ath = 128;                  // Athleticism. How fast Hunger drains
-byte Dis = 128;                  // Discipline. How fast happiness drains
-byte Int = 128;                  // Intelligence. How fast Boredom drains
+byte Ath = 128;                 // Athleticism. How fast Hunger drains
+byte Dis = 128;                 // Discipline. How fast happiness drains
+byte Int = 128;                 // Intelligence. How fast Boredom drains
 // Trait
 byte hun = 255;                 // Hunger
 byte hap = 255;                 // Happiness
 byte bor = 255;                 // Boredom
 // Energy Stats
-byte Energy = 0;                   // How much Energy the critter has to complete tasks
+byte Energy = 0;                // How much Energy the critter has to complete tasks
 byte metabolism = 50;           // The frequency at which heartbeats occur
 byte weight = 10;               // How much the critter "weighs"
-/*========================================================================================================================*/
-/*========================================================================================================================*/
-//ADD THIS ENERGY SYSTEM AS A BIOSTAT! HIGHER WEIGHT AND LOWER TRAITS DRAIN ENERGY FASTER! ENERGY IS NEEDED TO DO THINGS!
-//CAN DO THINGS ON ITS OWN IF ENERGY IS MAXED OUT!
-/*========================================================================================================================*/
-/*========================================================================================================================*/
-
 
 // Bio-functions
 bool deadcritter = false;
 unsigned int heartbeats = 0;    // How many heartbeats have been... beaten?
+unsigned int distressbeats = 0; // How many beats was the critter crying for attention?
 float hrtBPM = 0;               // Beats per minute. Not vital to the game. Good for the user's imagination, though.
 byte metaBonus = 0;             // A flat modifier of the metabolism from lifestage and medicines, etc.
 byte lifestage = 0;             // What stage
@@ -60,11 +54,20 @@ byte poopCount = 0;             // How many poops are on the floor
 byte sickCount = 0;             // What stage of sickness the critter is at
 int sickRolls = 0;              // How many times was the critter left vulnerable to sickness?
 bool Alert = false;             // Does the critter want/need attention?
-byte rollResult = 0;            //
 byte breed = 0;                 // What breed in the breed index (see _labels.h) the critter is
 
 //Inventory Items
-byte Inventory[inv_max_itemtypes][3] = {{0}}; //A table of items with three properties. "total owned", "total acknowledged", and "max limit".
+//A table of items with three properties. "total owned", "total acknowledged", and "max limit".
+byte Inventory[inv_max_itemtypes][3] = {
+  {inv_meds_start, inv_soda_start, inv_meds_max},     //meds
+  {inv_soda_start, inv_soda_start, inv_soda_max},     //soda
+  {inv_star_start, inv_star_start, inv_star_max},     //star
+  {inv_biok_start, inv_biok_start, inv_biok_max},     //biok
+  {inv_pedia_start, inv_pedia_start, inv_pedia_max},  //pedia
+  {inv_labk_start, inv_labk_start, inv_labk_max}      //labk
+};
+unsigned int boostBeat = 0;     //When is the last heartbeat for the boost?
+bool boostActive = false;
 
 //Menu and cursor funtions
 byte selMenu = 0;               // The currently selected menu
@@ -92,9 +95,12 @@ byte aniMode = 0;               // Which animation is currently playing?
 byte aniOffset = 0;             // Offset the frames of the animation by this much
 byte aniStage = 0;              // Which frame of the animation is playing?
 byte aniLast = 0;               // What was the LAST frame to be played?
+byte playPen_now = 48;          // The location of the critter on the main menu (playpen)
+byte playPen_then = 48;         // The previous location of the critter in the playpen
+byte foodType = 0;              // The type of food being eaten
 
 //Real clock functions
-int dnow, hnow, mnow, snow = 0; // Days, Hours, Minutes, Seconds right now
+int hnow, mnow, snow = 0; // Days, Hours, Minutes, Seconds right now
 unsigned long clockOFFSET = 0;  // Offset the real clock by the game clokc by this much
 bool hour12 = false;            // 'True' uses AM/PM system, 'False' uses 24 hour system
 

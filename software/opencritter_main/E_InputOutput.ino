@@ -41,13 +41,13 @@ void getButtons() { //Game-wide handling of reading button input
       buttbyte = Wire.read();
     }
 
-    for (int i = 1; i <= 8; i++) {
-      butREAD[i - 1] = (buttbyte / i) % 2;
-      if (butREAD[i - 1] != butTHEN[i - 1]) //If the current physical state of then button is not what it was
+    for (int i = 0; i <= 7; i++) {
+      butREAD[i] = (buttbyte >> i) % 2;
+      if (butREAD[i] != butTHEN[i]) //If the current physical state of then button is not what it was
       {
         CLK[sleepCLK] = millis();
-        butTHEN[i - 1] = butREAD[i - 1]; //Set the "previous state" to the button state
-        butNOW[i - 1] = butREAD[i - 1];  //Set the current state to the button state
+        butTHEN[i] = butREAD[i]; //Set the "previous state" to the button state
+        butNOW[i] = butREAD[i];  //Set the current state to the button state
       }
     }
   }

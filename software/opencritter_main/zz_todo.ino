@@ -1,13 +1,14 @@
-// Add self-feeding, self-playing and medicine/loot finding with full energy
 // Add stasis cell to put critter to "sleep" overnight
-// Add new graphics (fat, carbs, lazer jet, enemy lazer jet, ball, catcher, backpack, item icons).
 // Add score/stat changes screen at end of each game
-// Add flappy-laser-chicken game
-// Add more graphics for games
 // Add an engine for multiple animations at once
-// Center facing and profile images for all critters.
+// Lab Kit item shows labels and values in hex
+// Wish item allows you to change any one byte in the game
+
 // Make some code to flip graphics horizontally.
-// Let critters move from side to side.
+// Write code that sends the oled buffer to the serial port for "screenshots"
+
+//DevKit1 Classico
+
 
 // BATTERY CHANGES
 // Divide IOPU clock by 8 to save power
@@ -26,6 +27,8 @@
 // Move heart pin to PWM
 // Use a WS2812 as a heart led. Displays power by color
 
+
+//-----------(F("0123456789ABCDEF01234"));
 
 
 

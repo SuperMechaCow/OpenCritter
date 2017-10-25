@@ -93,7 +93,7 @@
 #define beep_Bip          8
 #define beep_Bop          9
 #define beep_Tick         10
-//#define beep_ thee fast upchirps
+#define beep_noise        11
 
 // BUZZER NAMES
 //0 and 1 are reserved for changing buzzer mute state

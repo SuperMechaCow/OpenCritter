@@ -19,9 +19,9 @@
 #define beeper_pin  0
 #define rumble_pin  0
 //i2c and uart comms
-#define i2cSDA 0
-#define i2cSCL 2
-#define serialbaud 115200
+#define i2cSDA      0
+#define i2cSCL      2
+#define serialbaud  115200
 #endif
 
 //oc on NodeMCU standalone
@@ -38,7 +38,7 @@
 //i2c and uart comms
 #define i2cSDA      D6
 #define i2cSCL      D7
-#define serialbaud 115200
+#define serialbaud  115200
 #endif
 
 #ifdef __AVR_ATmega2560__
@@ -51,5 +51,5 @@
 #define Cbut_pin    9
 #define beeper_pin  6
 #define rumble_pin  3
-#define serialbaud 115200
+#define serialbaud  115200
 #endif
