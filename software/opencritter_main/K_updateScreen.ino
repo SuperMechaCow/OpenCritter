@@ -482,7 +482,7 @@ void updateScreen()
           break;
         case inv_biok_slot:
           display.setCursor(30, 0);
-          display.print(F("Lab Kit"));
+          display.print(F("Bio Kit"));
           display.setTextSize(1);
           display.setCursor(0, 24);
           display.print(F("Shows the numerical"));

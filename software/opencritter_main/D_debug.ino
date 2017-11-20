@@ -33,6 +33,13 @@ void debug()
       //  7 - Int
       //  8 - heartbeats
       //  9 - distressbeats
+      //3 - Change heart keyframes
+      //  0 - beat_health
+      //  1 - beat_sick
+      //  2 - beat_cry
+      //  3 - beat_hatch
+      //  4 - beat_evolve
+      //  5 - beat_energy
 
       case 1:
         Serial.println(F("Which menu?"));
@@ -182,6 +189,81 @@ void debug()
             distressbeats = Serial.parseFloat();
             Serial.print(F("changed: "));
             Serial.println(distressbeats);
+        }
+        break;
+        case 3:
+        Serial.println(F("change keyframe: "));
+        while (!Serial.available())
+        {
+        }
+        switch (Serial.parseInt())
+        {
+          case 1: //health
+            Serial.print(F(" health: "));
+            Serial.print(beat_health);
+            Serial.println(F(" new val:"));
+            while (!Serial.available())
+            {
+            }
+            beat_health  = Serial.parseFloat();
+            Serial.print(F("changed: "));
+            Serial.println(beat_health);
+            break;
+          case 2: //sick
+            Serial.print(F(" sick: "));
+            Serial.print(beat_sick);
+            Serial.println(F(" new val:"));
+            while (!Serial.available())
+            {
+            }
+            beat_sick = Serial.parseFloat();
+            Serial.print(F("changed: "));
+            Serial.println(beat_sick);
+            break;
+          case 3: //cry
+            Serial.print(F(" cry: "));
+            Serial.print(beat_cry);
+            Serial.println(F(" new val:"));
+            while (!Serial.available())
+            {
+            }
+            beat_cry = Serial.parseFloat();
+            Serial.print(F("changed: "));
+            Serial.println(beat_cry);
+            break;
+          case 4: //hatch
+            Serial.print(F(" hatch: "));
+            Serial.print(beat_hatch);
+            Serial.println(F(" new val:"));
+            while (!Serial.available())
+            {
+            }
+            beat_hatch = Serial.parseFloat();
+            Serial.print(F("changed: "));
+            Serial.println(beat_hatch);
+            break;
+          case 5: //evolve
+            Serial.print(F(" evolve: "));
+            Serial.print(beat_evolve);
+            Serial.println(F("  new val:"));
+            while (!Serial.available())
+            {
+            }
+            beat_evolve = Serial.parseFloat();
+            Serial.print(F("changed: "));
+            Serial.println(beat_evolve);
+            break;
+          case 6: //energy
+            Serial.print(F(" energy: "));
+            Serial.print(beat_energy);
+            Serial.println(F(" new val:"));
+            while (!Serial.available())
+            {
+            }
+            beat_energy = Serial.parseFloat();
+            Serial.print(F("changed: "));
+            Serial.println(beat_energy);
+            break;
         }
         break;
       default:

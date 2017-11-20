@@ -289,6 +289,7 @@ void evolveHandler() {
     //If the critter is a baby becoming a teen
     //Determine the breed by it's lowest power stat, and if that power stat is higher than 50%
     //You will get a critter based on it's top two health stats, plus how well taken care of it is
+
     case baby:
       if (Ath < Dis && Ath < Int) {
         breed = breed + 3;
@@ -297,14 +298,20 @@ void evolveHandler() {
       }
       else if (Int < Ath && Int < Dis) {
         breed = breed + 5;
-        if (Int > (max_power / 2))
+        if (breed == hwooty)
           breed++;
+        if (Int > (max_power / 2)) {
+          breed++;
+          if (breed == hwooty)
+            breed++;
+        }
       }
       else {
         breed = breed + 4;
-        if (random(0, 2) == 1)
-          breed++;
       }
+      if (breed == moops || breed == hwooty)
+        breed = moops + random(0, 2);
+
       metaBonus = teen_m;
       lifestage++;
       break;

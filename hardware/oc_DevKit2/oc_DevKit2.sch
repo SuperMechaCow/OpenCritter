@@ -375,8 +375,6 @@ Wire Wire Line
 	5500 3200 5200 3200
 Text Label 5200 3200 0    60   ~ 0
 RESET
-Text Notes 1200 3250 0    60   ~ 0
-VERIFY HOW TO USE THE CP2102 AND IF THE SCHEMATIC IS RIGHT!\nESPECIALLY POWER!
 Text Notes 1200 4350 0    60   ~ 0
 Do the buttons need filter caps?
 Text Notes 1200 4600 0    60   ~ 0
@@ -757,6 +755,6 @@ A2 28 8A A2 28 8A A2 28 8A A2 28 8A A2 28 8A A2 28 8A A2 28 8A A2 28 8A A2 28 8A
 28 23 FE 3F 55 48 14 3C 2E 09 8D 21 00 00 00 00 49 45 4E 44 AE 42 60 82 
 EndData
 $EndBitmap
-Text Notes 2050 2350 0    60   ~ 0
-Add interupt to A button
+Text Notes 950  1450 0    197  ~ 0
+Add interupt to C button
 $EndSCHEMATC

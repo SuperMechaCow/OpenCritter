@@ -30,6 +30,7 @@ LIBS:contrib
 LIBS:valves
 LIBS:switches
 LIBS:motors
+LIBS:oc_parts
 LIBS:oc_DevKit2-cache
 EELAYER 25 0
 EELAYER END

@@ -175,7 +175,7 @@ void loop() {
         //Raising the power stat decreases the drain rate of the status
         //Raising a health stat with junk foods negatively impact power stats
         //Power stats also each effect one other part of the game
-        //Every health_beat number of heartbeats the game "rolls" to decrease a health stat
+        //Every beat_health number of heartbeats the game "rolls" to decrease a health stat
 
         //CALCULATE STAT CHANGE
         //The game "rolls the dice" (picks a number between 0 and max_drainChance)
@@ -183,7 +183,7 @@ void loop() {
         //The higher the power stat, the less likely there will be a health reduction
         //Sickness lowers the power temporarily. This is calculated by how many stacks of sickness it has times the sickness penalty multiplier
 
-        if (heartbeats % health_beat == 0) { //If the current heartbeat is a key beat for rolling for health stat drain
+        if (heartbeats % beat_health == 0) { //If the current heartbeat is a key beat for rolling for health stat drain
           if (random(0, max_drainChance) > Ath - (sick_penalty * sickCount)) { //High power stats reduce chance of health stat drain. Each stack of sickness increases chance.
             if (hun > 0)
               hun--; //hunger = athleticism
@@ -208,27 +208,27 @@ void loop() {
         }
 
         //See if it will cry wolf
-        if (heartbeats % cry_beat == 0) { //If this is a key
+        if (heartbeats % beat_cry == 0) { //If this is a key
           cryHandler();
         }
 
         //Check for sickness
-        if (heartbeats % sick_beat == 0) {
+        if (heartbeats % beat_sick == 0) {
           sickHandler();
         }
 
         //Check for poop
-        if (heartbeats % poop_beat == 0) {
+        if (heartbeats % beat_poop == 0) {
           poopHandler();
         }
 
         //Check to see if it has hatched
-        if (heartbeats % hatch_beat == 0 && breed == 0) {
+        if (heartbeats % beat_hatch == 0 && breed == 0) {
           evolveHandler();
         }
 
         //Check for evolution
-        if (heartbeats % evolve_beat == 0) {
+        if (heartbeats % beat_evolve == 0) {
           evolveHandler();
         }
 
@@ -237,7 +237,7 @@ void loop() {
           discovery();
         }
 
-        if (heartbeats % energy_beat == 0 && Energy != max_energy) {
+        if (heartbeats % beat_energy == 0 && Energy != max_energy) {
           Energy++;
         }
 
@@ -347,4 +347,3 @@ void loop() {
     delay(1);
   }
 }
-

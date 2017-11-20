@@ -21,7 +21,7 @@
 //i2c and uart comms
 #define i2cSDA      0
 #define i2cSCL      2
-#define serialbaud  115200
+#define serialbaud  500000
 #endif
 
 //oc on NodeMCU standalone

@@ -66,8 +66,8 @@
 #define sick_base             25          //The lowest the sick threshold can be
 #define sick_multi            20          //Multiplier used to calculate chance of sickness
 #define sick_penalty          10          //How much the power stat is "lowered" by when calculating health stat drain
-#define foodbonus             25          //How much does food increase the health stat?
-#define gamebonus_health      10          //How much do games increase a health stat?
+#define foodbonus             25          // 15 //How much does food increase the health stat?
+#define gamebonus_health      10          // 5  //How much do games increase a health stat?
 #define gamebonus_power       1           //How much do games increase a power stat?
 #define EnergyCost            10          //How much energy does a game use?
 
@@ -75,25 +75,6 @@
 #define max_sickChance        255
 #define max_poopChance        20
 #define max_drainChance       300
-
-//Heartbeat keyframes
-#if debugMode == true
-#define health_beat           20          //Roll to drain health every X heartbeats
-#define sick_beat             100         //Roll for sickness every X heartbeats
-#define poop_beat             100         //Roll for poop every X beats
-#define cry_beat              100         //Roll to cry for attention every X heartbeats
-#define hatch_beat            50          //How long it takes to hatch the egg
-#define evolve_beat           10000       //How many beats it takes to evolve
-#define energy_beat           1          //How many beats before charging Energy
-#else
-#define health_beat           20          //Roll to drain health every X heartbeats
-#define sick_beat             100         //Roll for sickness every X heartbeats
-#define poop_beat             100         //Roll for poop every X beats
-#define cry_beat              100         //Roll to cry for attention every X heartbeats
-#define hatch_beat            1000        //How long it takes to hatch the egg
-#define evolve_beat           10000       //How many beats it takes to evolve
-#define energy_beat           10          //How many beats before charging Energy
-#endif
 
 //BASE WEIGHT
 #define nominal_w             10

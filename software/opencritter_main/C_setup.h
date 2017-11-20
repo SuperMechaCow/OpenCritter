@@ -56,6 +56,15 @@ int sickRolls = 0;              // How many times was the critter left vulnerabl
 bool Alert = false;             // Does the critter want/need attention?
 byte breed = 0;                 // What breed in the breed index (see _labels.h) the critter is
 
+// Heartbeat Events (Keyframe)
+byte beat_health = 20;          // 10 //Roll to drain health every X heartbeats
+byte beat_sick = 100;           //Roll for sickness every X heartbeats
+byte beat_poop = 100;           //Roll for poop every X beats
+byte beat_cry = 100;            //Roll to cry for attention every X heartbeats
+int beat_hatch = 1000;          //How long it takes to hatch the egg
+int beat_evolve = 10000;        //How many beats it takes to evolve
+byte beat_energy = 20;          //How many beats before charging Energy
+
 //Inventory Items
 //A table of items with three properties. "total owned", "total acknowledged", and "max limit".
 byte Inventory[inv_max_itemtypes][3] = {
